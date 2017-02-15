@@ -1,12 +1,12 @@
 ---
 title: GameAP Documentation
 layout: default
+lang: en
 ---
 
 ## GameAP Documentation
 
-Coming Soon
-
+Select your language:
 
 * [Russian](/ru)
 * [English](/en)

@@ -1,3 +1,0 @@
-## GameAP Documentation
-
-Coming Soon

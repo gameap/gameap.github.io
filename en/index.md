@@ -1,3 +1,8 @@
+---
+layout: default
+lang: en
+---
+
 ## GameAP Documentation
 
-Coming Soon
+Coming soon
