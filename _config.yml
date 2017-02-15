@@ -1,0 +1,37 @@
+# Site title and subtitle. This is used in _includes/header.html
+title: 'GameAP Documentation'
+
+# if you wish to integrate disqus on pages set your shortname here
+disqus_shortname: ''
+
+# if you use google analytics, add your tracking id here
+# google_analytics_id: ''
+
+# Syntax highlighting
+highlighter: rouge
+
+# Since these are pages, it doesn't really matter
+future: true
+
+# Navigation
+navigation: 1
+
+# Default categories (in order) to appear in the navigation
+sections: [
+    ['ru', 'Russian']
+    ['en', 'English']
+]
+
+# Use the kramdown Markdown renderer
+markdown: kramdown
+redcarpet:
+    extensions: [
+        'no_intra_emphasis',
+        'fenced_code_blocks',
+        'autolink',
+        'strikethrough',
+        'superscript',
+        'with_toc_data',
+        'tables',
+        'hardwrap'
+    ]
