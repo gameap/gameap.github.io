@@ -1,4 +1,5 @@
 ---
+title: Документация GameAP
 layout: default
 lang: ru
 ---

@@ -22,7 +22,7 @@
 
             <div class="row">
                 {% assign post_count = site.posts|size %}
-                {% if site.navigation != 0 and site.navigation == 1 or post_count > 0 %}
+                {% if site.navigation != 0 and site.navigation == 1 and page.disable_navigation != 1 %}
                     <div id="navigation" class="col-sm-2">
                         {% include navigation.html %}
                     </div>

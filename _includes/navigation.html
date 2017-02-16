@@ -1,5 +1,9 @@
+{% assign lang = site.data.lang[page.lang] %}
+{% assign lang_dir =  %}
+{% assign lang_dir = '/' | append: page.lang | append: '/' %}
+
 <ul class="nav nav-list">
-    <li><a href="{{ site.baseurl }}/">Home</a></li>
+    <li><a href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
     {% for section in site.sections %}
         {% assign attr = section[0] %}
         {% assign label = section[1] %}
@@ -10,6 +14,12 @@
             {% endif %}
             <li data-order="{{ page.order }}"><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
         {% endfor %}
+    {% endfor %}
+
+    {% for fpage in (site.pages | sort: sort) %}
+        {% if fpage.dir == lang_dir and fpage.url != lang_dir %}
+            <li><a href="{{ fpage.url }}">{{ fpage.title }}</a><li>
+        {% endif %}
     {% endfor %}
 <!-- List additional links. It is recommended to add a divider
     e.g. <li class="divider"></li> first to break up the content. -->

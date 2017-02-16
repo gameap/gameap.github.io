@@ -1,6 +1,7 @@
 ---
 title: GameAP Documentation
 layout: default
+disable_navigation: 1
 lang: en
 ---
 
