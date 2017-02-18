@@ -16,7 +16,7 @@
         {% endfor %}
     {% endfor %}
 
-    {% for fpage in (site.pages | sort: sort) %}
+    {% for fpage in site.pages %}
         {% if fpage.dir == lang_dir and fpage.url != lang_dir %}
             <li><a href="{{ fpage.url }}">{{ fpage.title }}</a><li>
         {% endif %}
