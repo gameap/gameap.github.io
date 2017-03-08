@@ -57,5 +57,11 @@ php sprint database seed UserSeeder
 
 Не забудьте сменить пароль!
 
+Добавляем стандартные игры и модификации:
+```bash
+php sprint database seed GamesSeeder
+php sprint database seed GameTypesSeeder
+```
+
 ---
 Документация в процессе написания!

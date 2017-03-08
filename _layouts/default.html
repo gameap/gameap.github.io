@@ -15,7 +15,7 @@
 
         <div class="container">
             <div class="row">
-                <div id="header" class="col-sm-12">
+                <div id="header" class="col-md-12">
                     {% include header.html %}
                 </div>
             </div>
@@ -23,15 +23,15 @@
             <div class="row">
                 {% assign post_count = site.posts|size %}
                 {% if site.navigation != 0 and site.navigation == 1 and page.disable_navigation != 1 %}
-                    <div id="navigation" class="col-sm-2">
+                    <div id="navigation" class="col-md-3">
                         {% include navigation.html %}
                     </div>
 
-                    <div id="content" class="col-sm-10">
+                    <div id="content" class="col-md-9">
                         {{ content }}
                     </div>
                 {% else %}
-                    <div id="content" class="col-sm-12">
+                    <div id="content" class="col-md-12">
                         {{ content }}
                     </div>
                 {% endif %}
