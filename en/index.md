@@ -5,4 +5,7 @@ lang: en
 
 ## GameAP Documentation
 
-Coming soon
+Documentation writing in process
+
+Important:
+* [GameAP 2.x manual install](/en/manual_install.html)
