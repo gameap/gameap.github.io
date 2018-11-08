@@ -10,6 +10,7 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/syntax.css">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
+        <link rel="stylesheet" href="{{ site.baseurl }}/css/github-markdown.css">
     </head>
     <body>
 
@@ -27,7 +28,7 @@
                         {% include navigation.html %}
                     </div>
 
-                    <div id="content" class="col-md-9">
+                    <div id="content" class="col-md-9 markdown-body entry-content">
                         {{ content }}
                     </div>
                 {% else %}
