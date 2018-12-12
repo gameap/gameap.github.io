@@ -1,6 +1,7 @@
 ---
 layout: default
 lang: en
+order: 1
 ---
 
 ## GameAP Documentation

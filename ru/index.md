@@ -2,6 +2,7 @@
 title: Документация GameAP
 layout: default
 lang: ru
+order: 1
 ---
 
 ## Документация GameAP

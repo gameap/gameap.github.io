@@ -2,8 +2,10 @@
 title: GameAP Daemon Install
 layout: default
 lang: en
-category: Main
+category: GameAP Daemon
+order: 50
 ---
+
 
 # GameAP Daemon Manual Install
 

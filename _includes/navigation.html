@@ -3,24 +3,28 @@
 {% assign lang_dir = '/' | append: page.lang | append: '/' %}
 
 <ul class="nav nav-list">
-    <li><a href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
+    <li lass="nav-item" ><a href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
+
     {% for section in site.sections %}
         {% assign attr = section[0] %}
         {% assign label = section[1] %}
 
         {% for page in site.categories[attr] %}
             {% if forloop.first %}
-                <li class="nav-header">{{ label }}</li>
+                <li class="nav-item nav-header ">{{ label }}</li>
             {% endif %}
-            <li data-order="{{ page.order }}"><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+                <li data-order="{{ page.order }}"><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
         {% endfor %}
     {% endfor %}
-
-    {% for fpage in site.pages %}
-        {% if fpage.dir == lang_dir and fpage.url != lang_dir %}
-            <li><a href="{{ fpage.url }}">{{ fpage.title }}</a><li>
-        {% endif %}
+    
+    {% assign cats = site.pages | where:"lang",page.lang | sort: 'order' | group_by: 'category' %}
+    {% for cat in cats %}
+        <li>{{ cat.name }}</li>
+        {% assign items = cat.items | sort: 'order' %}
+        {% for fpage in items %}
+            {% if fpage.dir == lang_dir and fpage.url != lang_dir %}
+                <li lass="nav-item" ><a href="{{ fpage.url }}">{{ fpage.title }}</a><li>
+            {% endif %}
+        {% endfor %}
     {% endfor %}
-<!-- List additional links. It is recommended to add a divider
-    e.g. <li class="divider"></li> first to break up the content. -->
 </ul>

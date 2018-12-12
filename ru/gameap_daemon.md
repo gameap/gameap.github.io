@@ -2,7 +2,8 @@
 title: GameAP Daemon
 layout: default
 lang: ru
-category: Общее
+category: GameAP Daemon
+order: 50
 ---
 
 # GameAP Daemon

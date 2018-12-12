@@ -3,6 +3,7 @@ title: Ручная установка панели
 layout: default
 lang: ru
 category: Общее
+order: 30
 ---
 
 # Ручная установка панели

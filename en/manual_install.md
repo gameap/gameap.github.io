@@ -3,6 +3,7 @@ title: Manual panel install
 layout: default
 lang: en
 category: Main
+order: 30
 ---
 
 # Manual panel install

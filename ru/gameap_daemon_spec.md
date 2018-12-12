@@ -2,7 +2,8 @@
 title: GameAP Daemon спецификация
 layout: default
 lang: ru
-category: Общее
+category: GameAP Daemon
+order: 60
 ---
 
 # Файловый сервер
