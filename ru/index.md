@@ -5,9 +5,9 @@ lang: ru
 order: 1
 ---
 
-## Документация GameAP
-
 Документация в процессе написания
 
 Важное:
-* [Ручная установка GameAP 2.x](/ru/manual_install.html)
+* [Установка панели GameAP 3.x](/ru/install.html)
+* [Ручная установка GameAP 3.x](/ru/manual_install.html)
+* [Установка и настройка GameAP Daemon](/ru/gameap_daemon.html)

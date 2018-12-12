@@ -6,7 +6,8 @@ category: Общее
 order: 10
 ---
 
-# Требования
+* This will become a table of contents (this text will be scraped).
+{:toc}
 
 ## Серверная часть
  
@@ -16,7 +17,7 @@ order: 10
 ## Веб часть
 
 * Любой вер-сервер (nginx, lighttpd, apache и др.)
-* PHP версии 5.4 и выше. Рекомендуется PHP 7.1
+* PHP версии 7.1 и выше
 
 ### Composer
 
@@ -26,7 +27,7 @@ order: 10
 
 ##### Linux
 ```bash
-wget https://getcomposer.org/download/1.4.0/composer.phar
+wget https://getcomposer.org/download/1.8.0/composer.phar
 cp composer.phar /usr/bin/composer
 chmod +x /usr/bin/composer
 ```

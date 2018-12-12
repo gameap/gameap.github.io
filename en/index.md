@@ -4,8 +4,6 @@ lang: en
 order: 1
 ---
 
-## GameAP Documentation
-
 Documentation writing in process
 
 Important:

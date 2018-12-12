@@ -6,8 +6,6 @@ category: Main
 order: 10
 ---
 
-# Requirements
-
 ## Server part
  
 * GameAP Daemon 2.0
@@ -16,7 +14,7 @@ order: 10
 ## Web part
 
 * Any web server (nginx, lighttpd, apache etc.)
-* PHP >= 5.4. Recomended PHP 7.1
+* PHP >= 7.1
 
 ### Composer
 

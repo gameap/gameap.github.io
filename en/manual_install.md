@@ -6,8 +6,6 @@ category: Main
 order: 30
 ---
 
-# Manual panel install
-
 Install GameAP 2.x from GitHub.
 
 Notes!

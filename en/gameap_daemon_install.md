@@ -7,8 +7,6 @@ order: 50
 ---
 
 
-# GameAP Daemon Manual Install
-
 ## Debian
 
 It is actual for Debian Jessie and Debian Stretch.
