@@ -6,54 +6,157 @@ category: Main
 order: 30
 ---
 
-Install GameAP 2.x from GitHub.
+* This will become a table of contents (this text will be scraped).
+{:toc}
 
-Notes!
-1. This tutorial actual for Debian 8. Howewer, for Ubuntu/CentOS and other distributions it can works with some changes.
+Install GameAP 3.x from GitHub. These are detailed instructions for installing GameAP from GitHub, installing required dependencies and building a styles.
+
+> Notes!
+1. This tutorial actual for Debian/Ubuntu. Howewer, for Ubuntu/CentOS and other distributions it can works with some changes.
 2. This tutorial not actual for a Shared hostings.
 
-I use:
-* OS: Debian 8
-* PHP version: 7.1
+Requirements:
+* OS: Debian 9
+* PHP version: >= 7.1
 * Web server: Nginx
 * Database: MySQL
 * CLI Utilities: [git](requirements.html#git), [composer](requirements.html#composer)
+
+## Install required packages
+
+These packages will be needed in the future:
+```bash
+sudo apt-get install -y wget software-properties-common ca-certificates apt-transport-https gnupg curl lsb-release
+```
 
 Install required PHP extensions:
 ```bash
 apt-get -y install php7.1-cli php7.1-fpm php7.1-pdo php7.1-mysql php7.1-redis php7.1-gd php7.1-mcrypt php7.1-curl php7.1-bz2 php7.1-xml php7.1-mbstring php7.1-bcmath
 ```
 
-Create project directory, example **/var/www/gameap**. Clone GameAP from Git:
+Install composer:
 ```bash
-git clone https://github.com/et-nik/GameAP /var/www/gameap
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+```
+
+> If after the execution of commands you get the following errors:
+```
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+E: Unable to locate package php7.1-common
+E: Couldn't find any package by glob 'php7.1-common'
+E: Couldn't find any package by regex 'php7.1-common'
+E: Unable to locate package php7.1-cli
+E: Couldn't find any package by glob 'php7.1-cli'
+E: Couldn't find any package by regex 'php7.1-cli'
+...
+```
+For Debian/Ubuntu, run the following command:
+```
+echo "deb https://packages.sury.org/php/ $(lsb_release -c | cut -f2) main" | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt-get update
+```
+
+Install database and web server. You can use MySQL Nginx:
+
+```
+sudo apt-get install mysql-server nginx
+```
+
+> Please note that for testing the panel is not required to use MySQL and Nginx, you can use SQLite and the PHP: Built-in web server.
+Read more about this in [Simple Environment](#simple-environment)
+
+## Setup GameAP
+
+Create project directory, example `/var/www/gameap`. Clone GameAP from Git:
+```bash
+git clone https://github.com/et-nik/gameap /var/www/gameap
+```
+
+Go to GameAP home directory:
+
+```bash
+cd /var/www/gameap
+```
+
+The panel configuration is in the `.env` file. Create your configuration file from the example:
+```bash
+cp .env.example .env
 ```
 
 Install required PHP dependencies:
 ```bash
-composer install
+composer install --no-dev --optimize-autoloader
 ```
 
-Create database, edit  application/config/database.php.
-
-Update database schema:
+Generate an encryption key:
 ```bash
-php sprint database refresh app
+php artisan key:generate --force
 ```
 
-Create administrator:
+Create database, edit `.env`, set host, login, password and database name
+After that execute command:
 ```bash
-php sprint database seed UserSeeder
+php artisan migrate --seed
 ```
-This command create administrator with data:
 
+This command will create the necessary tables in the database, add the administrator and add some data for example.
+Go to the URL page with the control panel.
+
+Administrator default data:
 **Login:** admin
 **Password:** fpwPOuZD
 
-Do not forget change password!
+Do not forget to change your password!
 
-Add default Games and Game Types:
-```bash
-php sprint database seed GamesSeeder
-php sprint database seed GameTypesSeeder
+## Build a styles
+
+Install NPM:
 ```
+curl -sL https://deb.nodesource.com/setup_10.x | bash -
+apt-get install -y nodejs
+```
+
+Install required npm packages:
+```
+npm install
+```
+
+Build a styles:
+```
+npm run prod
+```
+
+Setup complete. All required dependencies are installed, all styles builded. You can use GameAP.
+
+> Do not forget that on the dedicated server on which you plan to host game servers you need to install and configure GameAP Daemon, you can read about it here - [Install GameAP Daemon] (/en/gameap_daemon.html).
+
+## Simple Environment
+
+If you need a panel to test something, you can use SQLite and the PHP Build-in web server. It is not necessary to install the MySQL database (or any other) and the Nginx web server (or Apache).
+
+Create empty database file:
+```
+touch /var/www/gameap/database.sqlite
+```
+
+Open `.env` and edit the options:
+```
+DB_CONNECTION=sqlite
+DB_DATABASE=/var/www/gameap/database.sqlite
+```
+
+Migrate database:
+```bash
+php artisan migrate --seed
+```
+
+Run PHP Build-in Web server:
+```
+cd public
+php -S localhost:8080
+```
+
+Go to URL `http://localhost:8080`
+Enter the administrator username and password.

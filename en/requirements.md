@@ -6,6 +6,9 @@ category: Main
 order: 10
 ---
 
+* This will become a table of contents (this text will be scraped).
+{:toc}
+
 ## Server part
  
 * GameAP Daemon 2.0
@@ -24,7 +27,7 @@ Optional. Required for manual install.
 
 ##### Linux
 ```bash
-wget https://getcomposer.org/download/1.4.0/composer.phar
+wget https://getcomposer.org/download/1.8.0/composer.phar
 cp composer.phar /usr/bin/composer
 chmod +x /usr/bin/composer
 ```

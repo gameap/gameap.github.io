@@ -18,8 +18,7 @@ sudo apt-get update
 sudo apt-get install -y wget curl gnupg ca-certificates apt-transport-https lsb-release
 ```
 
-
-### Добавление репозиториев
+### Добавление репозиториев GameAP
 
 Скачайте и добавьте GPG ключ:
 ```bash
@@ -107,8 +106,35 @@ server {
 
 ### MySQL
 
+После установки MySQL создайте базу данных `gameap`, откройте `.env` файл и отредактируйте параметры:
+```
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=gameap
+DB_USERNAME=gameap
+DB_PASSWORD=secret
+```
+
+После найстройки параметров перейдите в каталог с панелью управления `/var/www/gameap` и обновите схему базы данных:
+```bash
+php artisan migrate --seed
+```
+
 ### SQLite
 
+Создайте пустой файл базы данных:
 ```
 touch /var/www/gameap/database.sqlite
+```
+
+Откройте `.env` и отредактируйте параметры базы данных:
+```
+DB_CONNECTION=sqlite
+DB_DATABASE=/var/www/gameap/database.sqlite
+```
+
+После найстройки параметров перейдите в каталог с панелью управления `/var/www/gameap` и обновите схему базы данных:
+```bash
+php artisan migrate --seed
 ```

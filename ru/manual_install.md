@@ -13,7 +13,7 @@ order: 30
 сборке стилей.
 
 > Примечания!
-1. Этот мануал больше актуален для Debian 8. Однако, для Ubuntu/CentOS и др дистрибутивов это тоже должно работать, но
+1. Этот мануал больше актуален для Debian. Однако, для Ubuntu/CentOS и др дистрибутивов это тоже должно работать, но
 с некоторыми изменениями.
 2. Этот мануал не актуален для Shared хостингов.
 
@@ -35,6 +35,11 @@ sudo apt-get install -y wget software-properties-common ca-certificates apt-tran
 Установите PHP и необходимые расширения PHP:
 ```bash
 sudo apt-get -y install php7.1-common php7.1-cli php7.1-fpm php7.1-pdo php7.1-mysql php7.1-redis php7.1-curl php7.1-bz2 php7.1-zip php7.1-xml php7.1-mbstring php7.1-bcmath
+```
+
+Установите composer:
+```bash
+curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
 ```
 
 > Если после выполнения команд вы получаете слудующие ошибки:
@@ -117,7 +122,7 @@ php artisan migrate --seed
 
 Не забудьте сменить пароль!
 
-## Компиляция стилей
+## Сборка стилей
 
 Установите NPM:
 ```
