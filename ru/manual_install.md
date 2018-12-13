@@ -19,7 +19,7 @@ order: 30
 
 Нам понадобится:
 * ОС: Debian 8
-* Версия PHP: 7.1
+* Версия PHP: >= 7.1
 * Веб-сервер: Nginx
 * База данных: MySQL
 * Консольные утилиты: [git](requirements.html#git), [composer](requirements.html#composer)
@@ -29,7 +29,7 @@ order: 30
 Установите необходимые пакеты, которые в дальнейшем могут понадобится. Обычно, они уже должны быть установлены, но бывает, что их нет и
 из-за этого могут вознкнуть трудности в выполнении дальнейших инструкций:
 ```bash
-sudo apt-get install -y software-properties-common apt-transport-https gnupg curl
+sudo apt-get install -y wget software-properties-common ca-certificates apt-transport-https gnupg curl lsb-release
 ```
 
 Установите PHP и необходимые расширения PHP:
@@ -50,8 +50,15 @@ E: Couldn't find any package by glob 'php7.1-cli'
 E: Couldn't find any package by regex 'php7.1-cli'
 ...
 ```
-Тогда вам необходимо добавить новый репозиторий в менеджер пакетов. О том, как это сделать можете прочитать например здесь [https://sapeg.in/2018/06/847/](), либо
-тут [https://neoblogs.net/2017/03/22/ustanovka-php7-1-na-ubuntu-nastrojka-php7-1/]().
+Для Debian выполните следующую команду:
+```
+echo "deb https://packages.sury.org/php/ $(lsb_release -c | cut -f2) main" | sudo tee /etc/apt/sources.list.d/php.list
+sudo apt-get update
+```
+
+```bash
+sudo apt-get -y install php7.1-common php7.1-cli php7.1-fpm php7.1-pdo php7.1-mysql php7.1-redis php7.1-curl php7.1-bz2 php7.1-zip php7.1-xml php7.1-mbstring php7.1-bcmath
+```
 
 Установите базу данных и веб сервер. Можете использовать MySQL и Nginx:
 
