@@ -64,7 +64,7 @@ chmod +x ./installer.sh
 Следующий пример автоматически установит панель в каталог `/var/www/gameap`, установит и настроит веб-сервер, базу данных. Панель должна стать доступна по указанному в `--host` адресу `http://your-gameap.ru`:
 
 ```bash
-curl -sL http://packages.gameap.ru/installer | bash - \
+./installer.sh \
     --path=/var/www/gameap \
     --host=your-gameap.ru \
     --web-server=nginx \
@@ -74,7 +74,7 @@ curl -sL http://packages.gameap.ru/installer | bash - \
 
 Следующий пример автоматически установит панель в каталог `/var/www/gameap`. Установка веб-сервера не будет произведена. Будет установлен пакет php-sqlite для работы с базой SQLite.
 ```bash
-curl -sL http://packages.gameap.ru/installer | bash - \
+./installer.sh \
     --path=/var/www/gameap \
     --host=localhost \
     --web-server=none \
