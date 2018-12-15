@@ -29,17 +29,38 @@ order: 30
 Установите необходимые пакеты, которые в дальнейшем могут понадобится. Обычно, они уже должны быть установлены, но бывает, что их нет и
 из-за этого могут вознкнуть трудности в выполнении дальнейших инструкций:
 ```bash
-sudo apt-get install -y wget software-properties-common ca-certificates apt-transport-https gnupg curl lsb-release
+sudo apt-get -y install 
+    wget \
+    software-properties-common \
+    ca-certificates \
+    apt-transport-https \
+    gnupg \
+    curl \
+    lsb-release
 ```
 
 Установите PHP и необходимые расширения PHP:
 ```bash
-sudo apt-get -y install php7.1-common php7.1-cli php7.1-fpm php7.1-pdo php7.1-mysql php7.1-redis php7.1-curl php7.1-bz2 php7.1-zip php7.1-xml php7.1-mbstring php7.1-bcmath
+sudo apt-get -y install \
+    php7.1-common \
+    php7.1-cli \
+    php7.1-fpm \
+    php7.1-pdo \
+    php7.1-mysql \
+    php7.1-redis \
+    php7.1-curl \
+    php7.1-bz2 \
+    php7.1-zip \
+    php7.1-xml \
+    php7.1-mbstring \
+    php7.1-bcmath
 ```
 
 Установите composer:
 ```bash
-curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/local/bin --filename=composer
+curl -sS https://getcomposer.org/installer | sudo php -- \
+    --install-dir=/usr/local/bin \
+    --filename=composer
 ```
 
 > Если после выполнения команд вы получаете слудующие ошибки:
@@ -55,14 +76,11 @@ E: Couldn't find any package by glob 'php7.1-cli'
 E: Couldn't find any package by regex 'php7.1-cli'
 ...
 ```
-Для Debian выполните следующую команду:
+Для Debian выполните следующие команды:
 ```
-echo "deb https://packages.sury.org/php/ $(lsb_release -c | cut -f2) main" | sudo tee /etc/apt/sources.list.d/php.list
+wget -O - https://packages.sury.org/php/apt.gpg | sudo apt-key add -
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
 sudo apt-get update
-```
-
-```bash
-sudo apt-get -y install php7.1-common php7.1-cli php7.1-fpm php7.1-pdo php7.1-mysql php7.1-redis php7.1-curl php7.1-bz2 php7.1-zip php7.1-xml php7.1-mbstring php7.1-bcmath
 ```
 
 Установите базу данных и веб сервер. Можете использовать MySQL и Nginx:

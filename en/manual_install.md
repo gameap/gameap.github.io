@@ -52,9 +52,10 @@ E: Couldn't find any package by glob 'php7.1-cli'
 E: Couldn't find any package by regex 'php7.1-cli'
 ...
 ```
-For Debian/Ubuntu, run the following command:
+For Debian, run the following command:
 ```
-echo "deb https://packages.sury.org/php/ $(lsb_release -c | cut -f2) main" | sudo tee /etc/apt/sources.list.d/php.list
+wget -O - https://packages.sury.org/php/apt.gpg | sudo apt-key add -
+echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/php.list
 sudo apt-get update
 ```
 

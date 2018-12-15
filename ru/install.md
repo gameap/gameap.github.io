@@ -3,7 +3,7 @@ title: Установка панели
 layout: default
 lang: ru
 category: Общее
-order: 20
+order: 21
 ---
 
 * This will become a table of contents (this text will be scraped).
