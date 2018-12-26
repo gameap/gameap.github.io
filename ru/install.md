@@ -22,7 +22,7 @@ sudo apt-get install -y wget curl gnupg ca-certificates apt-transport-https lsb-
 
 Скачайте и добавьте GPG ключ:
 ```bash
-wget -O - http://packages.gameap.ru/debian/gameap-rep.gpg.key | sudo apt-key add -
+wget -O - http://packages.gameap.ru/gameap-rep.gpg.key | sudo apt-key add -
 ```
 
 Этот ключ служит для проверки подленности пакетов в репозиториях GameAP.
@@ -30,8 +30,9 @@ wget -O - http://packages.gameap.ru/debian/gameap-rep.gpg.key | sudo apt-key add
 
 Добавьте репозиторий:
 ```bash
-sudo echo "deb http://packages.gameap.ru/debian/ stretch main" > /etc/apt/sources.list.d/gameap.list
+sudo echo "deb http://packages.gameap.ru/debian/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/gameap.list
 ```
+
 
 ### Установка панели
 
@@ -81,8 +82,8 @@ server {
     }
 }
 ```
-Обратите внимание на параметры `server_name` и `root`, скорее всего у вас они другие и их нужно указать. 
-В `server_name` указывается хост сервера, например gameap.ru. 
+Обратите внимание на параметры `server_name` и `root`, скорее всего у вас они другие и их нужно указать.
+В `server_name` указывается хост сервера, например gameap.ru.
 В `root` указывается путь к public файлам панели (там, где index.php)
 
 ### Apache
@@ -91,14 +92,14 @@ server {
 
 ```
 <VirtualHost *:80>
-     
+
     ServerName example.com
     DocumentRoot "/var/www/gameap/public"
-         
+
     <Directory "/var/www/gameap/public">
         AllowOverride all
     </Directory>
-         
+
 </VirtualHost>
 ```
 

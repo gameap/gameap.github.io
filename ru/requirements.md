@@ -10,8 +10,8 @@ order: 10
 {:toc}
 
 ## Серверная часть
- 
-* GameAP Daemon 2.0
+
+* GameAP Daemon 2.1
 * GameAP Starter
 
 ## Веб часть

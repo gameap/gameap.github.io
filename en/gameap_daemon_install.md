@@ -15,7 +15,7 @@ It is actual for Debian Jessie and Debian Stretch.
 
 Download and add key:
 ```bash
-wget -O - http://packages.gameap.ru/debian/gameap-rep.gpg.key | apt-key add -
+wget -O - http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add -
 ```
 
 Add new repository:

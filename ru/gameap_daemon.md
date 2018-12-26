@@ -9,7 +9,7 @@ order: 50
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-GameAP Daemon — фоновое приложение, которое обменивается с панелью данными, работает с игровыми серверами 
+GameAP Daemon — фоновое приложение, которое обменивается с панелью данными, работает с игровыми серверами
 (устанавливает, удаляет, запускает, останавливает и т.д).
 
 Это основное приложение, которое будет контролировать статус игровых серверов, перезапускать их в случае надобности или
@@ -23,7 +23,7 @@ GameAP Daemon — фоновое приложение, которое обмен
 
 Скачайте и добавьте ключ:
 ```bash
-wget -O - http://packages.gameap.ru/debian/gameap-rep.gpg.key | apt-key add -
+wget -O - http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add -
 ```
 
 Добавьте новый репозиторий:
