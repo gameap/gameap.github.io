@@ -1,7 +1,7 @@
 ---
 title: Get Started
 layout: default
-lang: ru
+lang: en
 category: Main
 order: 2
 ---
