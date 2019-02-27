@@ -40,6 +40,12 @@ GameAP -- панель с открытым исходным кодом для у
 
 [Ручная установка GameAP 3.x](/ru/manual_install.html)
 
+### Установка на Shared хостинг
+
+Установка панели на Shared хостинг, где нет доступа к командной строке.
+
+* [Установка на shared хостинг](/ru/shared_install.html)
+
 ## Установка GameAP Daemon
 
 * [Установка и настройка GameAP Daemon](/ru/gameap_daemon.html)
