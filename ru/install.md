@@ -67,6 +67,7 @@ server {
         location = /index.php
         {
             # fastcgi_pass   php:9000;
+            fastcgi_pass    unix:/var/run/php/php7.2-fpm.sock;
             fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
             include        fastcgi_params;
         }
@@ -91,15 +92,24 @@ server {
 Пример конфигурации хоста Apache:
 
 ```
+NameVirtualHost *:80
+Listen 80
+ 
 <VirtualHost *:80>
-
     ServerName example.com
-    DocumentRoot "/var/www/gameap/public"
-
-    <Directory "/var/www/gameap/public">
-        AllowOverride all
+    DocumentRoot /var/www/gameap/public
+     
+    <Directory /var/www/gameap/public>
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride All
+            Order allow,deny
+            allow from all
+            Require all granted
     </Directory>
-
+     
+    LogLevel debug
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
 
