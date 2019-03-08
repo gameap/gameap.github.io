@@ -53,7 +53,9 @@ sudo apt-get -y install \
     php7.1-zip \
     php7.1-xml \
     php7.1-mbstring \
-    php7.1-bcmath
+    php7.1-bcmath \
+    php7.1-gmp \
+    php7.1-intl
 ```
 
 Установите composer:

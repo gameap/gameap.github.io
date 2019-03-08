@@ -18,6 +18,7 @@ order: 10
 
 * Any web server (nginx, lighttpd, apache etc.)
 * PHP >= 7.1
+* PHP Extensions: GD, OpenSSL, Curl, GMP, Intl
 
 ### Composer
 

@@ -18,6 +18,7 @@ order: 10
 
 * Любой вер-сервер (nginx, lighttpd, apache и др.)
 * PHP версии 7.1 и выше
+* Модули/расширения PHP: GD, OpenSSL, Curl, GMP, Intl
 
 ### Composer
 

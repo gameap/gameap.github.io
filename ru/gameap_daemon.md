@@ -66,7 +66,7 @@ apt-get install gameap-daemon
 
 | Параметр                  | Обязателен            | Тип       | Информация
 |---------------------------|-----------------------|-----------|------------
-| client_certificate_file   | да                    | string    | Сертификат клиента (панели)
+| ca_certificate_file   | да                    | string    | CA сертификат
 | certificate_chain_file    | да                    | string    | Сертификат сервера
 | private_key_file          | да                    | string    | Приватный ключ сервера
 | private_key_password      | нет                   | string    | Пароль от ключа сервера
