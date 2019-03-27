@@ -147,6 +147,16 @@ Setup complete. All required dependencies are installed, all styles builded. You
 
 > Do not forget that on the dedicated server on which you plan to host game servers you need to install and configure GameAP Daemon, you can read about it here - [Install GameAP Daemon] (/en/gameap_daemon.html).
 
+## Cron
+
+Add cron schedule
+
+```
+* * * * * cd /patch/to/gameap && php artisan schedule:run >> /dev/null 2>&1
+```
+
+Set your path instead  `/patch/to/gameap`.
+
 ## Simple Environment
 
 If you need a panel to test something, you can use SQLite and the PHP Build-in web server. It is not necessary to install the MySQL database (or any other) and the Nginx web server (or Apache).
