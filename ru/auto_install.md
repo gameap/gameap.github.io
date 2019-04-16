@@ -58,8 +58,11 @@ chmod +x ./installer.sh
 - `--web-server` Веб сервер. Возможные значения: `nginx`, `apache`, `none`
 - `--database` База данных. Возможные значения: `mysql`, `pgsql`, `sqlite`, `none`
 - `--github` Панель будет установлена с GitHub'а.
+- `--upgrade` Параметр используется для обновления панели.
 
 ### Примеры
+
+#### Установка панели
 
 Следующий пример автоматически установит панель в каталог `/var/www/gameap`, установит и настроит веб-сервер, базу данных. Панель должна стать доступна по указанному в `--host` адресу `http://your-gameap.ru`:
 
@@ -79,6 +82,18 @@ chmod +x ./installer.sh
     --host=localhost \
     --web-server=none \
     --database=sqlite
+```
+
+#### Обновление панели
+
+Следующий пример обновит панель:
+```bash
+./installer.sh --upgrade
+```
+
+Обновление панели используя GitHub:
+```bash
+./installer.sh --upgrade --github
 ```
 
 ## Что ещё устанавливает скрипт
