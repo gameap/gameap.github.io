@@ -24,9 +24,9 @@ The panel is installed on a dedicated server with PHP, a web server (Nginx, Apac
 
 Installation ways:
 
-* [Install to shared hosting](/ru/shared_install.html)
-* [Install on Linux with SSH (auto, easy)](/ru/auto_install.html)
-* [Install on Linux with SSH (manual, difficult)](/ru/manual_install.html)
+* [Install on Linux with SSH (auto, easy)](/en/auto_install.html)
+* [Install on shared hosting](/en/shared_install.html)
+* [Install on Linux with SSH (manual, difficult)](/en/manual_install.html)
 
 ## GameAP Daemon Installation
 
