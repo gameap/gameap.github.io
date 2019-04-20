@@ -104,13 +104,13 @@ Install required PHP dependencies:
 ```bash
 composer install --no-dev --optimize-autoloader
 ```
+Create database, edit `.env`, set host, login, password and database name
 
 Generate an encryption key:
 ```bash
 php artisan key:generate --force
 ```
 
-Create database, edit `.env`, set host, login, password and database name
 After that execute command:
 ```bash
 php artisan migrate --seed
