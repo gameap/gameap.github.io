@@ -8,7 +8,7 @@ order: 100
 
 Модуль управления FTP аккаунтами
 
-https://github.com/gameap/ftp-module
+[https://github.com/gameap/ftp-module](https://github.com/gameap/ftp-module)
 
 Модуль поддерживает создание, удаление, обновление аккаунтов FTP на выделенных серверах. После создания FTP аккаунта можно подключиться к нему например через FileZilla или другой клиент.
 
@@ -33,7 +33,7 @@ php artisan module:migrate Ftp
 
 ## При отсутствии доступа к консоли (на Shared хостинг)
 
-Скопируйте содержимое архива с модулем в каталог `modules`. Архив можно скачать здесь https://github.com/gameap/ftp-module
+Скопируйте содержимое архива с модулем в каталог `modules`. Архив можно скачать [здесь](https://github.com/gameap/ftp-module/archive/master.zip)
 
 Перейдите в панель управления, там выберите в верхнем меню **"GameAP"** -> **"Модули"**, затем кликните **"Запустить миграцию"**
 
@@ -54,7 +54,7 @@ php artisan module:migrate Ftp
 
 ## Настройка выделенного сервера (ноды)
 
-Скачайте `ftp.sh` отсюда https://github.com/gameap/scripts/tree/master/ftp и поместите его в рабочий каталог на выделенном сервере (по умолчанию `/srv/gameap`) и установите ему права на выполнение:
+Скачайте `ftp.sh` [отсюда](https://github.com/gameap/scripts/tree/master/ftp) и поместите его в рабочий каталог на выделенном сервере (по умолчанию `/srv/gameap`) и установите ему права на выполнение:
 ```
 chmod +x /srv/gameap/ftp.sh
 ```
