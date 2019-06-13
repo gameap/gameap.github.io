@@ -24,14 +24,14 @@
             <div class="row">
                 {% assign post_count = site.posts|size %}
                 {% if site.navigation != 0 and site.navigation == 1 and page.disable_navigation != 1 %}
-                    <div id="navigation" class="col-md-3">
+                    <aside id="navigation" class="col-md-3">
                         {% include navigation.html %}
-                    </div>
+                    </aside>
 
-                    <div id="content" class="col-md-9 markdown-body entry-content">
+                    <section id="content" class="col-md-9 markdown-body entry-content">
                         <h1>{{ page.title }}</h1>
                         {{ content }}
-                    </div>
+                    </section>
                 {% else %}
                     <div id="content" class="col-md-12">
                         {{ content }}
