@@ -8,6 +8,7 @@
         <title>{{ site.title }}{% if page.title %} : {{ page.title }}{% endif %}</title>
 
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.css">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/syntax.css">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/github-markdown.css">
@@ -28,10 +29,14 @@
                         {% include navigation.html %}
                     </aside>
 
-                    <section id="content" class="col-md-9 markdown-body entry-content">
+                    <section id="content" class="col-md-9 col-lg-6 markdown-body entry-content">
                         <h1>{{ page.title }}</h1>
                         {{ content }}
                     </section>
+
+                    <aside class="col-lg-3 noprint d-md-none d-lg-block">
+                        <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
+                    </aside>
                 {% else %}
                     <div id="content" class="col-md-12">
                         {{ content }}
@@ -111,5 +116,21 @@
             if (document.querySelectorAll) orderNav();
         </script>
         {% include yandex_metrika.html %}
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script>
+
+        <script>
+            $(function() {
+              var navSelector = "#toc";
+              var $myNav = $(navSelector);
+              Toc.init($myNav);
+              $("body").scrollspy({
+                target: navSelector
+              });
+            });
+        </script>
     </body>
 </html>
