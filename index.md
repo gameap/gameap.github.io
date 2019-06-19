@@ -9,5 +9,5 @@ lang: en
 
 Select your language:
 
-* [Russian](/ru)
-* [English](/en)
+* ![](/images/flags/russia.png) [Russian](/ru)
+* ![](/images/flags/kingdom.png) [English](/en)
