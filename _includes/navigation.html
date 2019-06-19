@@ -2,8 +2,8 @@
 {% assign lang_dir =  %}
 {% assign lang_dir = '/' | append: page.lang | append: '/' %}
 
-<ul class="nav nav-list">
-    <li lass="nav-item" ><a href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
+<ul class="nav flex-column">
+    <li lass="nav-item" ><a class="nav-link" href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
 
     {% for section in site.sections %}
         {% assign attr = section[0] %}
@@ -11,9 +11,9 @@
 
         {% for page in site.categories[attr] %}
             {% if forloop.first %}
-                <li class="nav-item nav-header ">{{ label }}</li>
+                <li class="nav-item nav-header">{{ label }}</li>
             {% endif %}
-                <li data-order="{{ page.order }}"><a href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
+                <li class="nav-item" data-order="{{ page.order }}"><a class="nav-link" href="{{ site.baseurl }}{{ page.url }}">{{ page.title }}</a></li>
         {% endfor %}
     {% endfor %}
     
@@ -23,7 +23,12 @@
         {% assign items = cat.items | sort: 'order' %}
         {% for fpage in items %}
             {% if fpage.dir == lang_dir and fpage.url != lang_dir %}
-                <li lass="nav-item" ><a href="{{ fpage.url }}">{{ fpage.title }}</a><li>
+                {% if page.url == fpage.url%}
+                    <li class="nav-item active" ><strong><a class="nav-link">{{ fpage.title }}</a></strong></li>
+                {% else %}
+                    <li class="nav-item" ><a class="nav-link" href="{{ fpage.url }}">{{ fpage.title }}</a></li>
+                {% endif %}
+
             {% endif %}
         {% endfor %}
     {% endfor %}

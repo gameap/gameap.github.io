@@ -1,5 +1,4 @@
 body {
-    font-weight: 400;
     text-shadow: 0 1px 1px rgba(255, 255, 255, 0.7);
 }
 
@@ -61,25 +60,21 @@ code {
     padding-right: 0;
 }
 
-.nav > li > ul {
-    padding-left: 15px;
-}
-
-.nav > li > ul > li {
+.nav-item {
     position: relative;
     display: block;
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
-#navigation li > ul > li > a:focus, 
-#navigation li > ul > li > a:hover 
+.nav-link:focus,
+.nav-link:hover
 {
     text-decoration: none;
     background-color: #eee;
 }
 
-.nav > li > ul > li > a {
+.nav-item > a {
     position: relative;
     display: block;
     padding-top: 10px;
@@ -106,4 +101,14 @@ body.rtl .row-fluid [class*="span"]:first-child {
 
 body.rtl ul, body.rtl ol {
     margin: 0 25px 10px 0;
+}
+
+@media print {
+  .noprint {
+    display: none !important;
+  }
+
+  #navigation {
+    display: none !important;
+  }
 }
