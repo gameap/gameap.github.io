@@ -29,13 +29,13 @@
                         {% include navigation.html %}
                     </aside>
 
-                    <section id="content" class="col-md-9 col-lg-6 markdown-body entry-content">
+                    <section id="content" class="col-sm-12 col-md-9 col-lg-6 markdown-body entry-content">
                         <h1>{{ page.title }}</h1>
                         {{ content }}
                     </section>
 
                     <aside class="col-lg-3 noprint d-md-none d-lg-block">
-                        <nav id="toc" data-toggle="toc" class="sticky-top"></nav>
+                        <nav id="toc" class="sticky-top"></nav>
                     </aside>
                 {% else %}
                     <div id="content" class="col-md-12">
