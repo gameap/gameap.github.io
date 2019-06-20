@@ -25,7 +25,7 @@ order: 2
 
 Посмотрите возможности панели на демо сайте.
 
-https://demo.gameap.ru
+[https://demo.gameap.ru](https://demo.gameap.ru)
 
 * Логин: demo
 * Пароль: demo

@@ -20,6 +20,7 @@ GameAP supports starting, stopping and restarting any games and services.
 | Rust | ✔ | ✘ |
 | Terraria | | 
 | San Andreas: MP | |
+
 and many more... 
 
 ## Installation methods
