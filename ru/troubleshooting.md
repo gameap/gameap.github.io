@@ -15,6 +15,19 @@ order: 40
 
 ### Whoops, looks like something went wrong.
 
+![](/images/errors/something_went_wrong.png)
+
+Ошибка может возникать по разным причинам. Чтобы выяснить подробности, необходимо включить 
+отображение подробностей.
+
+Откройте файл `.env`, измените параметры `APP_DEBUG` и `APP_LOG_LEVEL`:
+```env
+APP_DEBUG=true
+APP_LOG_LEVEL=debug
+```
+
+После того, как вы включите отображение подробностей, сравнивайте ваши ошибки с тем, что перечислено ниже.
+
 #### Генерация ключа
 
 ![](/images/errors/key_generate.png)
@@ -34,6 +47,15 @@ php artisan key:generate --force
 ```
 php artisan migrate --seed
 ```
+
+#### Неправильные параметры базы данных
+
+![](/images/errors/db_access_denied.png)
+
+Проблема возникает, если в настройках указаны неверные параметры от базы данных (хост, логин или пароль). 
+Откройте файл `.env` и проверьте параметры: `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD`.
+
+Иногда для параметра `DB_HOST` вместо `127.0.0.1` должно быть указано `localhost` или наоборот.
 
 ## Ошибки запуска сервера
 
