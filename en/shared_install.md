@@ -15,7 +15,7 @@ order: 31
 
 Installing GameAP on a shared hosting with no access to the command line.
 
-* **Minimum PHP version**: 7.1
+* **Minimum PHP version**: 7.2
 * **Recommended PHP version**: >= 7.2
 
 ## Downloading panel archive

@@ -17,7 +17,7 @@ Install GameAP 3.x from GitHub. These are detailed instructions for installing G
 
 Requirements:
 * OS: Debian 9
-* PHP version: >= 7.1
+* PHP version: >= 7.2
 * Web server: Nginx
 * Database: MySQL
 * CLI Utilities: [git](requirements.html#git), [composer](requirements.html#composer)

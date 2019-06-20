@@ -10,6 +10,12 @@ order: 32
 
 ### Debian Stretch
 
+<details markdown="1"> 
+  <summary>Q1: What is the best Language in the World? </summary>
+   A1: JavaScript 
+   **test**
+</details>
+
 Установка на панели на Debian
 
 * Веб часть: VDS, Debian 9 (Stretch)
