@@ -35,10 +35,19 @@ order: 32
     * [3:12 Установка нового игрового сервера](https://www.youtube.com/watch?v=O2ai567dDqE&t=192s){:target="_blank"}
     * [4:20 Управление игровым сервером](https://www.youtube.com/watch?v=O2ai567dDqE&t=260s){:target="_blank"}
 
+### Windows
+
+Установка GameAP на Windows
+
+* Веб часть: Windows Server 2019
+* Серверная часть: Windows Server 2019
+
+<iframe width="640" height="360" src="https://www.youtube.com/embed/JAEm6_KuChQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 ### Shared хостинг (ISPManager)
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/WtijKnbZ53Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 #### Содержание
 
 * [0:05 Скачивание панели](https://www.youtube.com/watch?v=WtijKnbZ53Q&t=5s){:target="_blank"}
