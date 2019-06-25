@@ -44,6 +44,26 @@ order: 32
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/JAEm6_KuChQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+#### Содержание 
+
+* Веб часть
+    * [0:12 Установка XAMPP](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=12s){:target="_blank"}
+    * [1:11 Настройка сайта с GameAP](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=71s){:target="_blank"}
+        * [1:12 Скачивание и распаковка архива с панелью](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=72s){:target="_blank"}
+        * [2:03 Настройка виртуального хоста в Apache](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=123s){:target="_blank"}
+    * [3:44 Настройка базы данных](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=224s){:target="_blank"}
+        * [3:54 Создание новой базы данных в PHPMyAdmin](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=234s){:target="_blank"}
+        * [4:14 Создание нового пользователя с привилегиями](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=254s){:target="_blank"}
+        * [4:35 Импорт SQL файла в базу данных](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=275s){:target="_blank"}
+    * [5:11 Настройка параметров панели](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=311s){:target="_blank"}
+    * [6:05 Включение необходимых модулей PHP](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=365s){:target="_blank"}
+    * [7:37 Настройка выполнения заданий CRON](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=457s){:target="_blank"}
+* Серверная часть
+    * [8:01 Добавление выделенного сервера](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=481s){:target="_blank"}
+        * [8:10 Установка Microsoft Visual C++ 2015](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=490s){:target="_blank"}
+        * [8:55 Установка GameAP Daemon](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=535s){:target="_blank"}
+    * [9:51 Создание нового игрового сервера](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=591s){:target="_blank"}
+    * [11:35 Управление игровым сервером](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=695s){:target="_blank"}
 
 ### Shared хостинг (ISPManager)
 
