@@ -36,15 +36,10 @@ sudo yum install curl
 
 ## Running auto installation script
 
-Download script and set execute permission:
+Download and run script:
 ```bash
 curl -sLO http://packages.gameap.ru/installer.sh
-chmod +x ./installer.sh
-```
-
-Run script:
-```
-./installer.sh
+bash ./installer.sh
 ```
 
 ## Running with parameters

@@ -37,15 +37,10 @@ sudo yum install curl
 
 ## Запуск скрипта
 
-Скачайте скрипт и установите права на выполнение:
+Скачайте скрипт выполните его
 ```bash
 curl -sLO http://packages.gameap.ru/installer.sh
-chmod +x ./installer.sh
-```
-
-Запустите скрипт:
-```
-./installer.sh
+bash ./installer.sh
 ```
 
 ## Запуск с параметрами
