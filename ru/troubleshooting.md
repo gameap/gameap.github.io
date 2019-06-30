@@ -142,9 +142,11 @@ ZIP или TAR архиву (RAR не поддерживается). Сами ф
 находятся во вложенном каталоге в архиве.
 
 Посмотрите примеры. Ниже неправильно сформированный архив для игры GTA: San Andreas Multiplayer:
+
 ![](/images/errors/source_archive_wrong.jpg)
 
 А вот так правильно:
+
 ![](/images/errors/source_archive_right.jpg)
 
 
