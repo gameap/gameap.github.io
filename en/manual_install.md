@@ -32,20 +32,20 @@ sudo apt-get install -y wget software-properties-common ca-certificates apt-tran
 Install required PHP extensions:
 ```bash
 sudo apt-get -y install \
-    php7.1-common \
-    php7.1-cli \
-    php7.1-fpm \
-    php7.1-pdo \
-    php7.1-mysql \
-    php7.1-redis \
-    php7.1-curl \
-    php7.1-bz2 \
-    php7.1-zip \
-    php7.1-xml \
-    php7.1-mbstring \
-    php7.1-bcmath \
-    php7.1-gmp \
-    php7.1-intl
+    php7.2-common \
+    php7.2-cli \
+    php7.2-fpm \
+    php7.2-pdo \
+    php7.2-mysql \
+    php7.2-redis \
+    php7.2-curl \
+    php7.2-bz2 \
+    php7.2-zip \
+    php7.2-xml \
+    php7.2-mbstring \
+    php7.2-bcmath \
+    php7.2-gmp \
+    php7.2-intl
 ```
 
 Install composer:
@@ -58,12 +58,12 @@ curl -sS https://getcomposer.org/installer | sudo php -- --install-dir=/usr/loca
 Reading package lists... Done
 Building dependency tree       
 Reading state information... Done
-E: Unable to locate package php7.1-common
-E: Couldn't find any package by glob 'php7.1-common'
-E: Couldn't find any package by regex 'php7.1-common'
-E: Unable to locate package php7.1-cli
-E: Couldn't find any package by glob 'php7.1-cli'
-E: Couldn't find any package by regex 'php7.1-cli'
+E: Unable to locate package php7.2-common
+E: Couldn't find any package by glob 'php7.2-common'
+E: Couldn't find any package by regex 'php7.2-common'
+E: Unable to locate package php7.2-cli
+E: Couldn't find any package by glob 'php7.2-cli'
+E: Couldn't find any package by regex 'php7.2-cli'
 ...
 ```
 For Debian, run the following command:

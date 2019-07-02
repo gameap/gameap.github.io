@@ -18,8 +18,8 @@ order: 30
 2. Этот мануал не актуален для Shared хостингов.
 
 Нам понадобится:
-* ОС: Debian 8
-* Версия PHP: >= 7.1
+* ОС: Debian 9
+* Версия PHP: >= 7.2
 * Веб-сервер: Nginx
 * База данных: MySQL
 * Консольные утилиты: [git](requirements.html#git), [composer](requirements.html#composer)
@@ -42,20 +42,20 @@ sudo apt-get -y install
 Установите PHP и необходимые расширения PHP:
 ```bash
 sudo apt-get -y install \
-    php7.1-common \
-    php7.1-cli \
-    php7.1-fpm \
-    php7.1-pdo \
-    php7.1-mysql \
-    php7.1-redis \
-    php7.1-curl \
-    php7.1-bz2 \
-    php7.1-zip \
-    php7.1-xml \
-    php7.1-mbstring \
-    php7.1-bcmath \
-    php7.1-gmp \
-    php7.1-intl
+    php7.2-common \
+    php7.2-cli \
+    php7.2-fpm \
+    php7.2-pdo \
+    php7.2-mysql \
+    php7.2-redis \
+    php7.2-curl \
+    php7.2-bz2 \
+    php7.2-zip \
+    php7.2-xml \
+    php7.2-mbstring \
+    php7.2-bcmath \
+    php7.2-gmp \
+    php7.2-intl
 ```
 
 Установите composer:
@@ -70,12 +70,12 @@ curl -sS https://getcomposer.org/installer | sudo php -- \
 Reading package lists... Done
 Building dependency tree       
 Reading state information... Done
-E: Unable to locate package php7.1-common
-E: Couldn't find any package by glob 'php7.1-common'
-E: Couldn't find any package by regex 'php7.1-common'
-E: Unable to locate package php7.1-cli
-E: Couldn't find any package by glob 'php7.1-cli'
-E: Couldn't find any package by regex 'php7.1-cli'
+E: Unable to locate package php7.2-common
+E: Couldn't find any package by glob 'php7.2-common'
+E: Couldn't find any package by regex 'php7.2-common'
+E: Unable to locate package php7.2-cli
+E: Couldn't find any package by glob 'php7.2-cli'
+E: Couldn't find any package by regex 'php7.2-cli'
 ...
 ```
 Для Debian выполните следующие команды:
