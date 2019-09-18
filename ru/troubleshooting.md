@@ -105,8 +105,7 @@ php artisan migrate --seed
 Обычно, запуск занимает менее 10 секунд. Если полоска статуса застыла на 10% или статус не меняется несколько минут,
 то попробуйте запустить/перезапустить GameAP Daemon:
 ```
-service gameap-daemon stop
-service gameap-daemon start
+service gameap-daemon restart
 ```
 
 ## Ошибки отображения статуса сервера
