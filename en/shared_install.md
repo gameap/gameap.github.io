@@ -31,8 +31,33 @@ Import the `gameap.sql` SQL file into the database. This can be done through PHP
 
 ## GameAP Setting Up
 
-Copy `.env.example` under the new name `.env`.
-Open the file `.env`, set `APP_KEY` value. Set database paramenters (host, database name, login, password).
+* Copy `.env.example` under the new name `.env`.
+* Open the file `.env`, set `APP_KEY` value. You can use next random generated value:
+
+<pre id="app-key"></pre>
+
+<a href="#" onclick="generateAndPrintKey(); return false;">Generate new key</a>
+
+<script>
+function randomKey(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\\/!@#$%^&*()_-+=';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+function generateAndPrintKey() {
+    document.getElementById('app-key').innerHTML = "base64:" + btoa(randomKey(32));
+}
+
+generateAndPrintKey();
+
+</script>
+
+* Set database paramenters (host, database name, login, password).
 
 ## Setting up a web server on a hosting
 

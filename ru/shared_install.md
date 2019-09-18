@@ -25,8 +25,33 @@ order: 31
 
 ## Настройка панели управления
 
-Скопируйте файл `.env.example` под новым именем `.env`. 
-Откройте файл `.env`, задайте значения для параметра `APP_KEY`. Укажите параметры базы данных.
+* Скопируйте файл `.env.example` под новым именем `.env`. 
+* Откройте файл `.env`, задайте значения для параметра `APP_KEY`. Можете использовать следующее значение, оно сгенерировано
+автоматически: 
+<pre id="app-key"></pre>
+
+<a href="#" onclick="generateAndPrintKey(); return false;">Сгенерировать новое значение</a>
+
+<script>
+function randomKey(length) {
+   var result           = '';
+   var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789\\/!@#$%^&*()_-+=';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+function generateAndPrintKey() {
+    document.getElementById('app-key').innerHTML = "base64:" + btoa(randomKey(32));
+}
+
+generateAndPrintKey();
+
+</script>
+
+* Укажите в файле `.env` параметры базы данных `DB_CONNECTION`, `DB_HOST`, `DB_DATABASE`, `DB_USERNAME` и `DB_PASSWORD`.
 
 ## Настройка веб сервера на хостинге
 
