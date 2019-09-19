@@ -1,5 +1,5 @@
 ---
-title: Добавление отсутствующей игры
+title: Добавление отсутствующих игр
 layout: default
 lang: ru
 category: Туториалы
