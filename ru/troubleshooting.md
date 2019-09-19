@@ -98,6 +98,8 @@ php artisan migrate --seed
 ./hlds_run -game valve +ip 0.0.0.0 +port {port} +map {default_map} +maxplayers {maxplayers} +sys_ticrate {fps}
 ```
 
+Более подробно о команде запуска читайте на странице [настройка игровых серверов](/ru/gameap_configure/game_servers.html#команда-запуска).
+
 Иногда, после изменения настроек игрового сервера требуется перезапуск GameAP Daemon.
 
 ### Окно с информацией висит и не меняется долгое время

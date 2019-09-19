@@ -3,7 +3,7 @@
 {% assign lang_dir = '/' | append: page.lang | append: '/' %}
 
 <ul class="nav flex-column">
-    <li lass="nav-item" ><a class="nav-link" href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
+    <li class="nav-item" ><a class="nav-link" href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
 
     {% assign cats = site.pages | where:"lang",page.lang | sort: 'order' | group_by: 'category' %}
 
