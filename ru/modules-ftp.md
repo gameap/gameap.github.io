@@ -27,9 +27,9 @@ order: 100
 cd /var/www/gameap
 ```
 
-После этого установить модуль и выполните миграцию:
+После этого установите модуль и выполните миграцию:
 ```
-composer require gameap/ftp-module "^1.1"
+composer require --update-no-dev gameap/ftp-module
 php artisan module:migrate Ftp
 ```
 
