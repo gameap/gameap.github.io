@@ -29,6 +29,18 @@ composer require --update-no-dev gameap/fastdl-module
 php artisan module:migrate Fastdl
 ```
 
+### Если возникла ошибка "bash: composer: command not found"
+
+Ошибка возникает если [composer](https://getcomposer.org/) не установлен. Установите его следующей командой:
+
+```bash
+curl -sS https://getcomposer.org/installer | sudo php -- \
+    --install-dir=/usr/local/bin \
+    --filename=composer
+```
+
+После установки попробуйте выполнить команду установки вновь.
+
 ## При отсутствии доступа к консоли (на Shared хостинг)
 
 Скопируйте содержимое архива с модулем в каталог `modules`. Архив можно скачать [здесь](https://github.com/gameap/fastdl-module/archive/master.zip)
