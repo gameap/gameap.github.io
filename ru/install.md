@@ -9,41 +9,11 @@ order: 21
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-## Debian/Ubuntu
+Установите панель одним из следующих способов
 
-### Установка необходимых пакетов
+* [Автоматическая установка](/ru/auto_install.html). Выполняется за короткое время скриптом автоустановки.
+* [Ручная установка](/ru/manual_install.html). Для опытных пользователей.
 
-```
-sudo apt-get update
-sudo apt-get install -y wget curl gnupg ca-certificates apt-transport-https lsb-release
-```
-
-### Добавление репозиториев GameAP
-
-Скачайте и добавьте GPG ключ:
-```bash
-wget -O - http://packages.gameap.ru/gameap-rep.gpg.key | sudo apt-key add -
-```
-
-Этот ключ служит для проверки подленности пакетов в репозиториях GameAP.
-
-
-Добавьте репозиторий:
-```bash
-sudo echo "deb http://packages.gameap.ru/debian/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/gameap.list
-```
-
-
-### Установка панели
-
-После того, как добавили репозиторий, обновите список пакетов и установите панель следующими командами:
-
-```bash
-sudo apt-get update
-sudo apt-get install gameap
-```
-
-Панель будет установлена в каталог `/var/www/gameap`
 
 ## Настройка веб-сервера
 
@@ -112,6 +82,9 @@ Listen 80
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
+
+Обратите внимание на значения `DocumentRoot` и `Directory`, они должны вести в public каталог панели, а не в её корень.
+Например `/var/www/gameap/public`.
 
 ## Настройка базы данных
 
