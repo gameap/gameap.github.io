@@ -45,7 +45,7 @@ APP_DEBUG=true
 Если прав нет, то установите их
 ```
 chown -R www-data:www-data /var/www/gameap
-chmod 755 /var/www
+chmod 755 /var/www/gameap
 ```
 
 > Обратите внимание, что не всегда веб сервер может быть запущен от пользователя
