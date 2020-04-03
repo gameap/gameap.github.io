@@ -3,7 +3,7 @@ title: Установка панели
 layout: default
 lang: ru
 category: Общее
-order: 21
+order: 20
 ---
 
 * This will become a table of contents (this text will be scraped).
@@ -12,6 +12,7 @@ order: 21
 Установите панель одним из следующих способов
 
 * [Автоматическая установка](/ru/auto_install.html). Выполняется за короткое время скриптом автоустановки.
+* [Установка на Shared хостинг](/ru/shared_install.md). Установка на обычный хостинг копированием файлов, без доступа по SSH.
 * [Ручная установка](/ru/manual_install.html). Для опытных пользователей.
 
 
