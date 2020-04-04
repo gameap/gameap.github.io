@@ -9,40 +9,12 @@ order: 21
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-## Debian/Ubuntu
+Install GameAP in one of the following ways:
 
-## Install required packages
+* [Automatic Installation](/en/auto_install.html). Fast way. Using a bash script that will do everything itself.
+* [Installation on Shared hosting](/en/shared_install.md). Installation on a shared hosting by copying files. If you do not have SSH. Or on Windows.
+* [Manual Installation](/ru/manual_install.html). For advanced users.
 
-```
-sudo apt-get update
-sudo apt-get install -y wget curl gnupg ca-certificates apt-transport-https lsb-release
-```
-
-### Add GameAP repositories
-
-Download and add GPG key:
-```bash
-wget -O - http://packages.gameap.ru/gameap-rep.gpg.key | sudo apt-key add -
-```
-
-This key is used to check the packages in GameAP repositories.
-
-Add repository:
-```bash
-sudo echo "deb http://packages.gameap.ru/debian/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/gameap.list
-```
-
-
-### Install panel
-
-Update the packages list and install the panel:
-
-```bash
-sudo apt-get update
-sudo apt-get install gameap
-```
-
-GameAP will be installed in the directory `/var/www/gameap`
 
 ## Web-server setup
 

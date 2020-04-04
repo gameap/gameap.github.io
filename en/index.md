@@ -37,19 +37,10 @@ Difficulty: easy
 
 [GameAP 3.x Automatic Installation](/en/auto_install.html)
 
-### Via package manager
-
-Availabel only for Linux. Panel installation via APT package manager.
-You need to add a repository and execute the installation command.
-
-Difficulty: medium
-
-[GameAP 3.x installation](/en/install.html)
-
 ### Manual installation from GitHub
 
 Installing from source codes. You will need to download the panel,
-install the necessary package dependencies, build styles using NPM.
+install Composer and NPM package dependencies, build assets using NPM.
 
 Difficulty: high
 
