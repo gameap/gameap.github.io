@@ -12,8 +12,8 @@ order: 21
 Install GameAP in one of the following ways:
 
 * [Automatic Installation](/en/auto_install.html). Fast way. Using a bash script that will do everything itself.
-* [Installation on Shared hosting](/en/shared_install.md). Installation on a shared hosting by copying files. If you do not have SSH. Or on Windows.
-* [Manual Installation](/ru/manual_install.html). For advanced users.
+* [Installation on Shared hosting](/en/shared_install.html). Installation on a shared hosting by copying files. If you do not have SSH. Or on Windows.
+* [Manual Installation](/en/manual_install.html). For advanced users.
 
 
 ## Web-server setup
