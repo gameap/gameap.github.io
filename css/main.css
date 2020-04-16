@@ -52,11 +52,6 @@ code {
     margin-top: 0;
 }
 
-#navigation li {
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
 #navigation li a {
     padding-left: 10px;
     padding-right: 10px;
@@ -70,8 +65,6 @@ code {
 .nav-item {
     position: relative;
     display: block;
-    margin-top: 5px;
-    margin-bottom: 5px;
 }
 
 .nav-link:focus,
