@@ -28,6 +28,31 @@ curl -sLO http://packages.gameap.ru/installer.sh && bash installer.sh
 * [Ручная установка на Linux по SSH (сложно)](/ru/manual_install.html)
 * [Установка на shared хостинг](/ru/shared_install.html)
 
+### Скачать
+
+Некоторые способы установки не требуют скачивания панели. Вы можете скачать архив с панелью и распаковать его у себя.
+
+* [gameap_latest.zip](http://www.gameap.ru/gameap_latest.zip)
+* [GitHub](https://github.com/et-nik/gameap)
+
+## Добавление выделенного сервера
+
+Добавьте новый выделенный сервер (VDS), на который затем будете устанавливать игровые серверы. 
+После установки панели зайдите в неё и в меню выберите **"Администрирование"** **"Выделенные серверы"** -> **"Создать"**. После
+чего откроется окошко с инструкцией, следуйте ей.
+
+![](/images/ru/get_started/add_dedicated_server.gif)
+
+Более подробно об установке и настройке читайте на странице [Выделенные серверы](/ru/gameap_configure/dedicated_servers.html).
+
+## Добавление игрового сервера
+
+Перейдите в **"Администрирование"** -> **"Игровые серверы"** -> **"Создать"**.
+
+![](/images/ru/get_started/add_game_server.gif)
+
+Более подробно о параметрах настройки игровых серверов читайте на странице [Игровые серверы](/ru/gameap_configure/game_servers.html)
+
 ## Демо
 
 Посмотрите возможности панели на демо сайте.
@@ -36,10 +61,3 @@ curl -sLO http://packages.gameap.ru/installer.sh && bash installer.sh
 
 * Логин: demo
 * Пароль: demo
-
-## Скачать
-
-Некоторые способы установки не требуют скачивания панели.
-
-* [GitHub](https://github.com/et-nik/gameap)
-* [gameap_latest.zip](http://www.gameap.ru/gameap_latest.zip)
