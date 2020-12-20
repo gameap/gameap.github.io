@@ -17,31 +17,6 @@ order: 100
 
 ## При наличии доступа к консоли (на VDS)
 
-### Используя Composer
-
-Перейдите в каталог с панелью (например /var/www/gameap):
-```
-cd /var/www/gameap
-```
-
-После этого установите модуль и выполните миграцию:
-```
-composer require --update-no-dev gameap/ftp-module
-php artisan module:migrate Ftp
-```
-
-#### Если возникла ошибка "bash: composer: command not found"
-
-Ошибка возникает если [composer](https://getcomposer.org/) не установлен. Установите его следующей командой:
-
-```bash
-curl -sS https://getcomposer.org/installer | sudo php -- \
-    --install-dir=/usr/local/bin \
-    --filename=composer
-```
-
-После установки попробуйте выполнить команду установки вновь.
-
 ### Используя Git
 
 Перейдите в каталог с панелью (по умолчанию `/var/www/gameap`):
@@ -51,12 +26,17 @@ cd /var/www/gameap
 
 Выполните команду:
 ```
-git clone https://github.com/gameap/fastdl-module modules/Ftp
+git clone https://github.com/gameap/ftp-module modules/Ftp
 ```
 
 Выполните миграцию базы данных:
 ```
 php artisan module:migrate Ftp
+```
+
+Включите модуль:
+```
+./artisan module:enable Ftp
 ```
 
 #### Если возникла ошибка "bash: git: command not found"

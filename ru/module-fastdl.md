@@ -24,30 +24,6 @@ Counter-Strike: Global Offensive и др.)
 
 ## При наличии доступа к консоли (на VDS)
 
-### Используя Composer
-Перейдите в каталог с панелью (например `/var/www/gameap`, это путь по умолчанию):
-```
-cd /var/www/gameap
-```
-
-После этого установите модуль и выполните миграцию:
-```
-composer require --update-no-dev gameap/fastdl-module
-php artisan module:migrate Fastdl
-```
-
-#### Если возникла ошибка "bash: composer: command not found"
-
-Ошибка возникает если [composer](https://getcomposer.org/) не установлен. Установите его следующей командой:
-
-```bash
-curl -sS https://getcomposer.org/installer | sudo php -- \
-    --install-dir=/usr/local/bin \
-    --filename=composer
-```
-
-После установки попробуйте выполнить команду установки вновь.
-
 ### Используя GIT
 
 Перейдите в каталог с панелью (по умолчанию `/var/www/gameap`):
@@ -63,6 +39,11 @@ git clone https://github.com/gameap/fastdl-module modules/Fastdl
 Выполните миграцию базы данных:
 ```
 php artisan module:migrate Fastdl
+```
+
+Включите модуль:
+```
+./artisan module:enable Ftp
 ```
 
 #### Если возникла ошибка "bash: git: command not found"
