@@ -22,49 +22,9 @@ Counter-Strike: Global Offensive и др.)
 
 # Установка модуля
 
-## При наличии доступа к консоли (на VDS)
+Зайдите в панель, выберите **Модули** -> **Marketplace**
 
-### Используя GIT
-
-Перейдите в каталог с панелью (по умолчанию `/var/www/gameap`):
-```
-cd /var/www/gameap
-```
-
-Выполните команду:
-```
-git clone https://github.com/gameap/fastdl-module modules/Fastdl
-```
-
-Выполните миграцию базы данных:
-```
-php artisan module:migrate Fastdl
-```
-
-Включите модуль:
-```
-./artisan module:enable Ftp
-```
-
-#### Если возникла ошибка "bash: git: command not found"
-
-Необходимо установить утилиту git. В зависимости от вашего дистрибутива, выполните команду.
-
-Debian/Ubuntu:
-``` 
-apt install git
-```
-
-CentOS:
-```bash
-yum install git
-```
-
-## При отсутствии доступа к консоли (на Shared хостинг)
-
-Скопируйте содержимое архива с модулем в каталог `modules`. Архив можно скачать [здесь](https://github.com/gameap/fastdl-module/archive/master.zip)
-
-Перейдите в панель управления, там выберите в верхнем меню **"GameAP"** -> **"Модули"**, затем кликните **"Запустить миграцию"**
+Найдите в списке FastDL модуль и нажмите "Установить."
 
 # Настройка модуля
 
