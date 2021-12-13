@@ -23,37 +23,6 @@ GameAP Daemon — фоновое приложение, которое обмен
 На странице появится окно с предложением автоматической установки. Скопируйте код и выполните на
 выделенном сервере.
 
-### Debian/Ubuntu
-
-Следующая инструкция актуальна для Debian/Ubuntu
-
-#### Установка необходимых пакетов
-
-Установите необходимые пакеты, которые потом могут понадобиться:
-
-```
-sudo apt-get update
-sudo apt-get install -y wget curl gnupg ca-certificates apt-transport-https lsb-release
-```
-
-После этого необходимо добавить репозиторий с GameAP Daemon.
-
-Скачайте и добавьте ключ:
-```bash
-wget -O - http://packages.gameap.ru/gameap-rep.gpg.key | apt-key add -
-```
-
-Добавьте репозиторий:
-```bash
-echo "deb http://packages.gameap.ru/debian/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/gameap.list
-```
-
-Обновите список пакетов и запустите установку:
-```bash
-apt-get update
-apt-get install gameap-daemon
-```
-
 ## Конфигурация
 
 Конфигурация GameAP Daemon находится в файле daemon.cfg

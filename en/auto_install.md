@@ -57,8 +57,6 @@ For silent installation no questions asked set parameters:
 
 #### Panel installation
 
-Next example au
-
 The following example will automatically install the panel in the directory `/var/www/gameap`, install and configure the web server, database. The panel should be available at the address `http://your-gameap.ru` specified in `--host`:
 
 ```bash

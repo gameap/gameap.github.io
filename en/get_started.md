@@ -26,7 +26,7 @@ Installation ways:
 
 * [Install on Linux with SSH (auto, easy)](/en/auto_install.html)
 * [Install on Linux with SSH (manual, difficult)](/en/manual_install.html)
-* [Install on shared hosting](/en/shared_install.html)
+* [Install on shared hosting (not recommended)](/en/shared_install.html)
 
 ### Download
 

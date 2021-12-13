@@ -16,11 +16,15 @@ order: 32
 curl -sLO http://packages.gameap.ru/installer.sh && bash installer.sh --upgrade
 ```
 
-На VDS, где установлен GameAP Daemon нужно выполнить следующие команды:
-```
-apt update
-apt install gameap-daemon
-service gameap-daemon restart
+На VDS, где установлен GameAP Daemon нужно сделать следующее:
+
+* Скачать последнюю версию `gameap-daemon` [отсюда](https://github.com/gameap/daemon/releases)
+* Распаковать файл gameap-daemon в `/usr/bin/`
+
+```bash
+curl -qL "https://packages.gameap.ru/gameap-daemon/download-release?os=linux&arch=$(arch)" -o gameap-daemon.tar.gz
+tar -xvf gameap-daemon.tar.gz
+cp gameap-daemon /usr/bin/gameap-daemon
 ```
 
 ## Shared хостинг
@@ -33,25 +37,28 @@ service gameap-daemon restart
 
 # Обновление GDaemon
 
+## Linux
+
 Для обновления GameAP Daemon остановите его:
 ```bash
 service gameap-daemon stop
 ```
 
-Затем установите новую версию пакета.
-
-**Debian**
 ```bash
-apt update
-apt install gameap-daemon
-```
-
-**CentOS**
-```bash
-yum install gameap-daemon
+curl -qL "https://packages.gameap.ru/gameap-daemon/download-release?os=linux&arch=$(arch)" -o gameap-daemon.tar.gz
+tar -xvf gameap-daemon.tar.gz
+cp gameap-daemon /usr/bin/gameap-daemon
 ```
 
 После этого запустите GameAP Daemon вновь:
 ```
 service gameap-daemon start
 ```
+
+
+## Windows
+
+* Остановите службу GameAP
+* Скачайте последнюю версию с https://github.com/gameap/daemon/releases
+* Замените gameap-daemon.exe
+* Запустите службу GameAP

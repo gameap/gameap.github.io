@@ -19,7 +19,7 @@ order: 30
 
 Нам понадобится:
 * ОС: Debian 9
-* Версия PHP: >= 7.2
+* Версия PHP: >= 7.3
 * Веб-сервер: Nginx
 * База данных: MySQL
 * Консольные утилиты: [git](requirements.html#git), [composer](requirements.html#composer)
@@ -42,20 +42,20 @@ sudo apt-get -y install
 Установите PHP и необходимые расширения PHP:
 ```bash
 sudo apt-get -y install \
-    php7.2-common \
-    php7.2-cli \
-    php7.2-fpm \
-    php7.2-pdo \
-    php7.2-mysql \
-    php7.2-redis \
-    php7.2-curl \
-    php7.2-bz2 \
-    php7.2-zip \
-    php7.2-xml \
-    php7.2-mbstring \
-    php7.2-bcmath \
-    php7.2-gmp \
-    php7.2-intl
+    php7.3-common \
+    php7.3-cli \
+    php7.3-fpm \
+    php7.3-pdo \
+    php7.3-mysql \
+    php7.3-redis \
+    php7.3-curl \
+    php7.3-bz2 \
+    php7.3-zip \
+    php7.3-xml \
+    php7.3-mbstring \
+    php7.3-bcmath \
+    php7.3-gmp \
+    php7.3-intl
 ```
 
 Установите composer:
@@ -70,12 +70,12 @@ curl -sS https://getcomposer.org/installer | sudo php -- \
 Reading package lists... Done
 Building dependency tree       
 Reading state information... Done
-E: Unable to locate package php7.2-common
-E: Couldn't find any package by glob 'php7.2-common'
-E: Couldn't find any package by regex 'php7.2-common'
-E: Unable to locate package php7.2-cli
-E: Couldn't find any package by glob 'php7.2-cli'
-E: Couldn't find any package by regex 'php7.2-cli'
+E: Unable to locate package php7.3-common
+E: Couldn't find any package by glob 'php7.3-common'
+E: Couldn't find any package by regex 'php7.3-common'
+E: Unable to locate package php7.3-cli
+E: Couldn't find any package by glob 'php7.3-cli'
+E: Couldn't find any package by regex 'php7.3-cli'
 ...
 ```
 Для Debian выполните следующие команды:
