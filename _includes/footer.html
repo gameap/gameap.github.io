@@ -2,12 +2,7 @@
 {% assign lang = site.data.lang[page.lang] %}
 
 {{ lang.title }}
-{% if page.lang == 'ru' %}
-    | <a href="http://www.gameap.ru/download">{{ lang.download }}</a>
-{% else %}
-    | <a href="http://www.gameap.ru/en/download">{{ lang.download }}</a>
-{% endif %}
-
+| <a href="http://gameap.ru">{{ lang.site }}</a>
 | <a href="http://forum.gameap.ru">{{ lang.forum }}</a>
 | <a href="https://github.com/et-nik/GameAP">{{ lang.on_github }}</a>
 | <a href="https://github.com/GameAP/gameap.github.io/blob/master/{{ page.path }}">{{ lang.edit_page }}</a>
