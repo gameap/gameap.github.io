@@ -233,98 +233,97 @@ Change file permissions
 
 Server return simple response with command execution results.
 
-## Статус сервер
+## Status server
 
-Позволяет получать различные сведения о работе демона, такие как: список ожидающих и выполняемых задач,
-список игровых серверов онлайн и т.д.
+Allows to recieve some info about daemon (tasks list, servers online, etc.)
 
-### Запрос
+### Request
 
-Первый элемент в списке Binn строки должен содержать код команды.
+First list element Binn must contain command code
 
-Например:
+Example:
 
-| Тип       | Значение/Пример       |      Описание             |
-|-----------|-----------------------|---------------------------|
-| uint8     | 2                     | Базовые сведения о работе демона
+| Type      | Value         | Description             
+|-----------|---------------|---------------------------
+| uint8     | 2             | Base daemon info
 
 
-### Ответ
+### Response
 
-#### Ответ с данными
+#### Response with data
 
-Ответ с данными, например списоком файлов в директории.
+Response with data (example directory listing)
 
-| Тип       |      Описание |
-|-----------|---------------|
-| uint      | Код           |
-| string    | Сообщение     |
-| ...       | Данные        |
-| ...       | Данные        |
-| ...       | Данные        |
+| Type      | Description 
+|-----------|---------------
+| uint      | Code           
+| string    | Message     
+| ...       | Data        
+| ...       | Data        
+| ...       | Data        
 
-#### Коды ответов
+#### Response codes
 
-| Код       | Описание                                  |
-|-----------|-------------------------------------------|
-| 1         | Общая ошибка
-| 2         | Критическая ошибка
-| 3         | Неизвестная команда
-| 100       | Успешное выполнение команды
+| Type      | Description                               
+|-----------|-------------------------------------------
+| 1         | Common error
+| 2         | Critical error
+| 3         | Unknown error
+| 100       | Success
 
-### Версия Daemon
+### Daemon version
 
-Получение сведений о номере версии GameAP Daemon и дате компиляции.
+Recieving info about gameap version and compilation date.
 
-#### Запрос
+#### Request
 
-| Тип       |      Описание            | Значение/Пример |
+| Type      | Description              | Value 
 |-----------|--------------------------|---------------
-| uint8     | Код                      | 1
+| uint8     | Code                     | 1
 
-#### Ответ
+#### Response
 
-| Тип       |      Описание |
-|-----------|---------------|
-| uint      | Код
-| string    | Сообщение
-| string    | Номер версии GameAP Daemon
-| string    | Дата и время компиляции
+| Type      | Description 
+|-----------|---------------
+| uint      | Code
+| string    | Message
+| string    | GameAP Daemon version
+| string    | Compilation date and time
 
-### Базовые данные о работе
+### Base working data
 
-#### Запрос
+#### Request
 
-| Тип       |      Описание            | Значение/Пример |
+| Type      | Description              | Value
 |-----------|--------------------------|---------------
-| uint8     | Код                      | 2
+| uint8     | Code                     | 2
 
-#### Ответ
+#### Response
 
-| Тип       |      Описание |
-|-----------|---------------|
-| uint      | Код
-| string    | Сообщение
+| Type      | Description
+|-----------|---------------
+| uint      | Code
+| string    | Message
 | uint32    | Uptime GameAP Daemon
-| uint32    | Количество выполняющихся заданий
-| uint32    | Количество ожидающих заданий
-| uint32    | Количество работающих игровых серверов (онлайн)
+| uint32    | Running tasks count
+| uint32    | Waiting tasks count
+| uint32    | Online servers count
 
-### Подробные данные о работе
+### Detail working data
 
-#### Запрос
+#### Request
 
-| Тип       |      Описание            | Значение/Пример |
+| Type      | Description              | Value
 |-----------|--------------------------|---------------
-| uint8     | Код                      | 3
+| uint8     | Code                     | 3
 
-#### Ответ
+#### Response
 
-| Тип       |      Описание |
-|-----------|---------------|
-| uint      | Код
-| string    | Сообщение
-| uint32    | Uptime GameAP Daemon
-| list      | Список ID выполняющихся заданий
-| list      | Список ID ожидающих заданий
-| list      | Список ID работающих игровых серверов (онлайн)
+| Type      | Description 
+|-----------|---------------
+| uint      | Code
+| string    | Message
+| uint32    | GameAP Daemon uptime
+| list      | Running tasks ID list
+| list      | Waiting tasks ID list
+| list      | Online servers ID list
