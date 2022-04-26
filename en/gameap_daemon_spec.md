@@ -1,5 +1,5 @@
 ---
-title: GameAP Daemon спецификация
+title: GameAP Daemon specifications
 layout: default
 lang: en
 category: GameAP Daemon
