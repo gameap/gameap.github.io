@@ -1,14 +1,17 @@
 {% assign lang = site.data.lang[page.lang] %}
 
 <div class="container">
-    <div class="row">
-        <div id="header">
+    <div id="header">
+        <div class="row">
             <div class="col-12 col-md-6">
-                <a class="naw-brand" href="{{ site.baseurl }}/">
-                    <img src="/images/gameap.png" width="32" class="mr-2" alt="GameAP">
-                    {{ site.title }}
-                </a>
-                {% if site.subtitle %}<small>{{ site.subtitle }}</small>{% endif %}
+                <div class="d-inline-flex">
+                    <a class="naw-brand" href="{{ site.baseurl }}/">
+                        <img src="/images/gameap_logo.svg" width="32" class="mr-2" alt="GameAP">
+                    </a>
+                </div>
+                <div class="d-inline-flex">
+                    {% if site.subtitle %}<small>{{ site.subtitle }}</small>{% endif %}
+                </div>
             </div>
             <div class="col-12 col-md-6 text-center text-md-right">
                 <a href="http://gameap.ru">{{ lang.site }}</a> | 
