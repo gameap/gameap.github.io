@@ -10,7 +10,7 @@ GameAP Daemon components specification. Any component named as "server" in that 
 
 ## Command server
 
-Allows to run any commands (include os commends)
+Allows to run any commands (include os commands)
 
 ### Request
 
