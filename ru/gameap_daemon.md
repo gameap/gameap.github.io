@@ -85,7 +85,8 @@ GameAP Daemon — фоновое приложение, которое обмен
 [Пример yaml файла](https://github.com/gameap/daemon/blob/master/config/gameap-daemon.yaml)
 
 После этого можно добавить настройку steam аккаунта:
-
->steam_config:
->login: "your login"
->password: "Pa$$worD"
+```
+steam_config:
+    login: "your login"
+    password: "Pa$$worD"
+```
