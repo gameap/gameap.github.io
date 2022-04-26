@@ -25,7 +25,11 @@ GameAP Daemon — фоновое приложение, которое обмен
 
 ## Конфигурация
 
-Конфигурация GameAP Daemon находится в файле daemon.cfg
+Конфигурация GameAP Daemon находится в файле:
+| OS      | Path
+|---------|--------------------------------------
+| Linux   | /etc/gameap-daemon/gameap-daemon.cfg
+| Windows | C:\gameap\daemon\daemon.cfg
 
 ### Базовые параметры
 
@@ -66,5 +70,22 @@ GameAP Daemon — фоновое приложение, которое обмен
 | stats_update_period       | нет                   | integer   | Период обновления статистики
 | stats_db_update_period    | нет                   | integer   | Период обновления базы данных
 
-
 [Пример конфигурации](https://github.com/gameap/GDaemon2#example-daemoncfg)
+
+### Использование не анонимного steam аккаунта
+
+Многие серверы нельзя скачать через steamcmd без входа в аккаунт с приобретенной копией игры, в этом случае требуется предоставить демону логин и пароль от такого steam аккаунта для дальнейшей авторизации в steamcmd.
+
+Нужно вручную преобразовать файл конфига демона из формата .cfg в формат .yaml (с учетом требований нового формата)
+| OS      | Было              | Стало
+|---------|-------------------|-------------------
+| Linux   | gameap-daemon.cfg | gameap-daemon.yaml
+| Windows | daemon.cfg        | daemon.yaml
+
+[Пример yaml файла](https://github.com/gameap/daemon/blob/master/config/gameap-daemon.yaml)
+
+После этого можно добавить настройку steam аккаунта:
+
+>steam_config:
+>login: "your login"
+>password: "Pa$$worD"
