@@ -39,7 +39,7 @@ Response contains: gameap-daemon command code, os exit code, execution result
 | int32      | Exit status
 | string     | Execution result
 
-#### Коды ответов демона
+#### Daemon response codes
 
 | Code      | Description                                  
 |-----------|-------------------------------
