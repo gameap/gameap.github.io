@@ -23,6 +23,7 @@ That action open suggestion about autoinstall. Copy the code and run on dedicate
 ## Configuration
 
 Gameap-daemon config is here:
+
 | OS      | Path
 |---------|------------------------------------
 | Linux   | /etc/gameap-daemon/gameap-daemon.cfg
@@ -74,6 +75,7 @@ Gameap-daemon config is here:
 Many steam game servers require log in to account that has a purchased copy of game, in that case you need to add steam login and password in to config file.
 
 You need to transform config from .cfg to .yaml manually (ofcourse with yaml syntax requirements)
+
 | OS      | Before            | After
 |---------|-------------------|-----------------
 | Linux   | gameap-daemon.cfg | gameap-daemon.yaml
