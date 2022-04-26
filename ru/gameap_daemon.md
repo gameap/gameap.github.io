@@ -28,7 +28,7 @@ GameAP Daemon — фоновое приложение, которое обмен
 Конфигурация GameAP Daemon находится в файле:
 
 | OS         | Path
-|------------|------------|
+|------------|------------
 | Linux      | /etc/gameap-daemon/gameap-daemon.cfg
 | Windows    | C:\gameap\daemon\daemon.cfg
 
