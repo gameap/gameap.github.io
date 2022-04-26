@@ -112,6 +112,7 @@ Server return simple response with command execution results
 After answer "success", server will be ready to send/recieve files.
 
 Server return answer on file recieve
+
 | Type       | Description               | Value 
 |------------|---------------------------|---------------
 | uint8      | Code                      | 101
