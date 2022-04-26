@@ -24,10 +24,10 @@ That action open suggestion about autoinstall. Copy the code and run on dedicate
 
 Gameap-daemon config is here:
 
-| OS      | Path
-|---------|------------------------------------
-| Linux   | /etc/gameap-daemon/gameap-daemon.cfg
-| Windows | C:\gameap\daemon\daemon.cfg
+| OS         | Path
+|------------|------------
+| Linux      | /etc/gameap-daemon/gameap-daemon.cfg
+| Windows    | C:\gameap\daemon\daemon.cfg
 
 ### Base examples
 
@@ -76,14 +76,15 @@ Many steam game servers require log in to account that has a purchased copy of g
 
 You need to transform config from .cfg to .yaml manually (ofcourse with yaml syntax requirements)
 
-| OS      | Before            | After
-|---------|-------------------|-----------------
-| Linux   | gameap-daemon.cfg | gameap-daemon.yaml
-| Windows | daemon.cfg        | daemon.yaml
+| OS         | Before            | After
+|------------|-------------------|------------
+| Linux      | gameap-daemon.cfg | gameap-daemon.yaml
+| Windows    | daemon.cfg        | daemon.yaml
 
 [yaml config example](https://github.com/gameap/daemon/blob/master/config/gameap-daemon.yaml)
 
 After that you can add steam account configuration rows:
+
 ```
 steam_config:
     login: "your login"
