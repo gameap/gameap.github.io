@@ -27,10 +27,10 @@ GameAP Daemon — фоновое приложение, которое обмен
 
 Конфигурация GameAP Daemon находится в файле:
 
-| OS      | Path
-|---------|--------------------------------------
-| Linux   | /etc/gameap-daemon/gameap-daemon.cfg
-| Windows | C:\gameap\daemon\daemon.cfg
+| OS         | Path
+|------------|------------|
+| Linux      | /etc/gameap-daemon/gameap-daemon.cfg
+| Windows    | C:\gameap\daemon\daemon.cfg
 
 ### Базовые параметры
 
@@ -79,10 +79,10 @@ GameAP Daemon — фоновое приложение, которое обмен
 
 Нужно вручную преобразовать файл конфига демона из формата .cfg в формат .yaml (с учетом требований нового формата)
 
-| OS      | Было              | Стало
-|---------|-------------------|-------------------
-| Linux   | gameap-daemon.cfg | gameap-daemon.yaml
-| Windows | daemon.cfg        | daemon.yaml
+| OS         | Было              | Стало
+|------------|-------------------|------------
+| Linux      | gameap-daemon.cfg | gameap-daemon.yaml
+| Windows    | daemon.cfg        | daemon.yaml
 
 [Пример yaml файла](https://github.com/gameap/daemon/blob/master/config/gameap-daemon.yaml)
 
