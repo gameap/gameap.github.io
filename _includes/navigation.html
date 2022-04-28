@@ -12,7 +12,7 @@
             {% continue %}
         {% endif %}
 
-        <li>{{ cat.name }}</li>
+        <li><b>{{ cat.name }}</b></li>
 
         {% assign items = cat.items | sort: 'order' %}
         {% for fpage in items %}
