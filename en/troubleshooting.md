@@ -70,3 +70,15 @@ change for several minutes, then try to start/restart GameAP Daemon:
 ```
 service gameap-daemon restart
 ```
+## Server install/update errors
+
+### Failed to install via steamcmd
+
+In some cases steamcmd users occurs with that error. Reasons not fully known but gameap support alternative download system called "depot downloader". All what you need is replace original file steamcmd.sh to alternative:
+
+```
+cd /srv/gameap/steamcmd
+mv steamcmd.sh steamcmd.sh.orig
+curl -O https://raw.githubusercontent.com/gameap/steamcmd-depotdownloader/main/steamcmd.sh
+chmod 755 steamcmd.sh && chown gameap:gameap steamcmd.sh
+```
