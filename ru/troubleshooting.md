@@ -249,6 +249,17 @@ ZIP или TAR архиву (RAR не поддерживается). Сами ф
 Если это URL к удалённому ресурсу, то проверьте доступен ли он по ссылке. При переходе по ссылке
 файл должен начать скачивание. Ссылки к Yandex Disk, Google Drive и т.п. не поддерживаются.
 
+### Failed to install via steamcmd
+
+Иногда пользователи steamcmd сталкиваются с такой ошибкой посреди процесса загрузки/обновления дистрибутива, причины до конца не известны, но панель поддерживает работу с альтернативной системой загрузки "depot downloader". Для использования нужно заменить скрипт steamcmd.sh на альтернативный:
+
+```
+cd /srv/gameap/steamcmd
+mv steamcmd.sh steamcmd.sh.orig
+curl -O https://raw.githubusercontent.com/gameap/steamcmd-depotdownloader/main/steamcmd.sh
+chmod 755 steamcmd.sh && chown gameap:gameap steamcmd.sh
+```
+
 ## Ошибки GameAP Daemon
 
 ### Could not connect to host: x.x.x.x, port:31717(Error 0: )
