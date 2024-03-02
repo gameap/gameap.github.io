@@ -3,7 +3,7 @@ title: Игры
 layout: default
 lang: ru
 category: Настройка панели
-order: 310
+order: 320
 ---
 
 * This will become a table of contents (this text will be scraped).

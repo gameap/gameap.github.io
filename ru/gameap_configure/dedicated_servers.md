@@ -3,7 +3,7 @@ title: Выделенные серверы
 layout: default
 lang: ru
 category: Настройка панели
-order: 200
+order: 300
 ---
 
 * This will become a table of contents (this text will be scraped).

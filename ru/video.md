@@ -2,8 +2,8 @@
 title: Видеоинструкции
 layout: default
 lang: ru
-category: Общее
-order: 32
+category: Установка GameAP
+order: 199
 ---
 
 * This will become a table of contents (this text will be scraped).

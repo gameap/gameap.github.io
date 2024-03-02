@@ -2,63 +2,59 @@
 title: Обновление
 layout: default
 lang: ru
-category: Общее
-order: 32
+category: Установка GameAP
+order: 190
 ---
 
-Перед обновлением панели не забудьте остановить GameAP Daemon на VDS, где работают игровые серверы.
-Сами игровые серверы при этом остановлены не будут.
+При установке GameAP будет установлена утилита gameapctl, которая позволяет управлять окружением панели, в том
+числе и обновлением.
 
-## VDS
+## GameAP Web/API
 
-Для обновления панели нужно выполнить команду на VDS где установлена панель:
+### Linux
+
+Для обновления панели необходимо выполнить команду:
+```shell
+gameapctl panel upgrade
 ```
-curl -sLO http://packages.gameap.ru/installer.sh && bash installer.sh --upgrade
+
+### Windows
+
+Чтобы обновить панель на Windows можно выполнить команду, где установлена gameapctl:
+```powershell
+C:\path\to\gameapctl.exe panel upgrade
 ```
 
-На VDS, где установлен GameAP Daemon нужно сделать следующее:
+Либо воспользуйтесь UI. Запустите gameapctl.exe, а в открывшемся окне в браузере нажмите **"Upgrade"**
+в разделе Web/API
 
-* Скачать последнюю версию `gameap-daemon` [отсюда](https://github.com/gameap/daemon/releases)
-* Распаковать файл gameap-daemon в `/usr/bin/`
-
-```bash
-curl -qL "https://packages.gameap.ru/gameap-daemon/download-release?os=linux&arch=$(arch)" -o gameap-daemon.tar.gz
-tar -xvf gameap-daemon.tar.gz
-cp gameap-daemon /usr/bin/gameap-daemon
-```
+![](/images/en/gameapctl/ui.png)
 
 ## Shared хостинг
 
-Для тех, у кого шаред. Скачиваем архив http://www.gameap.ru/gameap_latest.zip
-Из архива **всё кроме storage каталога** и `.env` файла копируем  с заменой.
-Затем заходим в панель, переходим в "Модули" и нажимаем кнопку "Запустить миграцию"
+Скачайте архив https://packages.gameap.com/gameap/gameap-3.1-shared.zip
+Из архива **всё кроме storage каталога** и `.env` файла скопируйте с заменой в каталог, где у вас находятся файлы панели.
+Затем зайдите в панель, перейдите в "Модули" и нажмите кнопку "Запустить миграцию"
 
-Затем очистите кеш. Удалите файлы `storage/framework/cache`, но не сам каталог
+Затем очистите кеш. Удалите файлы внутри `storage/framework/cache`, но не сам каталог
 
-# Обновление GDaemon
+# Обновление GameAP Daemon
 
 ## Linux
 
-Для обновления GameAP Daemon остановите его:
-```bash
-service gameap-daemon stop
+Для обновления Daemon необходимо выполнить команду:
+```shell
+gameapctl daemon upgrade
 ```
-
-```bash
-curl -qL "https://packages.gameap.ru/gameap-daemon/download-release?os=linux&arch=$(arch)" -o gameap-daemon.tar.gz
-tar -xvf gameap-daemon.tar.gz
-cp gameap-daemon /usr/bin/gameap-daemon
-```
-
-После этого запустите GameAP Daemon вновь:
-```
-service gameap-daemon start
-```
-
 
 ## Windows
 
-* Остановите службу GameAP
-* Скачайте последнюю версию с https://github.com/gameap/daemon/releases
-* Замените gameap-daemon.exe
-* Запустите службу GameAP
+Чтобы обновить GameAP Daemon на Windows можно выполнить команду, где установлена gameapctl:
+```powershell
+C:\path\to\gameapctl.exe daemon upgrade
+```
+
+Либо воспользуйтесь UI. Запустите gameapctl.exe, а в открывшемся окне в браузере нажмите **"Upgrade"**
+в разделе GameAP Daemon
+
+![](/images/en/gameapctl/ui.png)
