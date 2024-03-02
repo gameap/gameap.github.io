@@ -9,11 +9,6 @@ order: 10
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-## Серверная часть
-
-* GameAP Daemon 2.1
-* GameAP Starter
-
 ## Веб часть
 
 * Любой вер-сервер (nginx, lighttpd, apache и др.)

@@ -16,6 +16,10 @@
 
         {% assign items = cat.items | sort: 'order' %}
         {% for fpage in items %}
+            {% if fpage.hidden == true %}
+                {% continue %}
+            {% endif %}
+
             {% if page.url == fpage.url %}
                 <li class="nav-item active" ><strong><a class="nav-link">{{ fpage.title }}</a></strong></li>
             {% else %}

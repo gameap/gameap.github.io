@@ -3,7 +3,7 @@ title: FastDL Manager
 layout: default
 lang: ru
 category: Модули
-order: 101
+order: 501
 ---
 
 Модуль управления FastDL для Source и GoldSource серверов (Counter-Strike 1.6, Half-Life, Team Fortress 2, 

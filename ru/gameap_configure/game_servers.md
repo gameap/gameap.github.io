@@ -3,7 +3,7 @@ title: Игровые серверы
 layout: default
 lang: ru
 category: Настройка панели
-order: 20
+order: 210
 ---
 
 * This will become a table of contents (this text will be scraped).

@@ -3,7 +3,7 @@ title: GameAP Daemon спецификация
 layout: default
 lang: ru
 category: GameAP Daemon
-order: 60
+order: 401
 ---
 
 Спецификация по компонентам сервера GameAP Daemon. Каждый из компонентов далее

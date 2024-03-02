@@ -4,6 +4,7 @@ layout: default
 lang: ru
 category: Общее
 order: 30
+hidden: true
 ---
 
 * This will become a table of contents (this text will be scraped).

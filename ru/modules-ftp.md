@@ -3,7 +3,7 @@ title: FTP Manager
 layout: default
 lang: ru
 category: Модули
-order: 100
+order: 501
 ---
 
 Модуль управления FTP аккаунтами

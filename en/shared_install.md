@@ -4,6 +4,7 @@ layout: default
 lang: en
 category: Main
 order: 31
+hidden: true
 ---
 
 >! Documentation in the process of writing. This section requires more material.
