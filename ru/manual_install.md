@@ -10,6 +10,11 @@ hidden: true
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
+>! В большинстве случаев использования данный способ не рекомендуется использовать!
+> Используйте этот способ, только если нет возможности установить рекомендуемыми способами:
+> * [Установка на Linux](/ru/install/install_on_linux.html)
+> * [Устанвока на Windows](/ru/install/install_on_windows.html)
+
 Установка GameAP 3.x с GitHub. Это подробная инструкция по установке GameAP из GitHub, установке необходимых зависимостей и
 сборке стилей.
 

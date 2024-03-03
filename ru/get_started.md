@@ -15,24 +15,30 @@ order: 2
 
 Если у вас Linux, установлен CURL и вы не хотите разбираться с подробностями установки, то выполните команду:
 ```bash
-curl -sLO http://packages.gameap.ru/installer.sh && bash installer.sh
+bash <(curl -s https://gameap.com/install.sh)
 ```
 
 ## Установка панели
 
 Панель устанавливается на выделенный сервер с PHP, веб сервером (Nginx, Apache и др.) и базой данных (MySQL, PgSQL, SQLite, ...)
 
-Способы установки:
+* [Установка на Linux](/ru/install/install_on_linux.html)
+* [Устанвока на Windows](/ru/install/install_on_windows.html)
 
-* [Автоматическая установка на Linux по SSH (легко)](/ru/auto_install.html)
+### Устаревшие способы установки
+
+Способы ниже являются более сложными в установке, но всё ещё актуальны.
+Используйте их, если в этом есть определённая необходимость, но помните, что в большинстве 
+случаев лучше использовать способы, описанные выше.
+
 * [Ручная установка на Linux по SSH (сложно)](/ru/manual_install.html)
 * [Установка на shared хостинг](/ru/shared_install.html)
 
-### Скачать
+#### Скачать
 
-Некоторые способы установки не требуют скачивания панели. Вы можете скачать архив с панелью и распаковать его у себя.
+Рекомендуемые способы установки не требуют скачивания. Но вы можете скачать архив с панелью и распаковать его у себя.
 
-* [gameap_latest.zip](http://www.gameap.ru/gameap_latest.zip)
+* [gameap-3.1-shared.zip](https://packages.gameap.com/gameap/gameap-3.1-shared.zip)
 * [GitHub](https://github.com/et-nik/gameap)
 
 ## Добавление выделенного сервера
@@ -52,12 +58,3 @@ curl -sLO http://packages.gameap.ru/installer.sh && bash installer.sh
 ![](/images/ru/get_started/add_game_server.gif)
 
 Более подробно о параметрах настройки игровых серверов читайте на странице [Игровые серверы](/ru/gameap_configure/game_servers.html)
-
-## Демо
-
-Посмотрите возможности панели на демо сайте.
-
-[https://demo.gameap.ru](https://demo.gameap.ru)
-
-* Логин: demo
-* Пароль: demo

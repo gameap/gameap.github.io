@@ -2,8 +2,8 @@
 title: Устранение ошибок
 layout: default
 lang: ru
-category: Общее
-order: 40
+category: Устранение ошибок
+order: 400
 ---
 
 * This will become a table of contents (this text will be scraped).

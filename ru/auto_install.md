@@ -40,8 +40,8 @@ sudo yum install curl
 
 Скачайте скрипт выполните его
 ```bash
-curl -sLO http://packages.gameap.ru/installer.sh
-bash ./installer.sh
+curl -sLO https://gameap.com/install.sh
+bash ./install.sh
 ```
 
 ## Запуск с параметрами
@@ -100,6 +100,7 @@ bash ./installer.sh
 
 Скрипт автоматически устанавливает следующие пакеты:
 
+- `gameapctl` Утилита управления окружением GameAP
 - `software-properties-common` Управление репозиториями APT.
 - `apt-transport-https` Поддержка https для APT
 - `gnupg` Пакет для работы с цифровыми подписями и ключами. Необходим для проверки подлинности пакетов и добавления ключей репозиториев.
@@ -127,7 +128,3 @@ php-bz2, php-zip, php-xml, php-mbstring, php-bcmath
 - http://nginx.org/packages/
 Официальный репозиторий Nginx. Будет добавлен если в качестве веб сервера был выбран Nginx.
 Для удаления репозитория нужно удалить файл `/etc/apt/sources.list.d/nginx.list`
-
-- ppa:chris-lea/node.js
-Репозиторий для установки NodeJS менеджера пакетов (NPM). Он будет добавлен только при установке панели из GitHub.
-Для удаления выполните команду: `sudo ppa-purge ppa:chris-lea/node.js`

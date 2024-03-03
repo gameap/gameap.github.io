@@ -29,8 +29,8 @@ GameAP Daemon — фоновое приложение, которое обмен
 
 | OS         | Path
 |------------|------------
-| Linux      | /etc/gameap-daemon/gameap-daemon.cfg
-| Windows    | C:\gameap\daemon\daemon.cfg
+| Linux      | /etc/gameap-daemon/gameap-daemon.yaml
+| Windows    | C:\gameap\daemon\daemon.yaml
 
 ### Базовые параметры
 

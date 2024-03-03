@@ -9,6 +9,8 @@ order: 199
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
+>! Большинство видео потеряли свою актуальность.
+ 
 ## Установка
 
 ### Debian Stretch
@@ -66,6 +68,8 @@ order: 199
     * [11:35 Управление игровым сервером](https://www.youtube.com/watch?v=JAEm6_KuChQ&t=695s){:target="_blank"}
 
 ### Shared хостинг (ISPManager)
+
+>! Не рекомендуется использовать Shared способ! Используйте его, только если нет возможности установить другими способами. Некоторый функционал панели может быть ограничен или работать некорректно.
 
 <iframe width="640" height="360" src="https://www.youtube.com/embed/WtijKnbZ53Q" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 #### Содержание
