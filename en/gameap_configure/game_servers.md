@@ -3,7 +3,7 @@ title: Game Servers
 layout: default
 lang: en
 category: Panel settings
-order: 20
+order: 310
 ---
 
 * This will become a table of contents (this text will be scraped).

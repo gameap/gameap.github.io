@@ -3,7 +3,7 @@ title: Dedicated Servers
 layout: default
 lang: en
 category: Panel settings
-order: 10
+order: 300
 ---
 
 * This will become a table of contents (this text will be scraped).

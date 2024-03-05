@@ -2,8 +2,8 @@
 title: Troubleshooting
 layout: default
 lang: en
-category: Main
-order: 40
+category: Troubleshooting
+order: 400
 ---
 
 * This will become a table of contents (this text will be scraped).

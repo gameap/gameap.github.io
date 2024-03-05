@@ -9,43 +9,46 @@ order: 10
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-## Server part
+## System Requirements
 
-* GameAP Daemon 2.1
-* GameAP Starter
+### Web/API
 
-## Web part
+* RAM: 1 GB or more
+* Disk space: 200 MB or more
+* GameAP is not demanding on the CPU, so one core is sufficient for basic operation.
 
-* Any web server (nginx, lighttpd, apache etc.)
-* PHP >= 7.3
-* PHP Extensions: GD, OpenSSL, Curl, GMP, Intl
+### GameAP Daemon
 
-### Composer
+GameAP Daemon manages game servers, which require resources, and some game servers can be very demanding. The data below represent the requirements for running the server environment without considering the game servers.
 
-Optional. Required for manual install.
+* RAM: 128 MB
+* Disk space: 1 GB or more
+* GameAP Daemon is not demanding on the CPU, so one core is sufficient for operation.
 
-#### Install
+## Package and Operating System Requirements
 
-##### Linux
-```bash
-wget https://getcomposer.org/download/1.8.0/composer.phar
-cp composer.phar /usr/bin/composer
-chmod +x /usr/bin/composer
-```
+In most cases, gameapctl will install the necessary packages for the panel and GameAP Daemon operation.
 
-### Git
+Basic packages required for GameAP Web/API:
 
-Optional. Required for manual install.
+* Any web server (nginx, lighttpd, apache, etc.)
+* PHP version 7.3 and above
+* PHP modules/extensions: GD, OpenSSL, Curl, GMP, Intl
+* MySQL 5.6 and above, or MariaDB 10.0 and above. In the case of installing SQLite, no additional database is required.
 
-#### Install
+### Curl
+
+The server must have the curl utility installed, which will allow downloading the installation script.
+
+#### Installation
 
 ##### Debian/Ubuntu
-
-```bash
-apt-get install git
+```shell
+apt install curl
 ```
 
 ##### CentOS
-```bash
-yum install git
+
+```shell
+yum install curl
 ```

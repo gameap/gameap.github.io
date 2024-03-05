@@ -3,7 +3,7 @@ title: Games
 layout: default
 lang: en
 category: Panel settings
-order: 30
+order: 320
 ---
 
 * This will become a table of contents (this text will be scraped).

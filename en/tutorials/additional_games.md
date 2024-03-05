@@ -3,7 +3,7 @@ title: Adding Missing Games
 layout: default
 lang: en
 category: Tutorials
-order: 70
+order: 299
 ---
 
 The control panel supports the launch and basic control of any game servers and applications. 

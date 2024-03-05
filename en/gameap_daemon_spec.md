@@ -3,7 +3,7 @@ title: GameAP Daemon specifications
 layout: default
 lang: en
 category: GameAP Daemon
-order: 60
+order: 401
 ---
 
 GameAP Daemon components specification. Any component named as "server" in that document!
