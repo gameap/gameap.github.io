@@ -21,7 +21,7 @@ hidden: true
 
 Для начала вам нужно загрузить архив с панелью.
 Скачайте следующий архив:
-> [gameap_latest.zip](http://www.gameap.ru/gameap_latest.zip)
+> [gameap-3.1-shared.zip](https://packages.gameap.com/gameap/gameap-3.1-shared.zip)
 
 Распакуйте его в вашу директорию на хостинге.
 

@@ -45,7 +45,7 @@ install Composer and NPM package dependencies, build assets using NPM.
 
 Difficulty: high
 
-[GameAP 3.x manual installation](/ru/manual_install.html)
+[GameAP 3.x manual installation](/en/manual_install.html)
 
 ### Installation on Shared hosting
 
@@ -53,4 +53,4 @@ Installing the panel on a shared hosting, where there is no access to the comman
 
 Not recommended method
 
-* [GameAP 3.x installation on Shared hosting](/ru/shared_install.html)
+* [GameAP 3.x installation on Shared hosting](/en/shared_install.html)

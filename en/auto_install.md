@@ -10,7 +10,14 @@ hidden: true
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-Fully automatic installation. You need to run the script, it will automatically install the packages dependencies and panel. During the installation, you will need to enter and select some parameters:
+This page is outdated, please use one of the following up-to-date guides:
+* [Installation on Linux](/en/install/install_on_linux.html)
+* [Installation on Windows](/en/install/install_on_windows.html)
+
+Fully automatic installation. 
+You need to run the script, it will automatically install the packages 
+dependencies and panel. 
+During the installation, you will need to enter and select some parameters:
 
 - Installation path
 - Pahel host. Domain or IP

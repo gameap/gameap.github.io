@@ -9,7 +9,7 @@ hidden: true
 
 >! Documentation in the process of writing. This section requires more material.
 
->! t is not recommended to use the Shared method. Some panel functionality will be limited
+>! It is not recommended to use the Shared method. Some panel functionality will be limited
 
 * This will become a table of contents (this text will be scraped).
 {:toc}
@@ -22,7 +22,7 @@ Installing GameAP on a shared hosting with no access to the command line.
 ## Downloading panel archive
 
 Download the following archive:
-> [gameap_latest.zip](http://www.gameap.ru/gameap_latest.zip)
+> [gameap-3.1-shared.zip](https://packages.gameap.com/gameap/gameap-3.1-shared.zip)
 
 Unpack archive into your directory on hosting.
 
@@ -77,7 +77,7 @@ It is not recommended that the root directory of the site follow to the root dir
 
 Many hostings do not allow this to be configured in their control panel. You need to contact technical support for manual configuration.
 
-For an example of web server configuration, see [Installation/Web Server Setup](/ru/install.html#настройка-веб-сервера)
+For an example of web server configuration, see [Installation/Web Server Setup](/en/install.html#web-server-setup)
 
 ## Login Details
 
