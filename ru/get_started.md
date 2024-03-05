@@ -23,7 +23,7 @@ bash <(curl -s https://gameap.com/install.sh)
 Панель устанавливается на выделенный сервер с PHP, веб сервером (Nginx, Apache и др.) и базой данных (MySQL, PgSQL, SQLite, ...)
 
 * [Установка на Linux](/ru/install/install_on_linux.html)
-* [Устанвока на Windows](/ru/install/install_on_windows.html)
+* [Установка на Windows](/ru/install/install_on_windows.html)
 
 ### Устаревшие способы установки
 

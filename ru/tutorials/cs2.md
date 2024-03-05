@@ -16,7 +16,7 @@ GameAP полностью поддерживает Counster-Strike 2, включ
 Для начала работы с панелью управления GameAP, вам потребуется её установить, выбрав один из предложенных вариантов:
 
 * [Установка GameAP на Linux](/ru/install/install_on_linux.html)
-* [Устанвока GameAP на Windows](/ru/install/install_on_windows.html)
+* [Установка GameAP на Windows](/ru/install/install_on_windows.html)
 
 ### Установка GameAP Daemon
 

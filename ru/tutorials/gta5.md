@@ -23,7 +23,7 @@ GameAP обеспечивает полную поддержку игрового
 выберите один из следующих вариантов установки панели управления:
 
 * [Установка на Linux](/ru/install/install_on_linux.html)
-* [Устанвока на Windows](/ru/install/install_on_windows.html)
+* [Установка на Windows](/ru/install/install_on_windows.html)
 
 ### Установка GameAP Daemon
 

@@ -16,7 +16,7 @@ Minecraft - популярная игра в жанре песочницы, ра
 Для начала вам необходимо [установить GameAP](/ru/get_started.html#установка-панели), этой займёт несколько минут:
 
 * [Установка GameAP на Linux](/ru/install/install_on_linux.html)
-* [Устанвока GameAP на Windows](/ru/install/install_on_windows.html)
+* [Установка GameAP на Windows](/ru/install/install_on_windows.html)
 
 ### Установка GameAP Daemon
 
