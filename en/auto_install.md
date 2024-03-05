@@ -39,8 +39,8 @@ sudo yum install curl
 
 Download and run script:
 ```bash
-curl -sLO http://packages.gameap.ru/installer.sh
-bash ./installer.sh
+curl -sLO https://gameap.com/install.sh
+bash ./install.sh
 ```
 
 ## Running with parameters
@@ -115,9 +115,6 @@ php-bz2, php-zip, php-xml, php-mbstring, php-bcmath
 
 The script can add multiple repositories to APT. For example, in Debian Stretch, the default is PHP 7.0, and the minimum PHP version for panel 7.1. In this case, the script will check the ability to install the required version of PHP, if it is not, then add the necessary repositories.
 
-- http://packages.gameap.ru/
-GameAP repository. Delete file `/etc/apt/sources.list.d/gameap.list` if you want to remove repository 
-
 - https://packages.sury.org/php/
 This repository will be added to Debian Stretch and Jessie if the ability to install PHP >= 7.1 is not possible.
 Delete file `/etc/apt/sources.list.d/php.list` if you want to remove repository 
@@ -128,9 +125,4 @@ To delete, run the command: `sudo ppa-purge ppa:ondrej/php`
 
 - http://nginx.org/packages/
 Nginx official repository. It will be added if Nginx was selected as a web server.
-Delete file `/etc/apt/sources.list.d/nginx.list` if you want to remove repository 
-
-- ppa:chris-lea/node.js
-NodeJS Repository. 
-Репозиторий для установки NodeJS менеджера пакетов (NPM). It will be added only when installing the panel from GitHub.
-To delete, run the command: `sudo ppa-purge ppa:chris-lea/node.js`
+Delete file `/etc/apt/sources.list.d/nginx.list` if you want to remove repository

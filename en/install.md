@@ -10,9 +10,13 @@ hidden: true
 * This will become a table of contents (this text will be scraped).
 {:toc}
 
-Install GameAP in one of the following ways:
+Install the panel using one of the following methods:
 
-* [Automatic Installation](/en/auto_install.html). Fast way. Using a bash script that will do everything itself.
+Quick automatic installation:
+* [Installation on Linux](/en/install/install_on_linux.html)
+* [Installation on Windows](/en/install/install_on_windows.html)
+
+Other installation methods:
 * [Installation on Shared hosting](/en/shared_install.html). Installation on a shared hosting by copying files. If you do not have SSH. Or on Windows.
 * [Manual Installation](/en/manual_install.html). For advanced users.
 
