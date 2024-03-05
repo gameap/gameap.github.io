@@ -7,12 +7,14 @@ order: 20
 hidden: true
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
-This page is outdated, please use one of the following up-to-date guides:
+> ! This page is outdated, please use one of the following up-to-date guides:
 * [Installation on Linux](/en/install/install_on_linux.html)
 * [Installation on Windows](/en/install/install_on_windows.html)
+
+---
+
+* This will become a table of contents (this text will be scraped).
+{:toc}
 
 Fully automatic installation. 
 You need to run the script, it will automatically install the packages 

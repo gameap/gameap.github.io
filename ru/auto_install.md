@@ -7,12 +7,14 @@ order: 21
 hidden: true
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 >! Эта страница является устаревшей, воспользуйтесь одним из следующих актуальных мануалов:
 > * [Установка на Linux](/ru/install/install_on_linux.html)
 > * [Установка на Windows](/ru/install/install_on_windows.html)
+
+---
+
+* This will become a table of contents (this text will be scraped).
+{:toc}
 
 Полностью автоматическая установка. 
 Нужно запустить скрипт, он автоматически установит необходимые пакеты и панель. 
