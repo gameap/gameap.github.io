@@ -8,10 +8,11 @@ order: 101
 
 ## Supported Versions
 
-| Version      | Supported | Note                                           |
-|--------------|-----------|------------------------------------------------|
-| Server 2022 | ✔         | Last manual test (v0.9.1): March 2, 2024       |
-| Server 2019 | ✔         | Last manual test (v0.9.3): March 2, 2024       |
+| Version     | Supported | Note                                      |
+|-------------|-----------|-------------------------------------------|
+| Server 2022 | ✔         | Last manual test (v0.9.1): March 2, 2024  |
+| Server 2019 | ✔         | Last manual test (v0.9.3): March 2, 2024  |
+| Server 2016 | ✔         | Last manual test (v0.9.3): March 10, 2024 |
 
 ## Downloading GameAP Control
 
