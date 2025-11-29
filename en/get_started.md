@@ -20,26 +20,10 @@ bash <(curl -s https://gameap.com/install.sh)
 
 ## Panel Installation
 
-The panel is installed on a dedicated server with PHP, 
-a web server (Nginx, Apache, etc.), and a database (MySQL, PgSQL, SQLite, ...)
+The panel is installed on a dedicated server with a database (PostgreSQL, MySQL, SQLite).
 
 * [Installation on Linux](/en/install/install_on_linux.html)
 * [Installation on Windows](/en/install/install_on_windows.html)
-
-### Outdated Installation Methods
-
-The methods below are more complicated to install but are still relevant. Use them if there is a specific need, but remember that in most cases, it is better to use the methods described above.
-
-* [Install on Linux with SSH (auto, easy)](/en/auto_install.html)
-* [Install on Linux with SSH (manual, difficult)](/en/manual_install.html)
-* [Install on shared hosting (not recommended)](/en/shared_install.html)
-
-### Download
-
-You can download and unpack archive on your hosting. Some installation methods don't required archive downloading.
-
-* [gameap-3.1-shared.zip](https://packages.gameap.com/gameap/gameap-3.1-shared.zip)
-* [GitHub](https://github.com/et-nik/gameap)
 
 
 ## Adding a Dedicated Server

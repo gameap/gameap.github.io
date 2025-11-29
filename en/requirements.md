@@ -19,7 +19,8 @@ order: 10
 
 ### GameAP Daemon
 
-GameAP Daemon manages game servers, which require resources, and some game servers can be very demanding. The data below represent the requirements for running the server environment without considering the game servers.
+GameAP Daemon manages game servers, which require resources, and some game servers can be very demanding. 
+The data below represent the requirements for running the server environment without considering the game servers.
 
 * RAM: 128 MB
 * Disk space: 1 GB or more
@@ -31,9 +32,7 @@ In most cases, gameapctl will install the necessary packages for the panel and G
 
 Basic packages required for GameAP Web/API:
 
-* Any web server (nginx, lighttpd, apache, etc.)
-* PHP version 7.3 and above
-* PHP modules/extensions: GD, OpenSSL, Curl, GMP, Intl
+* PostgreSQL 16 and above, or
 * MySQL 5.6 and above, or MariaDB 10.0 and above. In the case of installing SQLite, no additional database is required.
 
 ### Curl

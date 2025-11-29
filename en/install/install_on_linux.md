@@ -18,11 +18,6 @@ bash <(curl -s https://gameap.com/install.sh)
 
 During the installation process, you will be prompted to enter some information.
 
-### Installation Path
-
-This is the path where the main panel files will be stored. 
-The default is `/var/www/gameap`.
-
 ### Host
 
 Specify the domain or IP address at which the panel will be accessible.
@@ -40,18 +35,15 @@ Examples of correct values:
 * example.com
 * http://example.com
 
-### Web Server
-
-The HTTP server that will accept and process incoming requests. 
-[Nginx](https://www.nginx.com/) is recommended for use.
 
 ### Database
 
 The database where data will be stored: users, information about servers, etc. 
-You can use [MySQL](https://www.mysql.com/) and 
+You can use [PostgreSQL](https://www.postgresql.org/),
+[MySQL](https://www.mysql.com/) and 
 [SQLite](https://www.sqlite.org/).
 
-MySQL is recommended in most cases. If the load on your server 
+PostgreSQL is recommended in most cases. If the load on your server 
 is expected to be low, and you do not plan to use more than 10 game servers, 
 you can use SQLite.
 
@@ -66,31 +58,16 @@ will be displayed. Do not forget to save this information to access the panel.
 
 ## Additional Installation Options
 
-### Develop Version
-
-You can install a version that is under development by specifying 
-additional flags `--github --branch=develop` during installation. 
-The installation time will significantly increase in this case, 
-as it will be performed from the sources.
-
-```shell
-bash <(curl -s https://gameap.com/install.sh) \
-  --github \
-  --branch=develop
-```
-
 ### Non-Interactive Installation
 
 This type of installation allows you to install the panel without 
 entering any data during the process. 
-You can add the `--path`, `--web-server`, `--database` flags, 
+You can add the `--database` flags, 
 and in this case, the installer will not require any additional data from you.
 
 ```shell
 bash <(curl -s https://gameap.com/install.sh) \
-  --path=/var/www/gameap \
-  --web-server=nginx \
-  --database=mysql \
+  --database=postgresql \
   --host=http://127.0.0.1 \
   --port=80
 ```
@@ -105,4 +82,4 @@ and game servers on the same VDS.
 
 ```Shell
 bash <(curl -s https://gameap.com/install.sh) --with-daemon
-  ```
+```

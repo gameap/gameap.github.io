@@ -41,21 +41,3 @@ Difficulty: Low
 * [Installation instruction for Linux](/en/install/install_on_linux.html)
 * [Installation instruction for Windows](/en/install/install_on_windows.html)
 
-### Installation on Shared hosting
-
-Installing the panel on a shared hosting, where there is no access to the command line.
-
-Not recommended method
-
-Difficulty: Medium
-
-* [GameAP 3.x installation on Shared hosting](/en/shared_install.html)
-
-### Manual installation from GitHub
-
-Installing from source codes. You will need to download the panel,
-install Composer and NPM package dependencies, build assets using NPM.
-
-Difficulty: High
-
-[GameAP 3.x manual installation](/en/manual_install.html)
