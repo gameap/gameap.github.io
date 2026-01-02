@@ -3,7 +3,7 @@
 {% assign lang_dir = '/' | append: page.lang | append: '/' %}
 
 <ul class="nav flex-column">
-    <li class="nav-item" ><a class="nav-link" href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
+    <li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
 
     {% assign cats = site.pages | where:"lang",page.lang | sort: 'order' | group_by: 'category' %}
 
@@ -12,7 +12,7 @@
             {% continue %}
         {% endif %}
 
-        <li><b>{{ cat.name }}</b></li>
+        <li class="nav-header"><b>{{ cat.name }}</b></li>
 
         {% assign items = cat.items | sort: 'order' %}
         {% for fpage in items %}
@@ -21,9 +21,9 @@
             {% endif %}
 
             {% if page.url == fpage.url %}
-                <li class="nav-item active" ><strong><a class="nav-link">{{ fpage.title }}</a></strong></li>
+                <li class="nav-item active"><strong><a class="nav-link">{{ fpage.title }}</a></strong></li>
             {% else %}
-                <li class="nav-item" ><a class="nav-link" href="{{ fpage.url }}">{{ fpage.title }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ fpage.url }}">{{ fpage.title }}</a></li>
             {% endif %}
         {% endfor %}
     {% endfor %}
