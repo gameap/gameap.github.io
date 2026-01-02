@@ -26,6 +26,10 @@ Or use curl to download for Linux amd64:
 
 ```shell
 curl -OL https://github.com/gameap/gameapctl/releases/download/v0.21.1/gameapctl-v0.21.1-linux-amd64.tar.gz
+```
+
+Unpack to `/usr/local/bin`:
+```shell
 tar xvfz gameapctl-v0.21.1-linux-amd64.tar.gz -C /usr/local/bin
 ```
 
@@ -69,7 +73,15 @@ First, create the `gameap` user and group:
 
 ```shell
 useradd -r -s /usr/sbin/nologin -d /var/lib/gameap gameap
+```
+
+Create the working directory:
+```shell
 mkdir -p /var/lib/gameap
+```
+
+Set ownership:
+```shell
 chown gameap:gameap /var/lib/gameap
 ```
 

@@ -6,8 +6,6 @@ category: Tutorials
 order: 204
 ---
 
-# Quake III Arena
-
 Quake III Arena is a multiplayer first-person shooter developed by id Software. 
 The game focuses entirely on multiplayer combat and lacks a traditional single-player campaign.
 
