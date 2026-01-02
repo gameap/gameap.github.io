@@ -20,10 +20,10 @@ jobs:
 
       - name: Build Jekyll site
         run: |
+          chmod -R 777 .
           docker run --rm \
-            -v "${{ github.workspace }}:/srv/jekyll:Z" \
+            -v "${{ github.workspace }}:/srv/jekyll" \
             -e JEKYLL_ENV=production \
-            -u 0:0 \
             jekyll/jekyll:4.2.2@sha256:400b8d1569f118bca8a3a09a25f32803b00a55d1ea241feaf5f904d66ca9c625 \
             jekyll build --trace
 
