@@ -1,9 +1,8 @@
 {% assign lang = site.data.lang[page.lang] %}
-{% assign lang_dir =  %}
 {% assign lang_dir = '/' | append: page.lang | append: '/' %}
 
-<ul class="nav flex-column">
-    <li class="nav-item"><a class="nav-link" href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a></li>
+<nav class="docs-nav">
+    <a class="docs-nav-home" href="{{ site.baseurl }}{{ lang_dir }}">{{ lang.docs }}</a>
 
     {% assign cats = site.pages | where:"lang",page.lang | sort: 'order' | group_by: 'category' %}
 
@@ -12,19 +11,33 @@
             {% continue %}
         {% endif %}
 
-        <li class="nav-header"><b>{{ cat.name }}</b></li>
-
         {% assign items = cat.items | sort: 'order' %}
+        {% assign section_has_active = false %}
         {% for fpage in items %}
-            {% if fpage.hidden == true %}
-                {% continue %}
-            {% endif %}
-
             {% if page.url == fpage.url %}
-                <li class="nav-item active"><strong><a class="nav-link">{{ fpage.title }}</a></strong></li>
-            {% else %}
-                <li class="nav-item"><a class="nav-link" href="{{ fpage.url }}">{{ fpage.title }}</a></li>
+                {% assign section_has_active = true %}
+                {% break %}
             {% endif %}
         {% endfor %}
+
+        <div class="nav-section{% if section_has_active %} is-open{% endif %}">
+            <button class="nav-section-toggle" type="button">
+                <span class="nav-section-icon"></span>
+                {{ cat.name }}
+            </button>
+            <ul class="nav-section-items">
+                {% for fpage in items %}
+                    {% if fpage.hidden == true %}
+                        {% continue %}
+                    {% endif %}
+
+                    {% if page.url == fpage.url %}
+                        <li class="is-active"><a>{{ fpage.title }}</a></li>
+                    {% else %}
+                        <li><a href="{{ fpage.url }}">{{ fpage.title }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
     {% endfor %}
-</ul>
+</nav>

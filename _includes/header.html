@@ -1,23 +1,14 @@
 {% assign lang = site.data.lang[page.lang] %}
 
 <div class="container">
-    <div id="header">
-        <div class="row">
-            <div class="col-12 col-md-6">
-                <div class="d-inline-flex">
-                    <a class="nav-brand" href="{{ site.baseurl }}/">
-                        <img src="/images/gameap_logo.svg" height="40px" class="me-2" alt="GameAP">
-                    </a>
-                </div>
-                <div class="d-inline-flex">
-                    <a href="{{ site.baseurl }}/">Documentation</a>
-                    {% if site.subtitle %}<small>{{ site.subtitle }}</small>{% endif %}
-                </div>
-            </div>
-            <div class="col-12 col-md-6 text-center text-md-end">
-                <a href="http://gameap.com">{{ lang.site }}</a> |
-                <a href="https://github.com/gameap">GitHub</a>
-            </div>
-        </div>
-    </div>
+    <header id="header">
+        <a class="header-brand" href="{{ site.baseurl }}/">
+            <img src="/images/gameap_logo.svg" height="32" alt="GameAP">
+            <span>Documentation</span>
+        </a>
+        <nav class="header-nav">
+            <a href="http://gameap.com">{{ lang.site }}</a>
+            <a href="https://github.com/gameap">GitHub</a>
+        </nav>
+    </header>
 </div>

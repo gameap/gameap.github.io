@@ -2,34 +2,47 @@ package main
 
 import (
 	"compress/gzip"
+	"embed"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
+	"mime"
 	"net/http"
 	"os"
-	"path/filepath"
+	"path"
 	"strings"
 	"time"
 )
+
+//go:embed site
+var embeddedFS embed.FS
+
+var siteFS fs.FS
 
 // Config holds server configuration from environment variables
 type Config struct {
 	Lang      string            // LANG - current language
 	Redirects map[string]string // REDIRECTS - map of lang -> domain
-	SiteRoot  string            // SITE_ROOT - site root directory
 	Port      string            // PORT - server port
 }
 
 var cfg Config
 
 func init() {
+	// Create sub-filesystem rooted at "site"
+	var err error
+	siteFS, err = fs.Sub(embeddedFS, "site")
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	cfg = Config{
 		Lang:      getEnv("LANG", "en"),
-		SiteRoot:  getEnv("SITE_ROOT", "/srv"),
 		Port:      getEnv("PORT", "80"),
 		Redirects: parseRedirects(os.Getenv("REDIRECTS")),
 	}
-	log.Printf("Config: LANG=%s, SITE_ROOT=%s, REDIRECTS=%v", cfg.Lang, cfg.SiteRoot, cfg.Redirects)
+	log.Printf("Config: LANG=%s, REDIRECTS=%v", cfg.Lang, cfg.Redirects)
 }
 
 func getEnv(key, fallback string) string {
@@ -82,6 +95,15 @@ func gzipMiddleware(next http.Handler) http.Handler {
 			next.ServeHTTP(w, r)
 			return
 		}
+
+		// Pre-set Content-Type for known file extensions before gzip wrapping
+		urlPath := r.URL.Path
+		if ext := path.Ext(urlPath); ext != "" {
+			if ct := mime.TypeByExtension(ext); ct != "" {
+				w.Header().Set("Content-Type", ct)
+			}
+		}
+
 		w.Header().Set("Content-Encoding", "gzip")
 		gz := gzip.NewWriter(w)
 		defer gz.Close()
@@ -90,20 +112,33 @@ func gzipMiddleware(next http.Handler) http.Handler {
 }
 
 func handleRequest(w http.ResponseWriter, r *http.Request) {
-	path := r.URL.Path
+	urlPath := r.URL.Path
 
 	// Set cache headers
-	if isStaticAsset(path) {
+	if isStaticAsset(urlPath) {
 		w.Header().Set("Cache-Control", "public, max-age=31536000")
 	} else {
 		w.Header().Set("Cache-Control", "public, max-age=3600")
 	}
 
+	// Root path
+	if urlPath == "/" {
+		serveFile(w, r, path.Join(cfg.Lang, "index.html"))
+		return
+	}
+
+	// Static assets (css, images) - check BEFORE language prefix
+	// because paths like /css/ look like language codes
+	if isStaticAsset(urlPath) {
+		serveFile(w, r, urlPath[1:]) // Remove leading slash
+		return
+	}
+
 	// Check if path starts with /$lang/
-	if lang, suffix, ok := extractLangPrefix(path); ok {
+	if lang, suffix, ok := extractLangPrefix(urlPath); ok {
 		if lang == cfg.Lang {
 			// Current language - serve locally
-			serveFile(w, r, filepath.Join(cfg.SiteRoot, lang, suffix))
+			serveFile(w, r, path.Join(lang, suffix))
 		} else if domain, exists := cfg.Redirects[lang]; exists {
 			// Other language from REDIRECTS - redirect
 			http.Redirect(w, r, fmt.Sprintf("https://%s/%s", domain, suffix), http.StatusMovedPermanently)
@@ -114,28 +149,16 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Root path
-	if path == "/" {
-		serveFile(w, r, filepath.Join(cfg.SiteRoot, cfg.Lang, "index.html"))
-		return
-	}
-
-	// Static assets (css, images)
-	if isStaticAsset(path) {
-		serveFile(w, r, filepath.Join(cfg.SiteRoot, path))
-		return
-	}
-
 	// Default - current language
-	serveFile(w, r, filepath.Join(cfg.SiteRoot, cfg.Lang, path))
+	serveFile(w, r, cfg.Lang+urlPath)
 }
 
 // extractLangPrefix extracts language from path /en/page -> ("en", "page", true)
-func extractLangPrefix(path string) (lang, suffix string, ok bool) {
-	if len(path) < 2 || path[0] != '/' {
+func extractLangPrefix(urlPath string) (lang, suffix string, ok bool) {
+	if len(urlPath) < 2 || urlPath[0] != '/' {
 		return "", "", false
 	}
-	rest := path[1:]
+	rest := urlPath[1:]
 	slashIdx := strings.Index(rest, "/")
 	if slashIdx == -1 {
 		return "", "", false
@@ -155,35 +178,48 @@ func extractLangPrefix(path string) (lang, suffix string, ok bool) {
 	return lang, suffix, true
 }
 
-func isStaticAsset(path string) bool {
+func isStaticAsset(urlPath string) bool {
 	prefixes := []string{"/css/", "/images/", "/assets/", "/media/"}
 	for _, p := range prefixes {
-		if strings.HasPrefix(path, p) {
+		if strings.HasPrefix(urlPath, p) {
 			return true
 		}
 	}
-	return path == "/favicon.ico"
+	return urlPath == "/favicon.ico"
 }
 
 func serveFile(w http.ResponseWriter, r *http.Request, filePath string) {
-	filePath = filepath.Clean(filePath)
-
-	if _, err := os.Stat(filePath); err != nil {
-		// Try with .html extension
-		if _, err := os.Stat(filePath + ".html"); err == nil {
-			filePath += ".html"
-		} else if _, err := os.Stat(filepath.Join(filePath, "index.html")); err == nil {
-			filePath = filepath.Join(filePath, "index.html")
-		} else {
-			http.NotFound(w, r)
-			return
-		}
+	// Clean the path and ensure no leading slash (fs.FS uses relative paths)
+	filePath = path.Clean(filePath)
+	if strings.HasPrefix(filePath, "/") {
+		filePath = filePath[1:]
 	}
 
-	info, _ := os.Stat(filePath)
+	// Try to stat the file
+	info, err := fs.Stat(siteFS, filePath)
+	if err != nil {
+		// Try with .html extension
+		htmlPath := filePath + ".html"
+		if _, err := fs.Stat(siteFS, htmlPath); err == nil {
+			filePath = htmlPath
+		} else {
+			// Try as directory with index.html
+			indexPath := path.Join(filePath, "index.html")
+			if _, err := fs.Stat(siteFS, indexPath); err == nil {
+				filePath = indexPath
+			} else {
+				http.NotFound(w, r)
+				return
+			}
+		}
+		// Re-stat the resolved path
+		info, _ = fs.Stat(siteFS, filePath)
+	}
+
+	// If it's a directory, try to serve index.html
 	if info != nil && info.IsDir() {
-		indexPath := filepath.Join(filePath, "index.html")
-		if _, err := os.Stat(indexPath); err == nil {
+		indexPath := path.Join(filePath, "index.html")
+		if _, err := fs.Stat(siteFS, indexPath); err == nil {
 			filePath = indexPath
 		} else {
 			http.NotFound(w, r)
@@ -191,5 +227,18 @@ func serveFile(w http.ResponseWriter, r *http.Request, filePath string) {
 		}
 	}
 
-	http.ServeFile(w, r, filePath)
+	// Read file content from embedded filesystem
+	content, err := fs.ReadFile(siteFS, filePath)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	// Set Content-Type based on file extension
+	ext := path.Ext(filePath)
+	if ct := mime.TypeByExtension(ext); ct != "" {
+		w.Header().Set("Content-Type", ct)
+	}
+
+	w.Write(content)
 }
