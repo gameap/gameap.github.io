@@ -1,0 +1,138 @@
+name: Build and Deploy to S3
+
+on:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build Jekyll Site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build Jekyll site
+        run: |
+          docker run --rm \
+            -v "${{ github.workspace }}:/srv/jekyll:Z" \
+            -e JEKYLL_ENV=production \
+            jekyll/jekyll:4.2.2@sha256:400b8d1569f118bca8a3a09a25f32803b00a55d1ea241feaf5f904d66ca9c625 \
+            jekyll build --trace
+
+      - name: Copy CSS to language directories
+        run: |
+          mkdir -p _site/en/css _site/ru/css
+          cp css/*.css _site/en/css/
+          cp css/*.css _site/ru/css/
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v6
+        with:
+          name: site
+          path: _site
+          retention-days: 1
+          if-no-files-found: error
+
+  deploy:
+    name: Deploy to S3 (${{ matrix.endpoint.name }})
+    runs-on: ubuntu-latest
+    needs: build
+
+    strategy:
+      fail-fast: false
+      matrix:
+        endpoint:
+          - name: primary
+            index: 1
+          - name: secondary
+            index: 2
+          - name: tertiary
+            index: 3
+
+    steps:
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: _site
+
+      - name: Install rclone
+        run: |
+          curl -LO https://github.com/rclone/rclone/releases/download/v1.72.1/rclone-v1.72.1-linux-amd64.deb
+          echo "a385c04469160e28ea37b3c5f6accd15c7f78f819398077c622c7f31e3eec43b  rclone-v1.72.1-linux-amd64.deb" | sha256sum -c -
+          sudo dpkg -i rclone-v1.72.1-linux-amd64.deb
+
+      - name: Set endpoint credentials
+        id: creds
+        run: |
+          case "${{ matrix.endpoint.index }}" in
+            1)
+              echo "url=${{ secrets.S3_ENDPOINT_1_URL }}" >> $GITHUB_OUTPUT
+              echo "bucket=${{ secrets.S3_ENDPOINT_1_BUCKET }}" >> $GITHUB_OUTPUT
+              echo "access_key=${{ secrets.S3_ENDPOINT_1_ACCESS_KEY }}" >> $GITHUB_OUTPUT
+              echo "secret_key=${{ secrets.S3_ENDPOINT_1_SECRET_KEY }}" >> $GITHUB_OUTPUT
+              echo "region=${{ secrets.S3_ENDPOINT_1_REGION }}" >> $GITHUB_OUTPUT
+              echo "locale=${{ secrets.S3_ENDPOINT_1_LOCALE }}" >> $GITHUB_OUTPUT
+              ;;
+            2)
+              echo "url=${{ secrets.S3_ENDPOINT_2_URL }}" >> $GITHUB_OUTPUT
+              echo "bucket=${{ secrets.S3_ENDPOINT_2_BUCKET }}" >> $GITHUB_OUTPUT
+              echo "access_key=${{ secrets.S3_ENDPOINT_2_ACCESS_KEY }}" >> $GITHUB_OUTPUT
+              echo "secret_key=${{ secrets.S3_ENDPOINT_2_SECRET_KEY }}" >> $GITHUB_OUTPUT
+              echo "region=${{ secrets.S3_ENDPOINT_2_REGION }}" >> $GITHUB_OUTPUT
+              echo "locale=${{ secrets.S3_ENDPOINT_2_LOCALE }}" >> $GITHUB_OUTPUT
+              ;;
+            3)
+              echo "url=${{ secrets.S3_ENDPOINT_3_URL }}" >> $GITHUB_OUTPUT
+              echo "bucket=${{ secrets.S3_ENDPOINT_3_BUCKET }}" >> $GITHUB_OUTPUT
+              echo "access_key=${{ secrets.S3_ENDPOINT_3_ACCESS_KEY }}" >> $GITHUB_OUTPUT
+              echo "secret_key=${{ secrets.S3_ENDPOINT_3_SECRET_KEY }}" >> $GITHUB_OUTPUT
+              echo "region=${{ secrets.S3_ENDPOINT_3_REGION }}" >> $GITHUB_OUTPUT
+              echo "locale=${{ secrets.S3_ENDPOINT_3_LOCALE }}" >> $GITHUB_OUTPUT
+              ;;
+          esac
+
+      - name: Check if endpoint is configured
+        id: check
+        run: |
+          if [ -z "${{ steps.creds.outputs.url }}" ] || [ -z "${{ steps.creds.outputs.bucket }}" ] || [ -z "${{ steps.creds.outputs.locale }}" ]; then
+            echo "configured=false" >> $GITHUB_OUTPUT
+            echo "::warning::Endpoint ${{ matrix.endpoint.name }} is not configured, skipping..."
+          else
+            echo "configured=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Sync locale to S3
+        if: steps.check.outputs.configured == 'true'
+        env:
+          RCLONE_CONFIG_S3_TYPE: s3
+          RCLONE_CONFIG_S3_PROVIDER: Other
+          RCLONE_CONFIG_S3_ACCESS_KEY_ID: ${{ steps.creds.outputs.access_key }}
+          RCLONE_CONFIG_S3_SECRET_ACCESS_KEY: ${{ steps.creds.outputs.secret_key }}
+          RCLONE_CONFIG_S3_ENDPOINT: ${{ steps.creds.outputs.url }}
+          RCLONE_CONFIG_S3_REGION: ${{ steps.creds.outputs.region }}
+        run: |
+          LOCALE="${{ steps.creds.outputs.locale }}"
+          echo "Deploying locale: $LOCALE to bucket: ${{ steps.creds.outputs.bucket }}"
+          rclone sync "_site/$LOCALE" "s3:${{ steps.creds.outputs.bucket }}" \
+            --progress \
+            --checksum \
+            --transfers 10 \
+            --checkers 20 \
+            -v
+
+      - name: Deployment summary
+        if: steps.check.outputs.configured == 'true'
+        run: |
+          echo "## Deployment to ${{ matrix.endpoint.name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Endpoint: ${{ steps.creds.outputs.url }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Bucket: ${{ steps.creds.outputs.bucket }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Locale: ${{ steps.creds.outputs.locale }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Status: Success" >> $GITHUB_STEP_SUMMARY
