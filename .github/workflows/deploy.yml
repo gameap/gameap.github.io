@@ -25,13 +25,7 @@ jobs:
             -v "${{ github.workspace }}:/srv/jekyll" \
             -e JEKYLL_ENV=production \
             jekyll/jekyll:4.2.2@sha256:400b8d1569f118bca8a3a09a25f32803b00a55d1ea241feaf5f904d66ca9c625 \
-            jekyll build --trace
-
-      - name: Copy CSS to language directories
-        run: |
-          mkdir -p _site/en/css _site/ru/css
-          cp css/*.css _site/en/css/
-          cp css/*.css _site/ru/css/
+            sh -c "jekyll build --trace && mkdir -p _site/en/css _site/ru/css && cp css/*.css _site/en/css/ && cp css/*.css _site/ru/css/"
 
       - name: Upload site artifact
         uses: actions/upload-artifact@v6
