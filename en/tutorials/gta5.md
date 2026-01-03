@@ -30,15 +30,15 @@ To install the game server on a machine (VDS), you need to install GameAP Daemon
 During the GameAP installation, you can choose to install it fully, 
 including Daemon.
 
-In the control panel, go to **"Administration"** -> **"Dedicated Servers"** 
--> **"Create"**. A window with an offer for automatic installation will appear. 
+In the control panel, go to **"Administration"** → **"Dedicated Servers"** 
+→ **"Create"**. A window with an offer for automatic installation will appear. 
 Copy the code and execute it on the dedicated server.
 
 After this, you can proceed to install the FiveM server.
 
 ### Creating a FiveM Server in GameAP
 
-Go to **Administration** -> **Game Servers** -> **Create**
+Go to **Administration** → **Game Servers** → **Create**
 
 ![](/images/en/tutorials/fivem/create_form.png)
 
@@ -61,7 +61,7 @@ After generating, you will see a message. You need to copy the key value.
 
 You need to copy the key value and specify it in 
 the settings in the control panel. 
-Go to **Servers** -> select your FiveM server -> **Management** -> **Settings**
+Go to **Servers** → select your FiveM server → **Management** → **Settings**
 
 ![](/images/en/tutorials/fivem/set_key.png)
 
@@ -73,6 +73,6 @@ The FiveM server configuration is located in the `server.cfg` file,
 which is located in the root directory. 
 You can edit this file in the panel's file manager.
 
-Go to **Servers** -> select your FiveM server -> **Management** -> **Files**
+Go to **Servers** → select your FiveM server → **Management** → **Files**
 
 ![](/images/en/tutorials/fivem/server_config.png)

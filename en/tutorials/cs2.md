@@ -27,8 +27,8 @@ you need to install GameAP Daemon.
 When installing GameAP, you can choose the option to perform 
 a full installation along with the Daemon.
 
-In the control panel, go to **"Administration"** -> **"Dedicated Servers"** 
--> **"Create"**. 
+In the control panel, go to **"Administration"** → **"Dedicated Servers"** 
+→ **"Create"**. 
 A window with an offer for automatic installation will appear. 
 Copy the code and execute it on the dedicated server.
 
@@ -36,7 +36,7 @@ After this, you can proceed with the Counter-Strike server installation.
 
 ## Installing Counter-Strike in GameAP
 
-Go to **Administration** -> **Game Servers** -> **Create**
+Go to **Administration** → **Game Servers** → **Create**
 
 ![](/images/en/tutorials/cs2/create_form.png)
 
@@ -64,7 +64,7 @@ use the 32-character value:
 ![](/images/en/tutorials/cs2/token_table.png)
 
 You need to copy the token value and specify it in the control panel settings. 
-Go to **Servers** -> select your server -> **Management** -> **Settings**
+Go to **Servers** → select your server → **Management** → **Settings**
 
 ![](/images/en/tutorials/cs2/set_token.png)
 

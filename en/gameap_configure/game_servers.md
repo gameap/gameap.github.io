@@ -11,7 +11,7 @@ order: 310
 
 ## Editing game servers
 
-To edit a game server (node), go to **"Administration"** -> **"Game Servers"** page, then 
+To edit a game server (node), go to **"Administration"** → **"Game Servers"** page, then 
 select the game server you want to edit and click on the **"Edit"** button.
 
 ### Description of parameters

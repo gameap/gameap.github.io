@@ -27,8 +27,8 @@ On the node where the game server will be hosted, you need
 to install GameAP Daemon. During the GameAP installation process, 
 you can choose the option to install it together with the Daemon.
 
-In the control panel, go to **Administration** -> **Dedicated Servers** 
--> **Create**. 
+In the control panel, go to **Administration** → **Dedicated Servers** 
+→ **Create**. 
 A window with an offer for automatic installation will appear. 
 Copy the code and execute it on the dedicated server.
 
@@ -36,7 +36,7 @@ After this, you can proceed to install the Minecraft server.
 
 ## Installing Minecraft in GameAP
 
-Go to **Administration** -> **Game Servers** -> **Create**
+Go to **Administration** → **Game Servers** → **Create**
 
 ![](/images/en/tutorials/minecraft/create_form.png)
 

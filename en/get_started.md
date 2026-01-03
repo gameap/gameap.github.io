@@ -29,7 +29,7 @@ The panel is installed on a dedicated server with a database (PostgreSQL, MySQL,
 ## Adding a Dedicated Server
 
 Add a new dedicated server (VDS, VPS, Physical server). On a dedicated server, game servers will then start.
-Go to **"Administration"** -> **"Dedicated servers"** -> **"Create"**.
+Go to **"Administration"** → **"Dedicated servers"** → **"Create"**.
 A window appears prompting you to automatically install GameAP Daemon on a dedicated server.
 Follow the instructions.
 
@@ -39,7 +39,7 @@ For more detailed information on installation and configuration, read the [Dedic
 
 ## Game server adding
 
-Go to **"Administration"** -> **"Game servers"** -> **"Create"**.
+Go to **"Administration"** → **"Game servers"** → **"Create"**.
 
 ![](/images/en/get_started/add_game_server.gif)
 

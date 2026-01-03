@@ -14,7 +14,7 @@ order: 320
 The control panel supports the launch and basic control of any game servers and applications. If
 the panel does not contain a game you need, you can add it.
 
-To add a new game, go to **"Administration"** -> **"Games"**, then select 
+To add a new game, go to **"Administration"** → **"Games"**, then select 
 **"Add Game"**.
 
 After adding the game, add the first mod of this game and specify the the game server start parameters.
@@ -106,7 +106,7 @@ Example game server working directory `/srv/gameap/servers/example-server`
 Each game can have many mods, each has its own features, settings, 
 startup parameters, configuration files, etc.
 
-To add a new game, go to **"Administration"** -> **"Games"**, then select 
+To add a new game, go to **"Administration"** → **"Games"**, then select 
 **"Add Mod"**
 
 ### Fields
@@ -218,21 +218,21 @@ in [Variables](#variables).
 ### Variables
 
 You can add individual settings for each game server. Then these settings can be edited
-by administrator or regular user on the settings page (**"Server List"** -> **"Administration"** -> 
+by administrator or regular user on the settings page (**"Server List"** → **"Administration"** → 
 **"Settings"**).
 
 | Field | Description
 | ------ | -------
 | Variable | Variable name. No curly brackets.
 | Default | Variable value by default. This value will be used if an individual value is not set for the game server.
-| Description | Game server description on the settings page (**"Server List"** -> **"Administration"** -> **"Settings"**)
+| Description | Game server description on the settings page (**"Server List"** → **"Administration"** → **"Settings"**)
 | Admin variable | If checked, only the administrator will be able to edit this setting for game servers.
 
 #### Examples
 
 | Values | Description
 | ------ | -------
-| **Variable:** default_map <br><br>**Default:** de_dust <br><br>**Description:** Map at startup | For each game server of this mod, the shortcode `{default_map}` and a new parameter in settings called "Default Map" with the default value "de_dust" will appear. <br><br>Individually for each server, this parameter can be edited at **"Server List"** -> **"Administration"** -> **"Settings"**
+| **Variable:** default_map <br><br>**Default:** de_dust <br><br>**Description:** Map at startup | For each game server of this mod, the shortcode `{default_map}` and a new parameter in settings called "Default Map" with the default value "de_dust" will appear. <br><br>Individually for each server, this parameter can be edited at **"Server List"** → **"Administration"** → **"Settings"**
 
 
 ### RCON commands

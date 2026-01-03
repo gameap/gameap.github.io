@@ -24,13 +24,13 @@ GameAP Daemon is an agent responsible for managing game servers on dedicated mac
 
 When installing GameAP, you can choose a full installation including the Daemon (using the `--with-daemon` flag).
 
-In the control panel, go to **"Administration"** -> **"Dedicated Servers"** -> **"Create"**. A window will appear offering automatic installation. Copy the code and run it on the dedicated server.
+In the control panel, go to **"Administration"** → **"Dedicated Servers"** → **"Create"**. A window will appear offering automatic installation. Copy the code and run it on the dedicated server.
 
 After that, you can proceed with installing the Quake III Arena server.
 
 ## Installing Quake III Arena Server in GameAP
 
-Go to **Administration** -> **Game Servers** -> **Create**
+Go to **Administration** → **Game Servers** → **Create**
 
 ![](/images/en/tutorials/quake3/create_form.png)
 

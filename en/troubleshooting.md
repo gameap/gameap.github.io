@@ -15,7 +15,7 @@ Description some possible errors and their fixing.
 
 More details you can view in logs.
 
-Go to **Administration** -> **GDaemon tasks**, open last server startup task.
+Go to **Administration** → **GDaemon tasks**, open last server startup task.
 
 Check GameAP Daemon logs. 
 Проверьте логи GameAP Daemon. Logs are stored on a dedicated server in a directory `/var/log/gameap-daemon`.
@@ -28,9 +28,9 @@ Sometimes it happens that the server starts, but its status in the panel is disp
 
 This error occurs when the launch command for the game server is empty, it must be filled.
 
-Go to the game server administration page: **Administration** -> **Servers** -> Then select your game server.
+Go to the game server administration page: **Administration** → **Servers** → Then select your game server.
 
-Or from main page **Servers List** -> Select game server -> **Control** -> **Administration**
+Or from main page **Servers List** → Select game server → **Control** → **Administration**
 
 Find the field **Start command**, fill the field. For Counter-Strike 1.6 startup command will be something like this:
 ```

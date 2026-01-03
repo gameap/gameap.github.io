@@ -17,7 +17,7 @@ This is the main application, what control game servers statuses and reload them
 
 ### Automatically from panel
 
-Go to **Administration** -> **Dedicated servers** -> **Create**
+Go to **Administration** → **Dedicated servers** → **Create**
 That action open suggestion about autoinstall. Copy the code and run on dedicated server.
 
 ## Configuration

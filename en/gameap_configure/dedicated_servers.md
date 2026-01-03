@@ -17,7 +17,7 @@ You can install GameAP Daemon on a dedicated server automatically by executing a
 
 ### Automatic GameAP Daemon installation on a dedicated server
 
-Go to the "Administration" -> "Dedicated Servers" page, click on the "Create" button.
+Go to the "Administration" → "Dedicated Servers" page, click on the "Create" button.
 A window appears prompting you to automatically install GameAP Daemon on a dedicated server. Copy the command and run it on the dedicated server as the superuser. The command looks something like this:
 ```
 curl http://your-panel/gdaemon/setup/zItWHWlI4RKPl9ZsYc3y3Wgd | bash --
@@ -26,7 +26,7 @@ The command will be available for execution within 5 minutes. After the time ela
 
 ## Editing dedicated servers
 
-To edit a dedicated server (node), go to **"Administration"** -> **"Dedicated Servers"** page, then 
+To edit a dedicated server (node), go to **"Administration"** → **"Dedicated Servers"** page, then 
 select the dedicated server you want to edit and click on the **"Edit"** button.
 
 ### Description of parameters
