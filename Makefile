@@ -7,6 +7,9 @@ PORT := 8080
 build:
 	docker buildx build -t $(IMAGE_NAME) --load --no-cache .
 
+build-push:
+	docker buildx build -t $(IMAGE_NAME) --push --no-cache .
+
 run: build
 	docker run -d --name $(CONTAINER_NAME) -p $(PORT):80 $(IMAGE_NAME)
 	@echo "Server running at http://localhost:$(PORT)"

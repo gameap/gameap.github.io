@@ -25,7 +25,14 @@ jobs:
             -v "${{ github.workspace }}:/srv/jekyll" \
             -e JEKYLL_ENV=production \
             jekyll/jekyll:4.2.2@sha256:400b8d1569f118bca8a3a09a25f32803b00a55d1ea241feaf5f904d66ca9c625 \
-            sh -c "jekyll build --trace && mkdir -p _site/en/css _site/ru/css && cp css/*.css _site/en/css/ && cp css/*.css _site/ru/css/"
+            sh -c "jekyll build --trace && \
+              mkdir -p _site/en/css _site/ru/css && \
+              cp css/*.css _site/en/css/ && \
+              cp css/*.css _site/ru/css/ && \
+              find _site/en -name '*.html' -exec sed -i 's|href=\"/en/|href=\"/|g' {} \; && \
+              find _site/en -name '*.html' -exec sed -i 's|src=\"/en/|src=\"/|g' {} \; && \
+              find _site/ru -name '*.html' -exec sed -i 's|href=\"/ru/|href=\"/|g' {} \; && \
+              find _site/ru -name '*.html' -exec sed -i 's|src=\"/ru/|src=\"/|g' {} \;"
 
       - name: Upload site artifact
         uses: actions/upload-artifact@v6

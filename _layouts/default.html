@@ -7,6 +7,15 @@
 
         <title>{{ site.title }}{% if page.title %} : {{ page.title }}{% endif %}</title>
 
+        {% assign clean_path = page.url | replace: '/ru/', '/' | replace: '/en/', '/' %}
+        <!-- Canonical URL -->
+        <link rel="canonical" href="{{ site.domains[page.lang] }}{{ clean_path }}">
+
+        <!-- Hreflang tags for language alternatives -->
+        <link rel="alternate" hreflang="en" href="{{ site.domains.en }}{{ clean_path }}">
+        <link rel="alternate" hreflang="ru" href="{{ site.domains.ru }}{{ clean_path }}">
+        <link rel="alternate" hreflang="x-default" href="{{ site.domains.en }}{{ clean_path }}">
+
         <link rel="stylesheet" href="{{ site.baseurl }}/css/syntax.css">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
         <link rel="stylesheet" href="{{ site.baseurl }}/css/github-markdown.css">

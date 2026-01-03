@@ -1,4 +1,11 @@
 {% assign lang = site.data.lang[page.lang] %}
+{% assign other_lang = 'ru' %}
+{% assign other_domain = site.domains.ru %}
+{% if page.lang == 'ru' %}
+    {% assign other_lang = 'en' %}
+    {% assign other_domain = site.domains.en %}
+{% endif %}
+{% assign clean_path = page.url | replace: '/en/', '/' | replace: '/ru/', '/' %}
 
 <div class="container">
     <header id="header">
@@ -9,6 +16,9 @@
         <nav class="header-nav">
             <a href="http://gameap.com">{{ lang.site }}</a>
             <a href="https://github.com/gameap">GitHub</a>
+            <a href="{{ other_domain }}{{ clean_path }}" class="lang-switch">
+                {% if page.lang == 'en' %}RU{% else %}EN{% endif %}
+            </a>
         </nav>
     </header>
 </div>

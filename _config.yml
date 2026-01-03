@@ -1,6 +1,11 @@
 # Site title and subtitle. This is used in _includes/header.html
 title: 'GameAP Documentation'
 
+# Domain configuration for multi-language deployment
+domains:
+  en: "https://docs.gameap.com"
+  ru: "https://docs.gameap.ru"
+
 # if you wish to integrate disqus on pages set your shortname here
 disqus_shortname: ''
 

@@ -137,10 +137,14 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	// Check if path starts with /$lang/
 	if lang, suffix, ok := extractLangPrefix(urlPath); ok {
 		if lang == cfg.Lang {
-			// Current language - serve locally
-			serveFile(w, r, path.Join(lang, suffix))
+			// Current language - redirect to clean URL (remove /ru/ or /en/ prefix)
+			cleanURL := "/" + suffix
+			if cleanURL == "/" {
+				cleanURL = "/"
+			}
+			http.Redirect(w, r, cleanURL, http.StatusMovedPermanently)
 		} else if domain, exists := cfg.Redirects[lang]; exists {
-			// Other language from REDIRECTS - redirect
+			// Other language from REDIRECTS - redirect to other domain with clean URL
 			http.Redirect(w, r, fmt.Sprintf("https://%s/%s", domain, suffix), http.StatusMovedPermanently)
 		} else {
 			// Language not in REDIRECTS - 404
