@@ -5,7 +5,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ site.title }}{% if page.title %} : {{ page.title }}{% endif %}</title>
+        {% assign lang = site.data.lang[page.lang] %}
+        <title>{{ lang.title }}{% if page.title %} : {{ page.title }}{% endif %}</title>
 
         {% assign clean_path = page.url | replace: '/ru/', '/' | replace: '/en/', '/' %}
         <!-- Canonical URL -->

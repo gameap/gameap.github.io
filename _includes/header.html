@@ -11,10 +11,10 @@
     <header id="header">
         <a class="header-brand" href="{{ site.baseurl }}/">
             <img src="/images/gameap_logo.svg" height="32" alt="GameAP">
-            <span>Documentation</span>
+            <span>{{ lang.documentation }}</span>
         </a>
         <nav class="header-nav">
-            <a href="http://gameap.com">{{ lang.site }}</a>
+            <a href="{{ lang.site_url }}">{{ lang.site }}</a>
             <a href="https://github.com/gameap">GitHub</a>
             <a href="{{ other_domain }}{{ clean_path }}" class="lang-switch">
                 {% if page.lang == 'en' %}RU{% else %}EN{% endif %}
