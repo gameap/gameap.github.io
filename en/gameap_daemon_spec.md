@@ -4,7 +4,10 @@ layout: default
 lang: en
 category: GameAP Daemon
 order: 401
+hidden: true
 ---
+
+> This documentation page is out of date.
 
 GameAP Daemon components specification. Any component named as "server" in that document!
 

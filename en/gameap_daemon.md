@@ -4,10 +4,10 @@ layout: default
 lang: en
 category: GameAP Daemon
 order: 400
+hidden: true
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
+> This documentation page is out of date. The current version is available at [/en/daemon/daemon.html](/en/daemon/daemon.html)
 
 GameAP Daemon — backgrouond application that allows panel to manage game servers (install, delete, run, stop etc.).
 

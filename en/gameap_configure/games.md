@@ -6,9 +6,6 @@ category: Panel settings
 order: 320
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Adding new games
 
 The control panel supports the launch and basic control of any game servers and applications. If

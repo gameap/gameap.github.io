@@ -4,7 +4,11 @@ layout: default
 lang: ru
 category: GameAP Daemon
 order: 401
+hidden: true
 ---
+
+> Устаревная страница документации
+
 
 Спецификация по компонентам сервера GameAP Daemon. Каждый из компонентов далее
 будет именоваться как сервер.
