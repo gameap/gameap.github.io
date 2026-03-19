@@ -2,7 +2,7 @@
 title: Games Import
 layout: default
 lang: en
-category: Panel Configuration
+category: Panel settings
 order: 330
 ---
 
