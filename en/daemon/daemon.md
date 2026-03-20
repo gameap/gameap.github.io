@@ -3,7 +3,7 @@ title: GameAP Daemon
 layout: default
 lang: en
 category: GameAP Daemon
-order: 100
+order: 400
 ---
 
 GameAP Daemon is a background application that exchanges data with the panel and works with game servers

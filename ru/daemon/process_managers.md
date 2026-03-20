@@ -3,7 +3,7 @@ title: Менеджеры процессов
 layout: default
 lang: ru
 category: GameAP Daemon
-order: 200
+order: 410
 ---
 
 Менеджер процессов — системная утилита, которая управляет процессами на сервере.

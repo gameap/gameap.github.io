@@ -3,7 +3,7 @@ title: GameAP Daemon
 layout: default
 lang: ru
 category: GameAP Daemon
-order: 100
+order: 400
 ---
 
 GameAP Daemon — фоновое приложение, которое обменивается с панелью данными, работает с игровыми серверами
