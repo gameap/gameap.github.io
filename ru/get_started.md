@@ -6,24 +6,24 @@ category: Общее
 order: 2
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
-Для начала работы желательно два выделенных или виртуальных сервера. На одном размещается панель управления, на другом игровые серверы. Можно всё устанавливать на одном выделенном сервере, но это делать не желательно.
-
-## Простейшая установка
-
-Если у вас Linux, установлен CURL и вы не хотите разбираться с подробностями установки, то выполните команду:
-```bash
-bash <(curl -s https://gameap.com/install.sh)
-```
+Для начала работы желательно два выделенных или виртуальных сервера. 
+На одном размещается панель управления, на другом игровые серверы. 
+Можно всё устанавливать на одном выделенном сервере.
 
 ## Установка панели
 
 Панель устанавливается на выделенный сервер с базой данных (PostgreSQL, MySQL, SQLite).
 
-* [Установка на Linux](/ru/install/install_on_linux.html)
-* [Установка на Windows](/ru/install/install_on_windows.html)
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="/images/icons/linux.svg" alt="Linux" width="20" height="20" style="vertical-align: middle"> [Установка на Linux](/ru/install/install_on_linux.html)
+
+&nbsp;&nbsp;&nbsp;&nbsp;<img src="/images/icons/windows.svg" alt="Windows" width="20" height="20" style="vertical-align: middle"> [Установка на Windows](/ru/install/install_on_windows.html)
+
+## Простейшая установка на Linux
+
+Если у вас Linux, установлен CURL и вы не хотите разбираться с подробностями установки, то выполните команду:
+```bash
+bash <(curl -s https://gameap.com/install.sh) --with-daemon
+```
 
 ## Добавление выделенного сервера
 
