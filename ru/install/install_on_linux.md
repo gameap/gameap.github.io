@@ -6,10 +6,6 @@ category: Установка GameAP
 order: 100
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
-
 ## Установка
 
 Установка на Linux выполняется одной командой:
@@ -41,7 +37,7 @@ bash <(curl -s https://gameap.com/install.sh)
 Можно использовать [PostgreSQL](https://www.postgresql.org/),
 [MySQL](https://www.mysql.com/) и [SQLite](https://www.sqlite.org/).
 
-В большинстве случаев рекомендуется использовать MySQL.
+В большинстве случаев рекомендуется использовать PostgreSQL.
 Если нагрузка на ваш сервер планируется небольшой и вы не планируете использовать более 10 игровых серверов,
 то можете использовать SQLite.
 

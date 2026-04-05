@@ -8,11 +8,15 @@ order: 101
 
 ## Supported Versions
 
-| Version     | Supported | Note                                      |
-|-------------|-----------|-------------------------------------------|
-| Server 2022 | ✔         | Last manual test (v0.9.1): March 2, 2024  |
-| Server 2019 | ✔         | Last manual test (v0.9.3): March 2, 2024  |
-| Server 2016 | ✔         | Last manual test (v0.9.3): March 10, 2024 |
+| Version     | Supported |
+|-------------|-----------|
+| Server 2025 | ✔         |
+| Server 2022 | ✔         |
+| Server 2022 | ✔         |
+| Server 2019 | ✔         |
+| 11          | ✔         |
+| 10          | ✔         |
+
 
 ## Downloading GameAP Control
 
@@ -24,7 +28,10 @@ For this, go to the gameapctl release page on Github:
 
 Select the latest release and click on it.
 
-![](/images/en/gameapctl/download.png)
+<video width="1280" height="720" controls>
+  <source src="/images/en/gameapctl/download.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
 
 After that, find the version suitable for you. 
 The most popular architecture is Windows AMD64, 
@@ -36,23 +43,19 @@ so you will most likely need to download this archive:
 
 After downloading the gameapctl archive, run it.
 
-![](/images/en/gameapctl/exe_in_archive.png)
-
 A browser window will open, in which you need to click "Install" 
 in the Web/API section.
 
-![](/images/en/gameapctl/ui_gameap_install_button.png)
+<video width="1280" height="720" controls>
+  <source src="/images/en/gameapctl/windows-install.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
 
 ### Installation Parameters
 
 Specify the necessary data for installation.
 
 ![](/images/en/gameapctl/ui_gameap_installation.png)
-
-#### Installation Path
-
-This is the path where the main panel files will be stored.
-By default, it is `C:\gameap\web`, and this path cannot currently be changed.
 
 #### Host
 
@@ -71,20 +74,13 @@ Correct value examples:
 * example.com
 * http://example.com
 
-#### Web Server
-
-The HTTP server that will accept and process incoming requests. 
-[Nginx](https://www.nginx.com/) is recommended.
-
 #### Database
 
 The database where data will be stored: users, server information, etc. 
-You can use [MySQL](https://www.mysql.com/)/[MariaDB](https://mariadb.org/) 
-and [SQLite](https://www.sqlite.org/).
-
-If the load on your server is expected to be low, 
-and you do not plan to use more than 10 game servers, 
-you can use SQLite.
+You can use:
+* [PostgreSQL](https://www.postgresql.org/). Recommended for large projects with many game servers and users.
+* [MySQL](https://www.mysql.com/)/[MariaDB](https://mariadb.org/)
+* [SQLite](https://www.sqlite.org/). If the load on your server is expected to be low and you do not plan to use more than 10 game servers.
 
 #### Installing GameAP Daemon
 
@@ -96,6 +92,7 @@ the GameAP Daemon server part, which handles game server operations.
 Wait for the installation to finish. 
 Some stages may take a considerable amount of time.
 
-Do not forget to save the login data and database information that will be provided at the end.
+Do not forget to save the login data and database information 
+that will be provided at the end.
 
 ![](/images/en/gameapctl/gameap_finished_installation.png)

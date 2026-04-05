@@ -6,9 +6,6 @@ category: Install GameAP
 order: 100
 ---
 
-* This will become a table of contents (this text will be scraped). 
-{:toc}
-
 ## Installation
 
 Installation on Linux is performed with a single command:
