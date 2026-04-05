@@ -599,6 +599,11 @@
   padding-right: 20px;
 }
 
+.markdown-body video {
+  max-width: 100%;
+  height: auto;
+}
+
 .markdown-body code {
   padding: 0.2em 0.4em;
   margin: 0;

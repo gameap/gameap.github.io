@@ -11,7 +11,7 @@ build-push:
 	docker buildx build -t $(IMAGE_NAME) --push --no-cache .
 
 run: build
-	docker run -d --name $(CONTAINER_NAME) -p $(PORT):80 $(IMAGE_NAME)
+	docker run -d --name $(CONTAINER_NAME) -e LANG=ru -p $(PORT):80 $(IMAGE_NAME)
 	@echo "Server running at http://localhost:$(PORT)"
 
 stop:
