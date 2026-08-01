@@ -33,7 +33,7 @@ game name
 * **Version**. Enter the version number or semantic value, for example “legacy”, “beta”, etc.
 
 Note! To enable automatic installation, you must fill in one of the following fields: 
-* [**Steam APP ID**](/en/gameap_configure/games.html#steam-app-set-config). Find out the value for the game you are interested in at 
+* [**Steam APP ID**](/en/gameap_configure/games.html#steam-app-id). Find out the value for the game you are interested in at 
 [Steam official wiki](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List), or in the database 
 [SteamDB](https://steamdb.info/)
 * [**Remote repository**](/en/gameap_configure/games.html#remote-repository). You can find some archives in the [GameAP repository](http://files.gameap.ru/)

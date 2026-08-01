@@ -17,8 +17,7 @@ More details you can view in logs.
 
 Go to **Administration** → **GDaemon tasks**, open last server startup task.
 
-Check GameAP Daemon logs. 
-Проверьте логи GameAP Daemon. Logs are stored on a dedicated server in a directory `/var/log/gameap-daemon`.
+Check GameAP Daemon logs. They are stored on a dedicated server in a directory `/var/log/gameap-daemon`.
 
 ### Server status is displayed incorrectly
 

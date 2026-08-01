@@ -20,10 +20,10 @@ GameAP -- панель с открытым исходным кодом для у
 * Контроль доступа (пользователи, роли, разрешения)
 * API для интеграции с другими системами и автоматизации. Документация по API доступна на [openapi.gameap.io](https://openapi.gameap.io/)
 
-Функционал панели можно расширить с помощью плагинов, которые добавляют новые функции и возможности.
-Плагины доступны на [plugins.gameap.ru](https://plugins.gameap.ru/). 
-Плагины поддерживаются сообществом, и любой может создать свой плагин.
-Плагины можно писать на любом языке программирования, поддерживающем компиляцию в WASM, например на Rust, C/C++, Go и других.
+Функциональность панели расширяется плагинами. Плагины доступны в каталоге [plugins.gameap.ru](https://plugins.gameap.ru/).
+Любой может разработать и опубликовать свой плагин (публикация проходит модерацию).
+Плагины можно писать на любом языке, компилируемом в WASM: для Rust есть готовый SDK, есть примеры на Go и AssemblyScript.
+Подробнее: [Плагины](/ru/plugins/).
 
 ## Поддерживаемые игры
 
@@ -33,13 +33,13 @@ GameAP -- панель с открытым исходным кодом для у
 |-------------------------------------------|-------|------|-----------------------------------------------------------------------------|
 | [Minecraft](/ru/tutorials/minecraft.html) | ✔     | ✔    | Поддерживается множество модов                                              |
 | Half-Life                                 | ✔     | ✔    | Поддерживаются все версии и популярные моды (Sven Co-op, HeadCrab Frenzy)   |
-| [Counter-Strike](ru/tutorials/cs2.html)   | ✔     | ✔    | Поддерживаются все версии (1.6, Source, Global Offencive, Counter-Strike 2) |
+| [Counter-Strike](/ru/tutorials/cs2.html)  | ✔     | ✔    | Поддерживаются все версии (1.6, Source, Global Offensive, Counter-Strike 2) |
 | Team Fortress 2                           | ✔     | ✔    |                                                                             |
 | Garry's Mod                               | ✔     | ✔    |                                                                             |
-| [Quake](ru/tutorials/quake3.html)         | ✔     | ✔    |                                                                             |
-| [Rust](ru/tutorials/rust.html)            | ✔     | ✔    |                                                                             |
+| [Quake](/ru/tutorials/quake3.html)        | ✔     | ✔    |                                                                             |
+| [Rust](/ru/tutorials/rust.html)           | ✔     | ✔    |                                                                             |
 | FiveM                                     | ✔     | ✘    | Grand Theft Auto V онлайн мод                                               |
-| [Hytale](ru/tutorials/hytale.html)        | ✘     | ✘    |                                                                             |
+| [Hytale](/ru/tutorials/hytale.html)       | ✘     | ✘    |                                                                             |
 | Terraria                                  |       |      |                                                                             |
 | San Andreas: MP                           |       |      |                                                                             |
 

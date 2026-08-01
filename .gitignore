@@ -1,2 +1,10 @@
 .jekyll-cache
 _site
+.research/
+
+# Рабочие материалы, не входящие в публикуемую документацию.
+# Без frontmatter Jekyll копирует их в _site как статические файлы,
+# то есть они стали бы доступны по прямому URL.
+_to_delete/
+plan.md
+plugins-ideas-summary.md

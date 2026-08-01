@@ -25,7 +25,7 @@ GameAP поддерживает импорт игр из других панел
 ## Особенности Pelican и Pterodactyl
 
 Работа с импортированными Pelican Eggs и Pterodactyl Eggs возможна только на 
-Docker и Podman [процесс менеджерах](/ru/daemon/process_manager.html).
+Docker и Podman [процесс менеджерах](/ru/daemon/process_managers.html).
 
 Вам необходимо сконфигурировать GameAP Daemon для работы с одним из этих процесс менеджером.
 Для этого при добавлении новой ноды, в разделе "Дополнительные настройки" выберите нужный процесс менеджер.

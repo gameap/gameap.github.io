@@ -33,7 +33,7 @@ order: 299
 * **Версия**. Укажите номер версии либо смысловое значение, например “legacy”, “beta” и т.п.
 
 Важно! Для возможности автоматической установки необходимо обязательно указать одно из следующих полей: 
-* [**Steam APP ID**](/ru/gameap_configure/games.html#steam-app-set-config). Значение для интересующей вас игры узнать на 
+* [**Steam APP ID**](/ru/gameap_configure/games.html#steam-app-id). Значение для интересующей вас игры узнать на 
 [официальной вики Steam](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List), либо в базе данных 
 [SteamDB](https://steamdb.info/)
 * [**Удалённый репозиторий**](/ru/gameap_configure/games.html#удалённый-репозиторий). Некоторые архивы есть в [хранилище GameAP](http://files.gameap.ru/)
