@@ -9,7 +9,13 @@ order: 190
 When installing GameAP, the `gameapctl` utility will be installed, 
 which allows you to manage the panel environment, including updates.
 
-> **Before upgrading: two-factor authentication is mandatory for administrators.**
+This page is about upgrading within the fourth version. Moving from GameAP 3 is described
+separately: [Upgrade from v3 to v4](/en/upgrade_from_v3_to_v4.html).
+
+Back up the database before upgrading: `gameapctl` does not save it, and an upgrade may change
+the schema.
+
+> **Mandatory two-factor authentication for administrators.**
 >
 > In GameAP 4 the requirement is enabled by default. After the upgrade, administrators without 2FA
 > will see a reminder, and after 30 days logging in will no longer issue a full session until 2FA is
@@ -43,16 +49,24 @@ click **"Upgrade"** in the Web/API section.
 
 ![](/images/en/gameapctl/ui.png)
 
-# Updating GameAP Daemon
+### Upgrading to a specific version
 
-## Linux
+By default the latest stable version is installed. To pick another one, specify it by tag:
+
+```shell
+gameapctl panel upgrade --version=4.2.0
+```
+
+## Updating GameAP Daemon
+
+### Linux
 
 To update the Daemon, execute the command:
 ```shell
 gameapctl daemon upgrade
 ```
 
-## Windows
+### Windows
 
 To update the GameAP Daemon on Windows, you can execute the command 
 where `gameapctl` is installed:
