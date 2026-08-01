@@ -32,7 +32,6 @@ Examples of correct values:
 * example.com
 * http://example.com
 
-
 ### Database
 
 The database where data will be stored: users, information about servers, etc. 
@@ -55,19 +54,55 @@ will be displayed. Do not forget to save this information to access the panel.
 
 ## Additional Installation Options
 
-### Non-Interactive Installation
+### Develop Version
 
-This type of installation allows you to install the panel without 
-entering any data during the process. 
-You can add the `--database` flags, 
-and in this case, the installer will not require any additional data from you.
+You can install the version currently in development by passing the extra
+flags `--github --branch=develop` to the installer.
+The installation will take noticeably longer in this case, since it is
+performed from source.
 
 ```shell
 bash <(curl -s https://gameap.com/install.sh) \
-  --database=postgresql \
-  --host=http://127.0.0.1 \
-  --port=80
+  --github \
+  --branch=develop
 ```
+
+### Non-Interactive Installation
+
+This type of installation lets you install the panel without entering any data
+during the process. Pass the flags, and the installer will not need any
+additional input from you.
+
+```shell
+bash <(curl -s https://gameap.com/install.sh) \
+  --non-interactive \
+  --host=127.0.0.1 \
+  --port=8025 \
+  --database=sqlite
+```
+
+Main flags:
+
+| Flag                  | Purpose                                                             |
+|-----------------------|---------------------------------------------------------------------|
+| `--non-interactive`   | Ask no questions                                                    |
+| `--host`              | Address at which the panel will be accessible                       |
+| `--port`              | Panel port, `8025` by default                                       |
+| `--grpc-port`         | gRPC port for daemons, `31718` by default                           |
+| `--database`          | `sqlite`, `mysql`, or `postgres`                                    |
+| `--database-host`     | Database host                                                       |
+| `--database-port`     | Database port                                                       |
+| `--database-name`     | Database name                                                       |
+| `--database-username` | Database user                                                       |
+| `--database-password` | Database user password                                              |
+| `--with-daemon`       | Also install GameAP Daemon                                          |
+| `--version`           | Specific panel version                                              |
+
+SQLite needs no connection parameters — the database file is created automatically.
+
+> The `--path` and `--web-server` flags are leftovers from GameAP 3 and have no effect when
+> installing GameAP 4: the panel is a single executable with a built-in web interface and does
+> not need a separate web server.
 
 ### Full Installation
 
