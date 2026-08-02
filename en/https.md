@@ -33,7 +33,7 @@ available. HTTP on `HTTP_PORT` (`8025` by default) is always on.
 
 ## Certificate from files
 
-```
+```dotenv
 TLS_CERT_FILE=/etc/gameap/certs/panel.crt
 TLS_KEY_FILE=/etc/gameap/certs/panel.key
 HTTPS_PORT=443
@@ -50,7 +50,7 @@ watch the files for changes on its own.
 Convenient when the configuration is rolled out by a secret management system and extra files on
 disk are undesirable.
 
-```
+```dotenv
 TLS_CERT=LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t...
 TLS_KEY=LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0t...
 ```
@@ -89,7 +89,7 @@ tools like certbot.
 
 The default method. It requires nothing except the panel being reachable from the internet.
 
-```
+```dotenv
 ACME_ENABLED=true
 ACME_EMAIL=admin@example.com
 ACME_DOMAINS=panel.example.com
@@ -128,7 +128,7 @@ is required.
 Of the built-in providers, only **Cloudflare** is supported. Others are added via plugins: in
 that case `ACME_DNS_PROVIDER` is set to `<plugin-id>:<provider-name>`.
 
-```
+```dotenv
 ACME_ENABLED=true
 ACME_EMAIL=admin@example.com
 ACME_DOMAINS=panel.example.com,*.example.com
@@ -192,7 +192,7 @@ The production Let's Encrypt directory has strict limits on the number of attemp
 and it is easy to exhaust them while setting things up. Until your setup works, use the staging
 directory:
 
-```
+```dotenv
 ACME_DIRECTORY_URL=https://acme-staging-v02.api.letsencrypt.org/directory
 ```
 
@@ -238,7 +238,7 @@ Possible `state` values:
 
 ## Redirecting to HTTPS
 
-```
+```dotenv
 TLS_FORCE_HTTPS=true
 ```
 

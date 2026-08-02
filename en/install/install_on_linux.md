@@ -50,7 +50,7 @@ Some distributions may have [MariaDB](https://mariadb.org/) installed.
 At the end of the installation, the access details for the panel 
 will be displayed. Do not forget to save this information to access the panel.
 
-![](/images/en/gameapctl/gameap_finished_installation.png)
+![Panel login details shown when the installation finishes](/images/en/gameapctl/gameap_finished_installation.png)
 
 ## Additional Installation Options
 

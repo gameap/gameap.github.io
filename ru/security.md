@@ -108,7 +108,7 @@ order: 331
 
 **3. Снять требование целиком.** В `config.env`:
 
-```
+```dotenv
 AUTH_REQUIRE_MFA_FOR_ADMINS=false
 ```
 
@@ -120,7 +120,7 @@ AUTH_REQUIRE_MFA_FOR_ADMINS=false
 
 **4. Оставить напоминание, но убрать блокировку.**
 
-```
+```dotenv
 AUTH_MFA_HARD_FAIL_DAYS=0
 ```
 
@@ -147,8 +147,20 @@ MySQL и SQLite — то же самое, но `two_factor_enabled = 0`.
 UPDATE users SET metadata = metadata - 'mfa_first_shown_at' WHERE login = 'admin';
 ```
 
-В MySQL и SQLite поле хранится как текст с JSON — проще всего очистить его целиком:
-`UPDATE users SET metadata = NULL WHERE login = 'admin';`
+В MySQL поле хранится как текст с JSON, ключ удаляется так:
+
+```sql
+UPDATE users SET metadata = JSON_REMOVE(metadata, '$.mfa_first_shown_at') WHERE login = 'admin';
+```
+
+В SQLite — начиная с версии 3.38:
+
+```sql
+UPDATE users SET metadata = json_remove(metadata, '$.mfa_first_shown_at') WHERE login = 'admin';
+```
+
+> Не очищайте поле `metadata` целиком (`SET metadata = NULL`): кроме отсчёта 2FA в нём могут
+> храниться другие сведения о пользователе, и они будут потеряны.
 
 После этого запустите панель и подключите 2FA заново.
 
@@ -208,7 +220,7 @@ UPDATE users SET metadata = metadata - 'mfa_first_shown_at' WHERE login = 'admin
 Ключи выдаются в [консоли reCAPTCHA](https://www.google.com/recaptcha/admin): зарегистрируйте сайт,
 выберите тип **reCAPTCHA v3** и укажите домен панели.
 
-```
+```dotenv
 CAPTCHA_PROVIDER=recaptcha_v3
 CAPTCHA_SITE_KEY=6LcExampleSiteKeyExampleSiteKeyExam
 CAPTCHA_SECRET_KEY=6LcExampleSecretKeyExampleSecretKeyEx
@@ -233,7 +245,7 @@ reCAPTCHA v3 ничего не спрашивает у пользователя:
 Ключи выдаются в панели [Cloudflare](https://dash.cloudflare.com/) в разделе **Turnstile**.
 Учётной записи достаточно бесплатной, домен не обязан быть делегирован в Cloudflare.
 
-```
+```dotenv
 CAPTCHA_PROVIDER=turnstile
 CAPTCHA_SITE_KEY=0x4AAAAAAAExampleSiteKey
 CAPTCHA_SECRET_KEY=0x4AAAAAAAExampleSecretKey
@@ -307,7 +319,7 @@ HSTS отдаётся только при обращении по HTTPS — по
 
 Генерируемая политика:
 
-```
+```text
 default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self';
 script-src 'self' blob: 'wasm-unsafe-eval' <хеши встроенных скриптов>;
 style-src 'self' 'unsafe-inline';
@@ -342,8 +354,11 @@ worker-src 'self' blob:
 Оба значения должны быть **ровно 32 случайных байта**, а не парольной фразой:
 
 ```bash
-openssl rand -hex 16
+openssl rand -base64 24
 ```
+
+Команда даёт ровно 32 символа. Не используйте `openssl rand -hex 32`: получится 64 символа,
+панель обрежет их до 32 и запишет предупреждение в журнал, а стойкость ключа при этом не вырастет.
 
 > `AUTH_SECRET` приводится к 32 байтам молча: более короткое значение дополняется, более длинное
 > обрезается, в журнал попадает только предупреждение. Короткий или предсказуемый `AUTH_SECRET`
@@ -383,7 +398,7 @@ openssl rand -hex 16
 > таблицы в базе, отдельного файла, ротации, интерфейса просмотра и API для чтения **нет**. Если
 > записи нужно хранить и искать, настройте сбор журнала панели штатными средствами системы —
 > например, через `journald` и внешний сборщик логов.
-
+>
 > `AUDIT_CLIENT_IP_HEADER` доверяет указанному заголовку от **любого** отправителя — списка доверенных
 > прокси в панели нет. Включайте эту переменную только если обратный прокси гарантированно
 > перезаписывает заголовок в приходящих запросах. Иначе IP-адрес можно подделать, а вместе с ним —

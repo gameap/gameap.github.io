@@ -51,7 +51,7 @@ The PostgreSQL driver names are interchangeable: `postgres`, `postgresql`, `pgsq
 
 Connection string formats:
 
-```
+```text
 # PostgreSQL
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://gameap:password@localhost:5432/gameap?sslmode=disable
@@ -369,7 +369,7 @@ constants in the code. The values are listed on the [Security](/en/security.html
 
 ## Minimal configuration example
 
-```
+```dotenv
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://gameap:password@localhost:5432/gameap?sslmode=disable
 

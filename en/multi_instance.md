@@ -24,7 +24,7 @@ event exchange.
 
 Example configuration:
 
-```
+```dotenv
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://gameap:password@db.example.com:5432/gameap?sslmode=require
 
@@ -47,7 +47,7 @@ issued by one will not be accepted by another, and encrypted data will be unread
 
 ## Instance Identifier
 
-```
+```dotenv
 PUBSUB_INSTANCE_ID=panel-1
 ```
 

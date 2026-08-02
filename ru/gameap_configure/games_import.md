@@ -26,7 +26,7 @@ order: 330
 
 Через API:
 
-```
+```http
 GET /api/games/{code}/export
 ```
 
@@ -39,7 +39,7 @@ GET /api/games/{code}/export
 
 Через API:
 
-```
+```http
 POST /api/games/import/gameap
 ```
 
@@ -68,7 +68,7 @@ schema_version: "1.0"
 
 Через API:
 
-```
+```text
 POST /api/games/import/pelican-egg
 ```
 
@@ -81,7 +81,7 @@ POST /api/games/import/pelican-egg
 
 Через API:
 
-```
+```text
 POST /api/games/upgrade
 ```
 

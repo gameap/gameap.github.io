@@ -183,13 +183,13 @@ IP или Хост игрового сервера. Примеры `127.0.0.1`, 
 
 Правильно:
 
-```
+```text
 tmux send-keys -t {uuid} {command} Enter
 ```
 
 Неправильно:
 
-```
+```text
 tmux send-keys -t {uuid} "{command}" Enter
 ```
 

@@ -25,7 +25,7 @@ order: 338
 
 Пример конфигурации:
 
-```
+```dotenv
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://gameap:пароль@db.example.com:5432/gameap?sslmode=require
 
@@ -48,7 +48,7 @@ FILES_S3_SECRET_ACCESS_KEY=...
 
 ## Идентификатор экземпляра
 
-```
+```dotenv
 PUBSUB_INSTANCE_ID=panel-1
 ```
 

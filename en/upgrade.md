@@ -47,7 +47,7 @@ C:\path\to\gameapctl.exe panel upgrade
 Or use the UI. Run `gameapctl.exe`, and in the browser window that opens,
 click **"Upgrade"** in the Web/API section.
 
-![](/images/en/gameapctl/ui.png)
+![The Upgrade button in the Web/API section of the gameapctl interface](/images/en/gameapctl/ui.png)
 
 ### Upgrading to a specific version
 
@@ -77,4 +77,4 @@ C:\path\to\gameapctl.exe daemon upgrade
 Or use the UI. Run `gameapctl.exe`, and in the browser window that opens, 
 click **"Upgrade"** in the GameAP Daemon section.
 
-![](/images/en/gameapctl/ui.png)
+![The Upgrade button in the GameAP Daemon section of the gameapctl interface](/images/en/gameapctl/ui.png)

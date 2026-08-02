@@ -36,7 +36,7 @@ After that, find the version suitable for you.
 The most popular architecture is Windows AMD64, 
 so you will most likely need to download this archive:
 
-![](/images/en/gameapctl/download_release_windows_amd64.png)
+![Choosing the gameapctl archive for Windows AMD64 on the releases page](/images/en/gameapctl/download_release_windows_amd64.png)
 
 ## Installing the Panel Using GameAP Control UI
 
@@ -54,7 +54,7 @@ in the Web/API section.
 
 Specify the necessary data for installation.
 
-![](/images/en/gameapctl/ui_gameap_installation.png)
+![Panel installation parameters form in the gameapctl interface](/images/en/gameapctl/ui_gameap_installation.png)
 
 #### Host
 
@@ -94,4 +94,4 @@ Some stages may take a considerable amount of time.
 Do not forget to save the login data and database information 
 that will be provided at the end.
 
-![](/images/en/gameapctl/gameap_finished_installation.png)
+![Panel login details shown when the installation finishes](/images/en/gameapctl/gameap_finished_installation.png)

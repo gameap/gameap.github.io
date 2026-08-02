@@ -94,7 +94,7 @@ You need to add the port 31718 publication and `GRPC_EXTERNAL_HOST` to it, as de
 
 Passwords and keys are set via a `.env` file next to `docker-compose.yml`:
 
-```
+```dotenv
 AUTH_SECRET=replace_with_32_random_bytes
 ENCRYPTION_KEY=replace_with_32_random_bytes
 POSTGRES_PASSWORD=replace_with_a_strong_password

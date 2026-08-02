@@ -40,7 +40,7 @@ After this, you can proceed to install the FiveM server.
 
 Go to **Administration** → **Game Servers** → **Create**
 
-![](/images/en/tutorials/fivem/create_form.png)
+![Create game server form for FiveM](/images/en/tutorials/fivem/create_form.png)
 
 * In the "Name" field, enter any server name, for example, "My GTA V Server".
 * In the "Game" field, select FiveM from the list.
@@ -53,17 +53,17 @@ Go to **Administration** → **Game Servers** → **Create**
 After installation, you need to specify a key that you must obtain from 
 [keymaster.fivem.net](https://keymaster.fivem.net)
 
-![](/images/en/tutorials/fivem/generate_key.png)
+![Creating a server key on keymaster.fivem.net](/images/en/tutorials/fivem/generate_key.png)
 
 After generating, you will see a message. You need to copy the key value.
 
-![](/images/en/tutorials/fivem/key.png)
+![The generated FiveM server key](/images/en/tutorials/fivem/key.png)
 
 You need to copy the key value and specify it in 
 the settings in the control panel. 
 Go to **Servers** → select your FiveM server → **Management** → **Settings**
 
-![](/images/en/tutorials/fivem/set_key.png)
+![FiveM key field in the game server settings](/images/en/tutorials/fivem/set_key.png)
 
 Now you can start your FiveM server in the panel.
 
@@ -75,4 +75,4 @@ You can edit this file in the panel's file manager.
 
 Go to **Servers** → select your FiveM server → **Management** → **Files**
 
-![](/images/en/tutorials/fivem/server_config.png)
+![FiveM server configuration file in the file manager](/images/en/tutorials/fivem/server_config.png)

@@ -38,7 +38,7 @@ After this, you can proceed to install the Minecraft server.
 
 Go to **Administration** → **Game Servers** → **Create**
 
-![](/images/en/tutorials/minecraft/create_form.png)
+![Create game server form for Minecraft](/images/en/tutorials/minecraft/create_form.png)
 
 * In the "Name" field, enter any server name.
 * In the "Game" field, select Minecraft.
@@ -57,13 +57,13 @@ Watch a short video on the process of installing a Minecraft server in GameAP:
 
 To manage the Minecraft server, go to the **Servers** section, then select your server and click **Management**. On this page, you will be able to start, stop your server, view its console, and send commands.
 
-![](/images/en/tutorials/minecraft/server_management.png)
+![Minecraft server management page with the console](/images/en/tutorials/minecraft/server_management.png)
 
 ### Changing the Server Version
 
 If you chose the "Multicore" modification, you can change the version of your server. To do this, go to the main page of managing your server, then select **Settings**.
 
-![](/images/en/tutorials/minecraft/server_settings.png)
+![Minecraft game server settings with the version selector](/images/en/tutorials/minecraft/server_settings.png)
 
 #### Examples of Settings
 
@@ -91,4 +91,4 @@ In this example, we will use a Minecraft server version 1.19.4 with Spigot API f
 
 `server.properties` is the main configuration file for the Minecraft server. You can edit it using the file manager in GameAP.
 
-![](/images/en/tutorials/minecraft/server_properties.png)
+![The server.properties file in the GameAP file manager](/images/en/tutorials/minecraft/server_properties.png)

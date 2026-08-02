@@ -84,7 +84,7 @@ are stored.
 
 Via the API, the history is available with:
 
-```
+```http
 GET /api/servers/{server}/tasks/{id}/executions
 ```
 
@@ -96,7 +96,7 @@ installation, updates.
 
 A stuck or unneeded task can be canceled: open it and click **Cancel**. Via the API:
 
-```
+```http
 POST /api/gdaemon_tasks/{id}/cancel
 ```
 

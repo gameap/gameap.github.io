@@ -13,7 +13,7 @@ commands from the panel.
 The daemon itself connects to the panel over gRPC and keeps a persistent connection. The panel
 does not connect to the daemon, and the daemon opens no inbound ports on the dedicated server.
 
-![](/images/en/gameap_architecture.svg)
+![GameAP architecture: the panel, daemons on dedicated servers, and game servers](/images/en/gameap_architecture.svg)
 
 ## Installation
 
@@ -22,7 +22,7 @@ does not connect to the daemon, and the daemon opens no inbound ports on the ded
 In the panel, go to **Administration** → **Dedicated Servers** → **Create**, copy the command,
 and run it on the dedicated server.
 
-![](/images/en/daemon/autoinstall.png)
+![Automatic GameAP Daemon installation dialog with the command for the dedicated server](/images/en/daemon/autoinstall.png)
 
 The full installation guide, including Windows, manual registration, and troubleshooting, is on
 the [Dedicated Servers](/en/gameap_configure/dedicated_servers.html) page.

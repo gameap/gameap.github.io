@@ -21,8 +21,8 @@ docker run -d \
   -p 31718:31718 \
   -e DATABASE_DRIVER=sqlite \
   -e 'DATABASE_URL=file:/var/lib/gameap/db.sqlite?_busy_timeout=5000&_journal_mode=WAL&cache=shared' \
-  -e AUTH_SECRET=$(openssl rand -hex 16) \
-  -e ENCRYPTION_KEY=$(openssl rand -hex 16) \
+  -e AUTH_SECRET=$(openssl rand -base64 24) \
+  -e ENCRYPTION_KEY=$(openssl rand -base64 24) \
   -e GRPC_EXTERNAL_HOST=panel.example.com \
   -v gameap-data:/var/lib/gameap \
   gameap/gameap:latest
@@ -93,7 +93,7 @@ docker compose up -d
 
 Пароли и ключи задаются через файл `.env` рядом с `docker-compose.yml`:
 
-```
+```dotenv
 AUTH_SECRET=замените_на_32_случайных_байта
 ENCRYPTION_KEY=замените_на_32_случайных_байта
 POSTGRES_PASSWORD=замените_на_надёжный_пароль

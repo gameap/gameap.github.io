@@ -32,7 +32,7 @@ After that, you can proceed with installing the Quake III Arena server.
 
 Go to **Administration** → **Game Servers** → **Create**
 
-![](/images/en/tutorials/quake3/create_form.png)
+![Create game server form for Quake III Arena](/images/en/tutorials/quake3/create_form.png)
 
 * In the "Name" field, enter any server name, for example "My Quake III Server".
 * In the "Game" field, select "Quake 3" from the dropdown list.
@@ -44,7 +44,7 @@ Go to **Administration** → **Game Servers** → **Create**
 
 To change the server configuration, go to the **Server** section, select your server, and click **Manage**. Then open the **Settings** tab.
 
-![](/images/en/tutorials/quake3/settings.png)
+![Settings tab of a Quake III Arena game server](/images/en/tutorials/quake3/settings.png)
 
 For changes to take effect, you need to restart the server.
 

@@ -38,7 +38,7 @@ After this, you can proceed with the Counter-Strike server installation.
 
 Go to **Administration** → **Game Servers** → **Create**
 
-![](/images/en/tutorials/cs2/create_form.png)
+![Create game server form for Counter-Strike 2](/images/en/tutorials/cs2/create_form.png)
 
 * In the "Name" field, enter any server name, 
   for example, "My Counter-Strike 2 Server".
@@ -56,17 +56,17 @@ for the server; without it, the server will not work.
 
 To generate it, go to [https://steamcommunity.com/dev/managegameservers](https://steamcommunity.com/dev/managegameservers).
 
-![](/images/en/tutorials/cs2/token_generation.png)
+![Generating a game server token on the Steam website](/images/en/tutorials/cs2/token_generation.png)
 
 After generation, the token value will appear in the table, 
 use the 32-character value:
 
-![](/images/en/tutorials/cs2/token_table.png)
+![Table with the generated Steam game server token](/images/en/tutorials/cs2/token_table.png)
 
 You need to copy the token value and specify it in the control panel settings. 
 Go to **Servers** → select your server → **Management** → **Settings**
 
-![](/images/en/tutorials/cs2/set_token.png)
+![Steam token field in the game server settings](/images/en/tutorials/cs2/set_token.png)
 
 After this, you can launch your server.
 
@@ -77,4 +77,4 @@ go to the `/game/csgo/cfg` directory, where you can find many *.cfg files.
 
 The main configuration file for Counter-Strike 2 server is `server.cfg`
 
-![](/images/en/tutorials/cs2/server_config.png)
+![The server.cfg file of a Counter-Strike 2 server in the file manager](/images/en/tutorials/cs2/server_config.png)

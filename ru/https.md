@@ -34,7 +34,7 @@ HTTP на `HTTP_PORT` (по умолчанию `8025`) работает всег
 
 ## Сертификат из файлов
 
-```
+```dotenv
 TLS_CERT_FILE=/etc/gameap/certs/panel.crt
 TLS_KEY_FILE=/etc/gameap/certs/panel.key
 HTTPS_PORT=443
@@ -51,7 +51,7 @@ HTTPS_PORT=443
 Удобно, когда конфигурация раскладывается системой управления секретами и лишние файлы на диске
 нежелательны.
 
-```
+```dotenv
 TLS_CERT=LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0t...
 TLS_KEY=LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0t...
 ```
@@ -91,7 +91,7 @@ base64 -w0 panel.key
 
 Способ по умолчанию. Ничего, кроме доступности панели из интернета, не требует.
 
-```
+```dotenv
 ACME_ENABLED=true
 ACME_EMAIL=admin@example.com
 ACME_DOMAINS=panel.example.com
@@ -128,7 +128,7 @@ TLS_FORCE_HTTPS=true
 Из встроенных провайдеров поддерживается только **Cloudflare**. Остальные подключаются плагинами:
 в этом случае в `ACME_DNS_PROVIDER` указывается `<идентификатор-плагина>:<имя-провайдера>`.
 
-```
+```dotenv
 ACME_ENABLED=true
 ACME_EMAIL=admin@example.com
 ACME_DOMAINS=panel.example.com,*.example.com
@@ -190,7 +190,7 @@ gameapctl panel letsencrypt disable
 У боевого каталога Let's Encrypt жёсткие ограничения на число попыток для одного домена, и
 исчерпать их при настройке легко. Пока настройка не заработала, используйте тестовый каталог:
 
-```
+```dotenv
 ACME_DIRECTORY_URL=https://acme-staging-v02.api.letsencrypt.org/directory
 ```
 
@@ -236,7 +236,7 @@ ACME_DIRECTORY_URL=https://acme-staging-v02.api.letsencrypt.org/directory
 
 ## Перенаправление на HTTPS
 
-```
+```dotenv
 TLS_FORCE_HTTPS=true
 ```
 

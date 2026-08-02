@@ -183,13 +183,13 @@ If the template is not set, the command is written to the game server's input fi
 
 Correct:
 
-```
+```text
 tmux send-keys -t {uuid} {command} Enter
 ```
 
 Incorrect:
 
-```
+```text
 tmux send-keys -t {uuid} "{command}" Enter
 ```
 

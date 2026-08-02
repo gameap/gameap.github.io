@@ -32,11 +32,15 @@ mysqldump -u root -p gameap > gameap-v3-backup.sql
 # PostgreSQL
 pg_dump -U gameap gameap > gameap-v3-backup.sql
 
-# SQLite — достаточно скопировать файл
-cp /var/www/gameap/database.sqlite gameap-v3-backup.sqlite
+# SQLite
+sqlite3 /var/www/gameap/database.sqlite ".backup 'gameap-v3-backup.sqlite'"
 ```
 
 Проверьте, что копия не пустая, и только потом продолжайте.
+
+> Для SQLite используйте именно `.backup`, а не `cp`. Простое копирование файла на работающей
+> панели может дать повреждённую копию: часть данных в этот момент находится в журнале WAL
+> и в основной файл ещё не перенесена.
 
 ### С каких баз данных обновление возможно
 
@@ -149,27 +153,31 @@ curl -OL https://github.com/gameap/gameap/releases/download/v4.1.2/gameap-v4.1.2
 tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /usr/bin
 ```
 
-Создайте файл конфигурации `/etc/gameap/config.env`:
+Создайте отдельный файл конфигурации `/etc/gameap-v4-test/config.env`:
 
-```
+```dotenv
 DATABASE_DRIVER=mysql
 DATABASE_URL=gameap:пароль@tcp(127.0.0.1:3306)/gameap_v4_test?parseTime=true
 
+# получить значения: openssl rand -base64 24
 AUTH_SECRET=замените_на_32_случайных_байта
 ENCRYPTION_KEY=замените_на_32_случайных_байта
 
-HTTP_PORT=8025
+HTTP_PORT=8125
+GRPC_PORT=31818
 ```
 
-Ключи удобно получить командой `openssl rand -hex 16`.
+> Пути, порты и имя сервиса здесь намеренно отличаются от рабочих. Если пробную установку
+> развернуть на тех же `/etc/gameap`, `8025` и `31718`, она перезапишет конфигурацию рабочей
+> панели и займёт её порты.
 
 Запустите:
 
 ```shell
-gameap --env /etc/gameap/config.env
+gameap --env /etc/gameap-v4-test/config.env
 ```
 
-Панель будет доступна на порту 8025. Полный список параметров конфигурации —
+Панель будет доступна на порту 8125. Полный список параметров конфигурации —
 [Справочник config.env](/ru/config.html).
 
 Убедитесь, что данные на месте: пользователи входят, игровые серверы и игры отображаются. После
@@ -179,19 +187,19 @@ gameap --env /etc/gameap/config.env
 
 Для удобного управления пробной установкой создайте отдельный сервис.
 
-Создайте пользователя и каталог:
+Создайте пользователя и каталог — с именами, отличными от рабочей установки:
 
 ```shell
-useradd -r -s /usr/sbin/nologin -d /var/lib/gameap gameap
-mkdir -p /var/lib/gameap
-chown gameap:gameap /var/lib/gameap
+useradd -r -s /usr/sbin/nologin -d /var/lib/gameap-v4-test gameap-test
+mkdir -p /var/lib/gameap-v4-test
+chown gameap-test:gameap-test /var/lib/gameap-v4-test
 ```
 
-Затем файл `/etc/systemd/system/gameap.service`:
+Затем файл `/etc/systemd/system/gameap-v4-test.service`:
 
 ```ini
 [Unit]
-Description=GameAP - Game Server Control Panel
+Description=GameAP 4 (trial installation)
 Documentation=https://docs.gameap.com
 After=network.target
 Wants=network-online.target
@@ -199,15 +207,12 @@ Requires=network.target
 
 [Service]
 Type=simple
-User=gameap
-Group=gameap
+User=gameap-test
+Group=gameap-test
 
-WorkingDirectory=/var/lib/gameap
+WorkingDirectory=/var/lib/gameap-v4-test
 
-ExecStart=/usr/bin/gameap
-
-# Разрешить привязку к привилегированным портам
-AmbientCapabilities=CAP_NET_BIND_SERVICE
+ExecStart=/usr/bin/gameap --env /etc/gameap-v4-test/config.env
 
 # Корректное завершение
 ExecStop=/bin/kill -TERM $MAINPID
@@ -221,22 +226,20 @@ RestartSec=5
 StartLimitInterval=60
 StartLimitBurst=3
 
-EnvironmentFile=/etc/gameap/config.env
-
-RuntimeDirectory=gameap
-PIDFile=/run/gameap/gameap.pid
+RuntimeDirectory=gameap-v4-test
+PIDFile=/run/gameap-v4-test/gameap.pid
 
 # Права доступа к файловой системе
 ProtectSystem=strict
 ProtectHome=true
 PrivateTmp=true
 
-ReadWritePaths=/var/lib/gameap
+ReadWritePaths=/var/lib/gameap-v4-test
 
 # Логирование
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=gameap
+SyslogIdentifier=gameap-v4-test
 
 [Install]
 WantedBy=multi-user.target
@@ -246,8 +249,17 @@ WantedBy=multi-user.target
 
 ```shell
 systemctl daemon-reload
-systemctl enable gameap
-systemctl start gameap
+systemctl enable gameap-v4-test
+systemctl start gameap-v4-test
+```
+
+Когда пробная установка больше не нужна, уберите её целиком, чтобы она не запускалась вместе
+с системой:
+
+```shell
+systemctl disable --now gameap-v4-test
+rm /etc/systemd/system/gameap-v4-test.service
+systemctl daemon-reload
 ```
 
 ## Если нужна последняя версия
@@ -262,3 +274,22 @@ systemctl start gameap
 
 Файлы игровых серверов при этом никуда переносить не нужно: они остаются на выделенном сервере,
 достаточно описать серверы в новой панели с теми же каталогами и портами.
+
+**А вот демонов придётся зарегистрировать заново.** У чистой панели свой центр сертификации, свои
+идентификаторы выделенных серверов и свои ключи доступа, а в конфигурации работающего демона
+записаны `ds_id`, `api_key` и сертификаты от старой панели — просто указать прежние пути и порты
+недостаточно.
+
+Для каждого выделенного сервера:
+
+1. В новой панели откройте **«Администрирование»** → **«Выделенные серверы»** → **«Создать»**
+   и возьмите оттуда команду установки или connect URL.
+2. На выделенном сервере выполните регистрацию:
+   `gameap-daemon enroll --connect=grpc://новая-панель:31718/ключ`
+3. Перезапустите демона: `systemctl restart gameap-daemon`.
+4. Убедитесь, что он подключился: выделенный сервер появился в панели, в журнале демона нет
+   `gRPC connection failed`.
+
+> Команда `enroll` перезаписывает файл конфигурации демона целиком, без слияния и без резервной
+> копии. Сохраните прежний файл, если в нём были ручные настройки — менеджер процессов, учётная
+> запись Steam, замены адресов репозиториев.

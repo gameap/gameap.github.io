@@ -22,7 +22,7 @@ This page is about how to authenticate with the API.
 
 The token is passed in a header:
 
-```
+```http
 Authorization: Bearer <token>
 ```
 
@@ -79,13 +79,13 @@ attempt to add them fails.
 
 The current list is available with:
 
-```
+```http
 GET /api/tokens/abilities
 ```
 
 ### Listing and Revoking
 
-```
+```http
 GET    /api/tokens        — list your tokens
 DELETE /api/tokens/{id}   — revoke a token
 ```

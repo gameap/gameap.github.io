@@ -22,7 +22,7 @@ order: 336
 
 Токен передаётся заголовком:
 
-```
+```http
 Authorization: Bearer <токен>
 ```
 
@@ -79,13 +79,13 @@ curl -X POST https://panel.example.com:8025/api/tokens \
 
 Актуальный список доступен запросом:
 
-```
+```http
 GET /api/tokens/abilities
 ```
 
 ### Просмотр и отзыв
 
-```
+```http
 GET    /api/tokens        — список своих токенов
 DELETE /api/tokens/{id}   — отозвать токен
 ```

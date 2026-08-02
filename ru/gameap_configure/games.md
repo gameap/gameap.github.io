@@ -253,7 +253,7 @@ RAR архивы не поддерживаются
 | {name} | Имя игрока на сервере
 
 Для многих игр на GoldSource/Source это команда: 
-```
+```text
 kick #{id}
 ```
 
@@ -271,7 +271,7 @@ kick #{id}
 | {reason} | Причина бана
 
 Для многих игр на GoldSource (Half-Life, Counter-Strike 1.6 и др.) под управлением AMX Mod X это команда: 
-```
+```text
 amx_ban "{name}" {time} "{reason}"
 ```
 
@@ -289,7 +289,7 @@ amx_ban "{name}" {time} "{reason}"
 | {reason} | Причина смены
 
 Для многих игр на GoldSource (Half-Life, Counter-Strike 1.6 и др.) под управлением AMX Mod X это команда: 
-```
+```text
 amx_nick #{id} {new_name}
 ```
 
@@ -299,7 +299,7 @@ amx_nick #{id} {new_name}
 этой командой перезапускается карта или раунд для какой-нибудь игры. Не поддерживается многими играми.
 
 Для многих игр на GoldSource/Source это команда: 
-```
+```text
 restart
 ```
 
@@ -312,7 +312,7 @@ restart
 | {map} | Имя карты
 
 Для многих игр на GoldSource/Source это команда: 
-```
+```text
 changelevel {map}
 ```
 
@@ -325,7 +325,7 @@ changelevel {map}
 | {msg} | Сообщение, которое будет отправлено на сервер
 
 Для многих игр на GoldSource (Half-Life, Counter-Strike 1.6 и др.) под управлением AMX Mod X это команда: 
-```
+```text
 amx_say "{msg}"
 ```
 
@@ -339,7 +339,7 @@ amx_say "{msg}"
 | {password} | Пароль, который будет установлен на сервере
 
 Для многих игр на GoldSource/Source это команда: 
-```
+```text
 password {password}
 ```
 

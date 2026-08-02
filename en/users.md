@@ -77,7 +77,7 @@ more.
 
 The same is done via the API:
 
-```
+```http
 GET  /api/users/{id}/servers                              — the user's servers
 GET  /api/users/{id}/servers/{server}/permissions         — permissions on the server
 PUT  /api/users/{id}/servers/{server}/permissions         — change permissions

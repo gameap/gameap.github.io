@@ -9,7 +9,7 @@ order: 335
 The panel works with PostgreSQL, MySQL or MariaDB, and SQLite. The choice is set with two
 variables in `config.env`:
 
-```
+```dotenv
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://gameap:password@localhost:5432/gameap?sslmode=disable
 ```
@@ -29,7 +29,7 @@ setup, and no backup more complex than copying a file.
 
 ### PostgreSQL
 
-```
+```dotenv
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://user:password@host:5432/database?sslmode=disable
 ```
@@ -41,7 +41,7 @@ The `sslmode` parameter sets the connection encryption mode: `disable` for a loc
 
 ### MySQL and MariaDB
 
-```
+```dotenv
 DATABASE_DRIVER=mysql
 DATABASE_URL=user:password@tcp(host:3306)/database?parseTime=true
 ```
@@ -51,13 +51,13 @@ The format differs from the usual URL with a scheme — it is the Go driver form
 
 Connecting through a socket:
 
-```
+```dotenv
 DATABASE_URL=user:password@unix(/var/run/mysqld/mysqld.sock)/database?parseTime=true
 ```
 
 ### SQLite
 
-```
+```dotenv
 DATABASE_DRIVER=sqlite
 DATABASE_URL=file:/var/lib/gameap/db.sqlite?_busy_timeout=5000&_journal_mode=WAL&cache=shared
 ```
@@ -69,7 +69,7 @@ The directory with the database file must be writable by the user the panel runs
 
 ### inmemory
 
-```
+```dotenv
 DATABASE_DRIVER=inmemory
 ```
 

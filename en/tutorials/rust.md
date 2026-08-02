@@ -40,7 +40,7 @@ After this, you can proceed to install the Rust server.
 
 Go to **Administration** → **Game Servers** → **Create**
 
-![](/images/en/tutorials/rust/create_form.png)
+![Create game server form for Rust](/images/en/tutorials/rust/create_form.png)
 
 * In the "Name" field, enter any server name, for example, "My Rust Server".
 * In the "Game" field, select Rust from the list.
@@ -53,7 +53,7 @@ Go to **Administration** → **Game Servers** → **Create**
 To change the server configuration, go to the **Server** section, 
 select your server, and click **Management**. Then, open the **Settings** tab.
 
-![](/images/en/tutorials/rust/settings.png)
+![Settings tab of a Rust game server](/images/en/tutorials/rust/settings.png)
 
 You need to restart the server for the settings to take effect.
 

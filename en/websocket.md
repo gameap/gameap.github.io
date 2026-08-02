@@ -27,7 +27,7 @@ Connections are opened at six addresses:
 The token is passed in a query parameter because headers cannot be set when opening a WebSocket
 from a browser:
 
-```
+```text
 wss://panel.example.com:8025/api/ws/servers/1/console?token=<token>
 ```
 

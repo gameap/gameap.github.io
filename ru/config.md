@@ -52,7 +52,7 @@ gameapctl panel restart
 
 Форматы строки подключения:
 
-```
+```text
 # PostgreSQL
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://gameap:пароль@localhost:5432/gameap?sslmode=disable
@@ -368,7 +368,7 @@ ACME включается только при одновременно зада�
 
 ## Пример минимальной конфигурации
 
-```
+```dotenv
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://gameap:пароль@localhost:5432/gameap?sslmode=disable
 

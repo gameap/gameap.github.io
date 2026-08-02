@@ -46,7 +46,7 @@ server. Or from the main page: **Servers List** → select the server → **Cont
 Find the **Game server start command** field and enter the command. For Counter-Strike 1.6 it
 will be something like this:
 
-```
+```text
 ./hlds_run -game cstrike +ip {ip} +port {port} +map {default_map} +maxplayers {maxplayers} +sys_ticrate {fps}
 ```
 
@@ -131,11 +131,11 @@ sitting in a nested directory.
 
 An incorrectly formed archive for GTA: San Andreas Multiplayer:
 
-![](/images/errors/source_archive_wrong.jpg)
+![Incorrect installation archive: game server files sit in a nested directory](/images/errors/source_archive_wrong.jpg)
 
 Correct:
 
-![](/images/errors/source_archive_right.jpg)
+![Correct installation archive: game server files sit at the archive root](/images/errors/source_archive_right.jpg)
 
 ### Incorrect installation source
 

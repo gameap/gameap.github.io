@@ -155,7 +155,7 @@ tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /usr/bin
 
 Create the configuration file `/etc/gameap/config.env`:
 
-```
+```dotenv
 DATABASE_DRIVER=mysql
 DATABASE_URL=gameap:password@tcp(127.0.0.1:3306)/gameap_v4_test?parseTime=true
 

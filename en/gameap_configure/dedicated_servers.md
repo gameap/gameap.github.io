@@ -85,7 +85,7 @@ There is no PowerShell one-liner, installation is done through gameapctl:
 
 The same can be done with a command in the console:
 
-```
+```shell
 gameapctl daemon install --connect=grpc://your-panel:31718/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx
 ```
 

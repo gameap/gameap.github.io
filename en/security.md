@@ -108,7 +108,7 @@ and finish enabling it — the pages needed for that are available.
 
 **3. Remove the requirement entirely.** In `config.env`:
 
-```
+```dotenv
 AUTH_REQUIRE_MFA_FOR_ADMINS=false
 ```
 
@@ -120,7 +120,7 @@ full ones.
 
 **4. Keep the reminder, but remove the lockout.**
 
-```
+```dotenv
 AUTH_MFA_HARD_FAIL_DAYS=0
 ```
 
@@ -210,7 +210,7 @@ configure `SECURITY_CSP_EXTRA_SCRIPT_SRC` additionally.
 Keys are issued in the [reCAPTCHA console](https://www.google.com/recaptcha/admin): register the site,
 choose the **reCAPTCHA v3** type and specify the panel domain.
 
-```
+```dotenv
 CAPTCHA_PROVIDER=recaptcha_v3
 CAPTCHA_SITE_KEY=6LcExampleSiteKeyExampleSiteKeyExam
 CAPTCHA_SECRET_KEY=6LcExampleSecretKeyExampleSecretKeyEx
@@ -235,7 +235,7 @@ address must be reachable from the panel server.
 Keys are issued in the [Cloudflare](https://dash.cloudflare.com/) dashboard, in the **Turnstile**
 section. A free account is enough, and the domain does not have to be delegated to Cloudflare.
 
-```
+```dotenv
 CAPTCHA_PROVIDER=turnstile
 CAPTCHA_SITE_KEY=0x4AAAAAAAExampleSiteKey
 CAPTCHA_SECRET_KEY=0x4AAAAAAAExampleSecretKey
@@ -310,7 +310,7 @@ development will not get the browser "stuck".
 
 The generated policy:
 
-```
+```text
 default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self';
 script-src 'self' blob: 'wasm-unsafe-eval' <hashes of inline scripts>;
 style-src 'self' 'unsafe-inline';
@@ -387,7 +387,7 @@ authentication method, IP address, User-Agent, request method and path, request 
 > is **no** separate database table, separate file, rotation, viewing interface or read API. If the
 > records need to be stored and searched, set up collection of the panel log with the standard tools
 > of your system — for example, through `journald` and an external log collector.
-
+>
 > `AUDIT_CLIENT_IP_HEADER` trusts the specified header from **any** sender — the panel has no trusted
 > proxy list. Enable this variable only if the reverse proxy is guaranteed to overwrite the header in
 > incoming requests. Otherwise the IP address can be spoofed, and with it the per-IP login rate limit

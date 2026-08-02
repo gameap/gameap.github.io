@@ -11,7 +11,7 @@ panels. This capability appeared in GameAP 4.1.
 
 All of this lives on the **Administration** → **Games** page.
 
-![](/images/en/gameap_configure/games_import/import_button.png)
+![Import and export buttons on the Games page in administration](/images/en/gameap_configure/games_import/import_button.png)
 
 ## GameAP's Own Format
 
@@ -25,7 +25,7 @@ serve a `<game-code>.gameap.yaml` file.
 
 Via the API:
 
-```
+```http
 GET /api/games/{code}/export
 ```
 
@@ -33,11 +33,11 @@ GET /api/games/{code}/export
 
 **Administration** → **Games** → **Import GameAP YAML**, upload the file and click **Import**.
 
-![](/images/en/gameap_configure/games_import/import_page.png)
+![Game import page with the YAML settings file selector](/images/en/gameap_configure/games_import/import_page.png)
 
 Via the API:
 
-```
+```http
 POST /api/games/import/gameap
 ```
 
@@ -66,7 +66,7 @@ format.
 
 Via the API:
 
-```
+```text
 POST /api/games/import/pelican-egg
 ```
 
@@ -80,7 +80,7 @@ click **Upgrade Games** on the **Administration** → **Games** page.
 
 Via the API:
 
-```
+```text
 POST /api/games/upgrade
 ```
 
@@ -102,4 +102,4 @@ Docker and Podman [process managers](/en/daemon/process_managers.html).
 You need to configure GameAP Daemon to work with one of these process managers.
 To do this, when adding a new node, select the desired process manager in the "Advanced Settings" section.
 
-![](/images/en/gameap_configure/games_import/daemon_process_manager.png)
+![Choosing the Docker process manager while adding a dedicated server](/images/en/gameap_configure/games_import/daemon_process_manager.png)

@@ -48,7 +48,7 @@ journalctl -u gameap-daemon -n 200 --no-pager
 Найдите поле **Команда запуска игрового сервера** и впишите команду. Для Counter-Strike 1.6 она
 будет примерно такой:
 
-```
+```text
 ./hlds_run -game cstrike +ip {ip} +port {port} +map {default_map} +maxplayers {maxplayers} +sys_ticrate {fps}
 ```
 
@@ -90,13 +90,25 @@ systemctl start gameap-daemon
 ### Несоответствие времени
 
 Проблема связана с расхождением времени на сервере с панелью и на выделенном сервере.
-Настройте синхронизацию времени на обоих.
 
-Изменение часового пояса в Debian и Ubuntu:
+Настройте синхронизацию часов на обоих серверах:
 
 ```bash
-dpkg-reconfigure tzdata
+timedatectl set-ntp true
+timedatectl status
 ```
+
+Если systemd не используется, включите службу синхронизации времени — например `chronyd`
+или `ntpd`.
+
+Отдельно проверьте часовой пояс: он на точность часов не влияет, но из-за него время
+в интерфейсе может отображаться со сдвигом.
+
+```bash
+timedatectl set-timezone Europe/Moscow
+```
+
+В Debian и Ubuntu часовой пояс можно выбрать и в диалоге: `dpkg-reconfigure tzdata`.
 
 ### Демон подключён, но статус не обновляется
 

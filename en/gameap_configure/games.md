@@ -51,7 +51,7 @@ and so on.
 #### Steam App ID
 
 Game server ID on Steam. Used to install the server through SteamCMD.
-You can find SteamID on [Steam official wiki] (https://developer.valvesoftware.com/wiki/Dedicated_Servers_List), or
+You can find SteamID on [Steam official wiki](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List), or
 in the [SteamDB](https://steamdb.info/).
 
 #### Steam App Set Config
@@ -87,7 +87,7 @@ Link to a remote source. This must be a URL to an HTTP or FTP resource. Archive 
 without any intermediate pages that require waiting or additional action. Links to Yandex Disk, Google Drive, 
 etc. are not supported.
 
-You can find some builds on the [official GameAP repository] (http://files.gameap.ru/).
+You can find some builds on the [official GameAP repository](http://files.gameap.ru/).
 
 ##### Examples
 
@@ -253,7 +253,7 @@ You can set shortcodes for the command that will be replaced with the data of a 
 | {name} | Server player name
 
 For many GoldSource/Source games, this is the command: 
-```
+```text
 kick #{id}
 ```
 
@@ -271,7 +271,7 @@ You can set shortcodes for the command that will be replaced with the data of a 
 | {reason} | Ban reason
 
 For many GoldSource games (Half-Life, Counter-Strike 1.6, etc.) running AMX Mod X, this is the command: 
-```
+```text
 amx_ban "{name}" {time} "{reason}"
 ```
 
@@ -289,7 +289,7 @@ You can set shortcodes for the command that will be replaced with the data of a 
 | {reason} | Reason for change
 
 For many GoldSource games (Half-Life, Counter-Strike 1.6, etc.) running AMX Mod X, this is the command: 
-```
+```text
 amx_nick #{id} {new_name}
 ```
 
@@ -299,7 +299,7 @@ You can set the command to soft restart the server, without restarting the game 
 this command restarts the game map or round. Not supported by many games.
 
 For many GoldSource/Source games, this is the command: 
-```
+```text
 restart
 ```
 
@@ -312,7 +312,7 @@ With this command, you can change the game server map.
 | {map} | Map name
 
 For many GoldSource/Source games, this is the command: 
-```
+```text
 changelevel {map}
 ```
 
@@ -325,7 +325,7 @@ With this command, you can send a text chat message to all players on the server
 | {msg} | Message to be sent to the server
 
 For many GoldSource games (Half-Life, Counter-Strike 1.6, etc.) running AMX Mod X, this is the command: 
-```
+```text
 amx_say "{msg}"
 ```
 
@@ -339,7 +339,7 @@ this password, can log in.
 | {password} | Server password
 
 For many GoldSource/Source games, this is the command: 
-```
+```text
 password {password}
 ```
 

@@ -10,7 +10,7 @@ order: 335
 Панель работает с PostgreSQL, MySQL или MariaDB и SQLite. Выбор задаётся двумя переменными
 в `config.env`:
 
-```
+```dotenv
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://gameap:пароль@localhost:5432/gameap?sslmode=disable
 ```
@@ -30,7 +30,7 @@ DATABASE_URL=postgres://gameap:пароль@localhost:5432/gameap?sslmode=disabl
 
 ### PostgreSQL
 
-```
+```dotenv
 DATABASE_DRIVER=postgres
 DATABASE_URL=postgres://пользователь:пароль@хост:5432/база?sslmode=disable
 ```
@@ -42,7 +42,7 @@ DATABASE_URL=postgres://пользователь:пароль@хост:5432/ба
 
 ### MySQL и MariaDB
 
-```
+```dotenv
 DATABASE_DRIVER=mysql
 DATABASE_URL=пользователь:пароль@tcp(хост:3306)/база?parseTime=true
 ```
@@ -52,13 +52,13 @@ DATABASE_URL=пользователь:пароль@tcp(хост:3306)/база?p
 
 Подключение через сокет:
 
-```
+```dotenv
 DATABASE_URL=пользователь:пароль@unix(/var/run/mysqld/mysqld.sock)/база?parseTime=true
 ```
 
 ### SQLite
 
-```
+```dotenv
 DATABASE_DRIVER=sqlite
 DATABASE_URL=file:/var/lib/gameap/db.sqlite?_busy_timeout=5000&_journal_mode=WAL&cache=shared
 ```
@@ -70,12 +70,16 @@ DATABASE_URL=file:/var/lib/gameap/db.sqlite?_busy_timeout=5000&_journal_mode=WAL
 
 ### inmemory
 
-```
+```dotenv
 DATABASE_DRIVER=inmemory
+DATABASE_URL=inmemory
 ```
 
 Данные хранятся только в оперативной памяти и теряются при перезапуске. Предназначен для тестов,
 для рабочей установки не годится.
+
+`DATABASE_URL` требуется задать даже здесь: панель проверяет её на непустоту до того, как узнаёт
+драйвер, и без неё не запустится. Значение при этом не используется.
 
 ## Миграции
 
@@ -133,9 +137,12 @@ sqlite3 /var/lib/gameap/db.sqlite ".backup '/backup/gameap-$(date +%F).sqlite'"
 
 Базы недостаточно. Вместе с ней сохраняйте:
 
-* **`config.env`** — в нём `AUTH_SECRET` и `ENCRYPTION_KEY`. Без `ENCRYPTION_KEY` часть данных
-  из копии восстановить не получится, а у всех пользователей перестанет работать двухфакторная
-  аутентификация;
+* **`config.env`** — в нём `AUTH_SECRET` и `ENCRYPTION_KEY`. Восстанавливать нужно **те же
+  значения**, что были на момент копирования: при другом `AUTH_SECRET` перестанут приниматься
+  выданные токены. Если `ENCRYPTION_KEY` на установке был задан, без него не восстановить
+  зашифрованные данные и перестанет работать двухфакторная аутентификация. Если он не задавался,
+  ключ шифрования секретов TOTP выводится из `AUTH_SECRET` — тогда достаточно сохранить его,
+  а добавлять `ENCRYPTION_KEY` при восстановлении **нельзя**, это сломает 2FA всем пользователям;
 * **каталог файлов панели** — в нём сертификаты gRPC, по которым подключаются демоны, и данные
   ACME. Путь задаётся `FILES_LOCAL_BASE_PATH`.
 

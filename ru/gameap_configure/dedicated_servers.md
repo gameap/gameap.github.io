@@ -41,7 +41,7 @@ order: 300
 Скопируйте команду из вкладки Linux и выполните её на выделенном сервере **от имени root**:
 
 ```bash
-bash <(curl -s 'http://your-panel/nodes/setup/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx')
+bash <(curl -fsSL 'https://your-panel/nodes/setup/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx')
 ```
 
 Скрипт проверит окружение, установит `gameapctl` в `/usr/local/bin` (а если он уже установлен —
@@ -54,7 +54,7 @@ systemd `gameap-daemon`.
 в файл и запустите его:
 
 ```bash
-curl -fsSL 'http://your-panel/nodes/setup/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx' -o gameap-setup.sh
+curl -fsSL 'https://your-panel/nodes/setup/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx' -o gameap-setup.sh
 sudo bash gameap-setup.sh
 ```
 
@@ -83,7 +83,7 @@ sudo bash gameap-setup.sh
 
 То же самое можно сделать командой в консоли:
 
-```
+```shell
 gameapctl daemon install --connect=grpc://your-panel:31718/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx
 ```
 

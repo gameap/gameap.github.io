@@ -87,7 +87,7 @@ order: 315
 
 Через API история доступна запросом:
 
-```
+```http
 GET /api/servers/{server}/tasks/{id}/executions
 ```
 
@@ -99,7 +99,7 @@ GET /api/servers/{server}/tasks/{id}/executions
 
 Зависшую или ненужную задачу можно отменить: откройте её и нажмите **«Отменить»**. Через API:
 
-```
+```http
 POST /api/gdaemon_tasks/{id}/cancel
 ```
 

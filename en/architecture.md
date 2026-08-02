@@ -9,7 +9,7 @@ order: 5
 GameAP consists of two applications: the **panel**, which the administrator works with, and the
 **daemon**, which runs on every dedicated server and manages game servers.
 
-![](/images/en/gameap_architecture.svg)
+![GameAP architecture: the panel, daemons on dedicated servers, and game servers](/images/en/gameap_architecture.svg)
 
 ## Three Layers
 
