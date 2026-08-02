@@ -6,9 +6,6 @@ category: Плагины
 order: 342
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Архитектура
 
 Плагин GameAP — это WASM-модуль для таргета `wasm32-wasip1` (WASI preview 1), собранный как reactor. Панель исполняет каждый плагин в изолированном рантайме [wazero](https://github.com/tetratelabs/wazero): без файловой системы, сети и переменных окружения, stdout и stderr отбрасываются.

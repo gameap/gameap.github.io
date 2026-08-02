@@ -1,5 +1,6 @@
 ---
 title: Установка на Windows
+description: "Установка панели GameAP на Windows через gameapctl: поддерживаемые версии системы, загрузка, запуск установщика и завершение настройки."
 layout: default
 lang: ru
 category: Установка GameAP
@@ -34,7 +35,7 @@ order: 101
 После этого найдите версию подходящую вам. Наиболее популярной является архитектура
 Windows AMD64, поэтому скорее всего вам необходимо скачать именно этот архив:
 
-![](/images/en/gameapctl/download_release_windows_amd64.png)
+![Выбор архива gameapctl для Windows AMD64 на странице релизов](/images/en/gameapctl/download_release_windows_amd64.png)
 
 ## Установка панели с использованием GameAP Control UI
 
@@ -51,7 +52,7 @@ Windows AMD64, поэтому скорее всего вам необходим�
 
 Укажите необходимые данные для установки
 
-![](/images/en/gameapctl/ui_gameap_installation.png)
+![Форма параметров установки панели в интерфейсе gameapctl](/images/en/gameapctl/ui_gameap_installation.png)
 
 #### Хост
 
@@ -91,4 +92,4 @@ Windows AMD64, поэтому скорее всего вам необходим�
 После окончания не забудьте сохранить данные для входа 
 и данные от базы, которые будут указаны.
 
-![](/images/en/gameapctl/gameap_finished_installation.png)
+![Данные для входа в панель, показанные по завершении установки](/images/en/gameapctl/gameap_finished_installation.png)

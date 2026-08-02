@@ -6,9 +6,6 @@ category: Плагины
 order: 344
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Каталог плагинов
 
 Каталог плагинов GameAP доступен по адресам [plugins.gameap.ru](https://plugins.gameap.ru/) (русская версия) и [plugins.gameap.dev](https://plugins.gameap.dev/) (английская версия). Публичная часть каталога включает:

@@ -1,5 +1,6 @@
 ---
 title: Начало работы
+description: "Установка панели и подключение первого выделенного сервера: что подготовить, какие команды выполнить и как создать первый игровой сервер."
 layout: default
 lang: ru
 category: Общее
@@ -31,7 +32,7 @@ bash <(curl -s https://gameap.com/install.sh) --with-daemon
 После установки панели зайдите в неё и в меню выберите **"Администрирование"** **"Выделенные серверы"** → **"Создать"**. После
 чего откроется окошко с инструкцией, следуйте ей.
 
-![](/images/ru/get_started/add_dedicated_server.gif)
+![Добавление выделенного сервера в панели GameAP](/images/ru/get_started/add_dedicated_server.gif)
 
 Более подробно об установке и настройке читайте на странице [Выделенные серверы](/ru/gameap_configure/dedicated_servers.html).
 
@@ -39,6 +40,6 @@ bash <(curl -s https://gameap.com/install.sh) --with-daemon
 
 Перейдите в **"Администрирование"** → **"Игровые серверы"** → **"Создать"**.
 
-![](/images/ru/get_started/add_game_server.gif)
+![Создание игрового сервера в панели GameAP](/images/ru/get_started/add_game_server.gif)
 
 Более подробно о параметрах настройки игровых серверов читайте на странице [Игровые серверы](/ru/gameap_configure/game_servers.html)

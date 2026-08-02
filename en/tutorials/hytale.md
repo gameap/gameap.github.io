@@ -31,7 +31,7 @@ When installing GameAP, you can choose a full installation of the panel together
 
 Navigate to **Administration** → **Game Servers** → **Create**
 
-![](/images/en/tutorials/hytale/create_form.png)
+![Create game server form for Hytale](/images/en/tutorials/hytale/create_form.png)
 
 * In the "Name" field, enter any name for your server.
 * In the "Game" field, select the Hytale option.
@@ -48,7 +48,7 @@ After the first launch, you need to complete several authorization steps.
 After the first launch, you need to authorize the device running the game server.
 In the game server console, find the line with the authorization link, copy it, and open it in your browser.
 
-![](/images/en/tutorials/hytale/auth_download.png)
+![Authorization link in the Hytale server console](/images/en/tutorials/hytale/auth_download.png)
 
 > Note! To download the game server files, you must own the game.
 > If you don't own the game, you will see the message
@@ -56,28 +56,28 @@ In the game server console, find the line with the authorization link, copy it, 
 
 During the authorization process on the developer's website, you will need to enter a code that will be sent to your email.
 
-![](/images/en/tutorials/hytale/auth_enter_code.png)
+![Entering the authorization code on the Hytale developer site](/images/en/tutorials/hytale/auth_enter_code.png)
 
 After entering the code, click "Verify".
 Then, in the popup window, click "Approve" to grant access to your account.
 
-![](/images/en/tutorials/hytale/auth_press_approve.png)
+![Granting access with the Approve button](/images/en/tutorials/hytale/auth_press_approve.png)
 
 After this, you will see a message that the device has been authorized.
 
-![](/images/en/tutorials/hytale/auth_device_approved.png)
+![Message confirming the device was authorized](/images/en/tutorials/hytale/auth_device_approved.png)
 
 The game server files will start downloading. This may take some time
 depending on your internet connection speed.
 
-![](/images/en/tutorials/hytale/files_downloading.png)
+![Hytale game server files downloading](/images/en/tutorials/hytale/files_downloading.png)
 
 #### Authorizing the Game Server
 
 After the game server files have been downloaded, you need to authorize the game server itself.
 To do this, enter the command `/auth login device` in the game server console.
 
-![](/images/en/tutorials/hytale/auth_server.png)
+![Game server authorization command in the Hytale console](/images/en/tutorials/hytale/auth_server.png)
 
 After this, a line with an authorization link will appear in the game server console,
 similar to the file downloader authorization process.
@@ -85,27 +85,27 @@ Copy the link and open it in your browser, then repeat the same steps as with th
 
 If successful, you will see a message in the game server console that authorization was successful (`Authentication successful! Mode: OAUTH_DEVICE`)
 
-![](/images/en/tutorials/hytale/auth_server_success.png)
+![Console message confirming the game server was authorized](/images/en/tutorials/hytale/auth_server_success.png)
 
 #### Automatic Authorization on Each Startup
 
 By default, after authorization, you will need to enter the `/auth login device` command
 to authorize the game server on each startup. You will see this message:
-```
+```text
 WARNING: Credentials stored in memory only - they will be lost on restart!
 To persist credentials, run: /auth persistence <type>
 Available types: Memory, Encrypted
 ```
 
 To avoid entering the authorization command every time, enable credential persistence by running the command:
-```
+```text
 /auth persistence Encrypted
 ```
 
 After this, an `auth.enc` file will appear in the game server root directory,
 which will store the encrypted authorization data.
 
-![](/images/en/tutorials/hytale/auth_enc_file.png)
+![File holding the encrypted Hytale authorization data](/images/en/tutorials/hytale/auth_enc_file.png)
 
 ### Game Server Settings
 
@@ -127,7 +127,7 @@ Most Hytale game server and world settings are configured through configuration 
 
 The main settings are located in the `config.json` file.
 
-![](/images/en/tutorials/hytale/main_config.png)
+![The config.json file with the main Hytale server settings](/images/en/tutorials/hytale/main_config.png)
 
 Here you can configure the following parameters:
 * `ServerName` — your server name that will be displayed in the server list.
@@ -142,7 +142,7 @@ Here you can configure the following parameters:
 World settings and data are located in the `universe/worlds/` directory, which contains world folders.
 Each world folder has a `config.json` file with world settings, for example `universe/worlds/default/config.json`:
 
-![](/images/en/tutorials/hytale/world_config.png)
+![The config.json file with Hytale world settings](/images/en/tutorials/hytale/world_config.png)
 
 Here you can configure the Seed (world generation seed), various generation parameters, chunk settings, NPC, PVP,
 and other parameters.

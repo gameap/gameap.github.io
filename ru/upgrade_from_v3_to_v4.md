@@ -1,83 +1,205 @@
 ---
 title: Обновление с v3 до v4
+description: "Переход с GameAP 3 на 4: обновление на месте возможно только до версий 4.0 и 4.1, резервная копия базы, порядок действий и откат."
 layout: default
 lang: ru
 category: Установка GameAP
 order: 191
 ---
 
-## Автоматическое обновление с помощью gameapctl
+Обновиться с GameAP 3, сохранив существующую базу данных, можно только на **версии 4.0 и 4.1**.
+Они распознают базу третьей версии, дополняют её схему своими таблицами и продолжают работать
+с теми же пользователями, серверами и играми.
 
-Если у вас уже установлена старая версия панели, вы можете обновиться до новой версии с помощью [`gameapctl`](https://github.com/gameap/gameapctl).
-Эта утилита устанавливается автоматически вместе с GameAP и позволяет управлять окружением панели, включая обновления.
+> **Начиная с версии 4.2 обновление на месте не поддерживается.** Более поздние версии рассчитаны
+> на схему четвёртой версии и с базой GameAP 3 работать не будут.
+>
+> Если нужна последняя версия панели, установите её на чистую базу и перенесите данные
+> самостоятельно — см. [Если нужна последняя версия](#если-нужна-последняя-версия).
 
-Выполните следующие команды:
+Последняя версия в поддерживаемой линейке — **4.1.2**.
+
+## Перед обновлением
+
+> **Сделайте резервную копию базы данных вручную.** `gameapctl` копирует каталог установки v3
+> и конфигурацию веб-сервера, но **базу данных не сохраняет**, а обновление изменяет её схему
+> необратимо.
+
+```shell
+# MySQL или MariaDB
+mysqldump -u root -p gameap > gameap-v3-backup.sql
+
+# PostgreSQL
+pg_dump -U gameap gameap > gameap-v3-backup.sql
+
+# SQLite
+sqlite3 /var/www/gameap/database.sqlite ".backup 'gameap-v3-backup.sqlite'"
+```
+
+Проверьте, что копия не пустая, и только потом продолжайте.
+
+> Для SQLite используйте именно `.backup`, а не `cp`. Простое копирование файла на работающей
+> панели может дать повреждённую копию: часть данных в этот момент находится в журнале WAL
+> и в основной файл ещё не перенесена.
+
+### С каких баз данных обновление возможно
+
+| СУБД в GameAP 3  | Обновление на месте |
+|------------------|---------------------|
+| MySQL, MariaDB   | да                  |
+| SQLite           | да                  |
+| PostgreSQL       | **нет**             |
+
+Для MySQL и SQLite панель распознаёт существующую базу GameAP 3 и не пытается создать таблицы
+заново. Для PostgreSQL такого распознавания нет: первая же миграция попытается создать уже
+существующие таблицы и завершится с ошибкой.
+
+Если GameAP 3 работает на PostgreSQL, установите GameAP 4 на чистую базу и перенесите данные
+самостоятельно.
+
+## Обновление до 4.1
+
+`gameapctl` устанавливается вместе с панелью и умеет выполнять переход.
 
 ```shell
 gameapctl self-update
-gameapctl panel upgrade --to=v4
+gameapctl panel upgrade
 ```
 
-### Не установлен gameapctl? (gameapctl: command not found)
+Утилита сама определит, что установлена третья версия, и выполнит обновление.
 
-Если у вас не установлен `gameapctl`, вы можете скачать его с [GitHub releases](https://github.com/gameap/gameapctl/tags).
+> **Проверьте, какую версию ставит `gameapctl`.** При переходе с третьей версии он игнорирует флаг
+> `--version` и устанавливает последнюю стабильную версию из линейки 4.x. Если это окажется 4.2
+> или новее, обновление рабочей базы делать нельзя.
+>
+> Сначала проверьте переход на копии базы данных — порядок описан в разделе
+> [Проверка на копии базы](#проверка-на-копии-базы). Убедитесь, что установилась 4.0 или 4.1,
+> и только после этого обновляйте рабочую установку.
 
-Или используйте curl для загрузки для Linux amd64:
+Что происходит при обновлении:
+
+1. Читается файл `.env` установки GameAP 3, из него берутся параметры подключения к базе.
+2. Каталог установки v3 и конфигурация веб-сервера копируются во временный каталог. Путь к копии
+   выводится в консоль — запишите его.
+3. Формируется конфигурация GameAP 4 `config.env`, в неё подставляется та же база данных
+   и генерируются новые ключи `AUTH_SECRET` и `ENCRYPTION_KEY`.
+4. Устанавливается и запускается GameAP 4.
+
+При первом запуске панель применяет миграции: обнаруживает, что база принадлежит третьей версии,
+пропускает создание таблиц и добавляет только то, чего не хватает четвёртой версии.
+
+### Не установлен gameapctl
+
+Скачайте его со [страницы релизов](https://github.com/gameap/gameapctl/releases) или командой,
+подставив нужную версию:
 
 ```shell
-curl -OL https://github.com/gameap/gameapctl/releases/download/v0.21.1/gameapctl-v0.21.1-linux-amd64.tar.gz
-tar xvfz gameapctl-v0.21.1-linux-amd64.tar.gz -C /usr/local/bin
+VERSION=$(curl -sL https://api.github.com/repos/gameap/gameapctl/releases/latest \
+  | grep -m1 '"tag_name"' | cut -d'"' -f4)
+curl -OL "https://github.com/gameap/gameapctl/releases/download/${VERSION}/gameapctl-${VERSION}-linux-amd64.tar.gz"
+tar xvfz "gameapctl-${VERSION}-linux-amd64.tar.gz" -C /usr/local/bin
 ```
 
-Затем выполните команду self-update:
+## Что меняется при переходе
+
+**Веб-сервер и PHP больше не нужны.** GameAP 4 — один исполняемый файл со встроенным веб-интерфейсом.
+После обновления nginx или Apache можно оставить обратным прокси либо убрать вовсе.
+
+**Порт по умолчанию — 8025**, а не 80.
+
+**Пароли пользователей продолжают работать.** Версии 4.0 и 4.1 проверяют пароли тем же способом,
+что и третья версия. Просить пользователей менять пароли не нужно.
+
+**Демоны продолжают работать по прежнему протоколу.** В версиях 4.0 и 4.1 панель обменивается
+данными с GameAP Daemon так же, как третья версия, и подключается к демону сама. Настройки
+выделенных серверов менять не нужно, порт демона (по умолчанию `31717`) должен оставаться открытым.
+
+> Не выполняйте `gameapctl daemon upgrade --switch-to-grpc` после обновления до 4.1. Обмен данными
+> по gRPC появился только в версии 4.2, и панель 4.1 к такому демону подключиться не сможет.
+
+## Откат
+
+Если после обновления что-то не работает:
+
+1. Остановите GameAP 4: `gameapctl panel stop`.
+2. Восстановите базу данных из резервной копии, сделанной до обновления.
+3. Верните каталог установки v3 из временной копии, путь к которой вывел `gameapctl`.
+4. Восстановите конфигурацию веб-сервера и запустите его.
+
+> Откат без резервной копии базы данных невозможен: схема изменена, и GameAP 3 с ней уже
+> не заработает.
+
+## Проверка на копии базы
+
+Прежде чем обновлять рабочую установку, стоит прогнать переход на копии базы данных. Заодно это
+показывает, какую именно версию установит `gameapctl`.
+
+> Не подключайте пробную установку к рабочей базе: при первом запуске панель применит к ней
+> миграции, и GameAP 3 перестанет работать.
+
+Создайте копию базы:
 
 ```shell
-gameapctl self-update
+mysqldump -u root -p gameap > /tmp/gameap.sql
+mysql -u root -p -e "CREATE DATABASE gameap_v4_test"
+mysql -u root -p gameap_v4_test < /tmp/gameap.sql
 ```
 
-## Запуск параллельно со старой версией
-
-Если вы хотите запустить GameAP v3 и GameAP v4 параллельно для тестирования перед обновлением, выполните следующие шаги:
-
-Скачайте GameAP с [https://github.com/gameap/gameap/releases](https://github.com/gameap/gameap/releases) для вашей платформы.
-
-Или используйте curl для загрузки для Linux amd64:
+Скачайте версию из линейки 4.1 со [страницы релизов](https://github.com/gameap/gameap/releases)
+и распакуйте:
 
 ```shell
-curl -OL https://github.com/gameap/gameap/releases/download/v4.0.0/gameap-v4.0.0-linux-amd64.tar.gz
+curl -OL https://github.com/gameap/gameap/releases/download/v4.1.2/gameap-v4.1.2-linux-amd64.tar.gz
+tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /usr/bin
 ```
 
-Распакуйте в `/usr/bin/gameap`:
+Создайте отдельный файл конфигурации `/etc/gameap-v4-test/config.env`:
+
+```dotenv
+DATABASE_DRIVER=mysql
+DATABASE_URL=gameap:пароль@tcp(127.0.0.1:3306)/gameap_v4_test?parseTime=true
+
+# получить значения: openssl rand -base64 24
+AUTH_SECRET=замените_на_32_случайных_байта
+ENCRYPTION_KEY=замените_на_32_случайных_байта
+
+HTTP_PORT=8125
+GRPC_PORT=31818
+```
+
+> Пути, порты и имя сервиса здесь намеренно отличаются от рабочих. Если пробную установку
+> развернуть на тех же `/etc/gameap`, `8025` и `31718`, она перезапишет конфигурацию рабочей
+> панели и займёт её порты.
+
+Запустите:
 
 ```shell
-tar xvfz gameap-v4.0.0-linux-amd64.tar.gz -C /usr/bin
+gameap --env /etc/gameap-v4-test/config.env
 ```
 
-Запустите GameAP:
+Панель будет доступна на порту 8125. Полный список параметров конфигурации —
+[Справочник config.env](/ru/config.html).
 
-```shell
-gameap --legacy-env /var/www/gameap/.env
-```
-
-GameAP v4 будет запущен на порту 8025.
+Убедитесь, что данные на месте: пользователи входят, игровые серверы и игры отображаются. После
+этого можно обновлять рабочую установку.
 
 ### Настройка systemd-сервиса
 
-Вы можете создать отдельный systemd-сервис для GameAP v4 для удобного управления.
+Для удобного управления пробной установкой создайте отдельный сервис.
 
-Сначала создайте пользователя и группу `gameap`:
+Создайте пользователя и каталог — с именами, отличными от рабочей установки:
 
 ```shell
-useradd -r -s /usr/sbin/nologin -d /var/lib/gameap gameap
-mkdir -p /var/lib/gameap
-chown gameap:gameap /var/lib/gameap
+useradd -r -s /usr/sbin/nologin -d /var/lib/gameap-v4-test gameap-test
+mkdir -p /var/lib/gameap-v4-test
+chown gameap-test:gameap-test /var/lib/gameap-v4-test
 ```
 
-Затем создайте файл `/etc/systemd/system/gameap.service`:
+Затем файл `/etc/systemd/system/gameap-v4-test.service`:
 
 ```ini
 [Unit]
-Description=GameAP - Game Server Control Panel
+Description=GameAP 4 (trial installation)
 Documentation=https://docs.gameap.com
 After=network.target
 Wants=network-online.target
@@ -85,16 +207,12 @@ Requires=network.target
 
 [Service]
 Type=simple
-User=gameap
-Group=gameap
+User=gameap-test
+Group=gameap-test
 
-# Рабочая директория
-WorkingDirectory=/var/lib/gameap
+WorkingDirectory=/var/lib/gameap-v4-test
 
-ExecStart=/usr/bin/gameap
-
-# Разрешить привязку к привилегированным портам
-AmbientCapabilities=CAP_NET_BIND_SERVICE
+ExecStart=/usr/bin/gameap --env /etc/gameap-v4-test/config.env
 
 # Корректное завершение
 ExecStop=/bin/kill -TERM $MAINPID
@@ -108,34 +226,70 @@ RestartSec=5
 StartLimitInterval=60
 StartLimitBurst=3
 
-# Конфигурация окружения
-# EnvironmentFile=/etc/gameap/config.env
-
-RuntimeDirectory=gameap
-PIDFile=/run/gameap/gameap.pid
+RuntimeDirectory=gameap-v4-test
+PIDFile=/run/gameap-v4-test/gameap.pid
 
 # Права доступа к файловой системе
 ProtectSystem=strict
 ProtectHome=true
 PrivateTmp=true
 
-ReadWritePaths=/var/lib/gameap /var/lib/gameap/files
-# Это необходимо, если вы запускаете GameAP с legacy-окружением
-# ReadWritePaths=/var/www/gameap
+ReadWritePaths=/var/lib/gameap-v4-test
 
 # Логирование
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=gameap
+SyslogIdentifier=gameap-v4-test
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-Затем включите и запустите сервис:
+Включите и запустите сервис:
 
 ```shell
 systemctl daemon-reload
-systemctl enable gameap
-systemctl start gameap
+systemctl enable gameap-v4-test
+systemctl start gameap-v4-test
 ```
+
+Когда пробная установка больше не нужна, уберите её целиком, чтобы она не запускалась вместе
+с системой:
+
+```shell
+systemctl disable --now gameap-v4-test
+rm /etc/systemd/system/gameap-v4-test.service
+systemctl daemon-reload
+```
+
+## Если нужна последняя версия
+
+Обновиться с GameAP 3 сразу на 4.2 или новее нельзя. Порядок такой:
+
+1. Установите актуальную версию GameAP 4 на **чистую** базу данных, не трогая рабочую установку —
+   см. [Установка на Linux](/ru/install/install_on_linux.html).
+2. Перенесите данные из GameAP 3: заведите заново пользователей, выделенные серверы, игры
+   и игровые серверы — вручную или через [API](https://openapi.gameap.io/).
+3. Убедитесь, что всё работает, и только после этого выводите старую установку из эксплуатации.
+
+Файлы игровых серверов при этом никуда переносить не нужно: они остаются на выделенном сервере,
+достаточно описать серверы в новой панели с теми же каталогами и портами.
+
+**А вот демонов придётся зарегистрировать заново.** У чистой панели свой центр сертификации, свои
+идентификаторы выделенных серверов и свои ключи доступа, а в конфигурации работающего демона
+записаны `ds_id`, `api_key` и сертификаты от старой панели — просто указать прежние пути и порты
+недостаточно.
+
+Для каждого выделенного сервера:
+
+1. В новой панели откройте **«Администрирование»** → **«Выделенные серверы»** → **«Создать»**
+   и возьмите оттуда команду установки или connect URL.
+2. На выделенном сервере выполните регистрацию:
+   `gameap-daemon enroll --connect=grpc://новая-панель:31718/ключ`
+3. Перезапустите демона: `systemctl restart gameap-daemon`.
+4. Убедитесь, что он подключился: выделенный сервер появился в панели, в журнале демона нет
+   `gRPC connection failed`.
+
+> Команда `enroll` перезаписывает файл конфигурации демона целиком, без слияния и без резервной
+> копии. Сохраните прежний файл, если в нём были ручные настройки — менеджер процессов, учётная
+> запись Steam, замены адресов репозиториев.

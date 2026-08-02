@@ -32,7 +32,7 @@ Minecraft - популярная игра в жанре песочницы, ра
 
 Перейдите на страницу **Администрирование** → **Игровые серверы** → **Создать**
 
-![](/images/ru/tutorials/minecraft/create_form.png)
+![Форма создания игрового сервера Minecraft](/images/ru/tutorials/minecraft/create_form.png)
 
 * В поле "Имя" впишите любое название сервера.
 * В поле "Игра" выберите опцию Minecraft.
@@ -53,7 +53,7 @@ Minecraft - популярная игра в жанре песочницы, ра
 Для управления Minecraft сервером перейдите в раздел **Серверы**, затем выберите ваш сервер и нажмите **Управление**.
 На этой странице вы сможете запускать, останавливать ваш сервер, смотреть его консоль, отправлять команды.
 
-![](/images/ru/tutorials/minecraft/server_management.png)
+![Страница управления сервером Minecraft с консолью](/images/ru/tutorials/minecraft/server_management.png)
 
 
 ### Изменение версии сервера
@@ -61,7 +61,7 @@ Minecraft - популярная игра в жанре песочницы, ра
 Если вы выбрали "Multicore" модификацию, то можете изменить версию вашего сервера.
 Для этого перейдите на основную страницу управления вашим сервером, затем выберите **Настройки**.
 
-![](/images/ru/tutorials/minecraft/server_settings.png)
+![Настройки игрового сервера Minecraft с выбором версии](/images/ru/tutorials/minecraft/server_settings.png)
 
 #### Примеры настроек
 
@@ -91,4 +91,4 @@ Minecraft - популярная игра в жанре песочницы, ра
 `server.properties` это основной файл конфигурации сервера Minecraft.
 Вы можете его отредактировать используя файловый менеджер в GameAP.
 
-![](/images/ru/tutorials/minecraft/server_properties.png)
+![Файл server.properties в файловом менеджере GameAP](/images/ru/tutorials/minecraft/server_properties.png)

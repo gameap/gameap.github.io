@@ -14,15 +14,15 @@ order: 299
 Сперва необходимо перейти на страницу добавления игры. Перейдите в меню **"Администрирование"** затем выберите 
 **"Игры"**.
 
-![](/images/tutorial_additional_games/game_menu_ru.png)
+![Пункт «Игры» в меню администрирования](/images/tutorial_additional_games/game_menu_ru.png)
 
 После этого на странице вверху найдите кнопку **"Добавить игру"** и нажмите на неё.
 
-![](/images/tutorial_additional_games/add_game_menu_ru.png)
+![Кнопка «Добавить игру» на странице списка игр](/images/tutorial_additional_games/add_game_menu_ru.png)
 
-Вы перейдёте на страницу с добавление новой игры. Здесь вам нужно указать некоторые данные вашей новой игры.
+Вы перейдёте на страницу с добавлением новой игры. Здесь вам нужно указать некоторые данные вашей новой игры.
 
-![](/images/tutorial_additional_games/example_add_svencoop_ru.png)
+![Форма добавления игры на примере Sven Co-op](/images/tutorial_additional_games/example_add_svencoop_ru.png)
 
 Вам нужно обязательно указать следующие поля:
 * **Код**. Укажите сокращённое название игры
@@ -36,7 +36,7 @@ order: 299
 * [**Steam APP ID**](/ru/gameap_configure/games.html#steam-app-id). Значение для интересующей вас игры узнать на 
 [официальной вики Steam](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List), либо в базе данных 
 [SteamDB](https://steamdb.info/)
-* [**Удалённый репозиторий**](/ru/gameap_configure/games.html#удалённый-репозиторий). Некоторые архивы есть в [хранилище GameAP](http://files.gameap.ru/)
+* [**Удалённый репозиторий**](/ru/gameap_configure/games.html#удалённый-репозиторий). Ссылка на архив по HTTP или FTP
 * [**Локальный репозиторий**](/ru/gameap_configure/games.html#локальный-репозиторий).
 
 Все эти поля указывать не обязательно, но значение в каком-то одном из них обязательно должно быть.
@@ -53,7 +53,7 @@ order: 299
 
 Чтобы добавить новую модификацию для определённой игры, выберите в списке игру и нажмите **"Добавить первый мод"**.
 
-![](/images/tutorial_additional_games/example_menu_add_mod_svencoop_ru.png)
+![Кнопка «Добавить первый мод» для игры Sven Co-op](/images/tutorial_additional_games/example_menu_add_mod_svencoop_ru.png)
 
 Если для игры уже есть хоть одна модификация, то на самом верху страницу со списком игры выберите 
 **"Добавить модификацию"**.
@@ -62,7 +62,7 @@ order: 299
 режима игры (GunGame, Jail и т.п.), либо наличия каких-либо модулей (AMXX, ReAMXX для Counter-Strike,
  IndustrialCraft, BuildCraft для Minecraft и т.п.).
  
-![](/images/tutorial_additional_games/example_add_svencoop_mod_ru.png)
+![Форма создания модификации игры Sven Co-op](/images/tutorial_additional_games/example_add_svencoop_mod_ru.png)
 
 Если у вас есть архив с дополнительными плагинами, которые необходимо записать поверх базовой сборки, то укажите путь к
 нему в полях локальный или удалённый репозиторий. 
@@ -72,9 +72,11 @@ order: 299
 Подробнее на странице [Настройка игр](/ru/gameap_configure/games.html#локальный-репозиторий-1).
 
 В поле **удалённый репозиторий** нужно указывать url к архиву на HTTP или FTP. 
-Пример пути `http://files.gameap.ru/svencoop/svencoop_op4_maps.tar.xz`.
+Пример пути `https://cdn.gameap.ru/svencoop/svencoop_op4_maps.tar.xz`.
 Подробнее на странице [Настройка игр](/ru/gameap_configure/games.html#удалённый-репозиторий-1). 
-Примеры архивов можете посмотреть в [хранилище GameAP](http://files.gameap.ru/)
+Готовые архивы для многих игр есть в хранилище GameAP (`cdn.gameap.ru`, `cdn.gameap.com`), но
+посмотреть их список нельзя — каталог закрыт, работают только прямые ссылки. Обычно проще взять
+готовые настройки игры кнопкой **«Обновить игры»**: в них адреса уже указаны.
 
 ## Конфигурирование модификации
 
@@ -84,7 +86,7 @@ order: 299
 Команды запуска по умолчанию следует указывать. Если вы их не укажете, то при создании нового игрового сервера команда
 запуска для него будет пустой, а её необходимо будет указать, иначе сервер не запустится.
 
-![](/images/tutorial_additional_games/game_mods_edit_basic_ru.png)
+![Основные настройки модификации с командой запуска по умолчанию](/images/tutorial_additional_games/game_mods_edit_basic_ru.png)
 
 Примеры команд запуска по умолчанию для некоторых игр для Linux:
 * Sven Co-op: 
@@ -122,16 +124,16 @@ startdedicated.bat
 Некоторые параметры могут менять только администраторы, а некоторые доступны для смены обычным пользователям. 
 Список переменных и их имя указывается в настройках модификации, во вкладке "Переменные".
 
-![](/images/tutorial_additional_games/game_mods_edit_vars_ru.png)
+![Вкладка «Переменные» в настройках модификации](/images/tutorial_additional_games/game_mods_edit_vars_ru.png)
 
 Переменные, определённые в модификации для каждого игрового сервера можно затем изменить индивидуально в настройках.
 
 Следующая вкладка в настройках модификации это "Команды RCON". Вы можете указать RCON команды для кика, бана игроков, 
 RCON команды смены карты и другие команды, они используются для более расширенного управления игровым сервером.
 
-![](/images/tutorial_additional_games/game_mods_edit_commands_ru.png)
+![Вкладка «Команды RCON» в настройках модификации](/images/tutorial_additional_games/game_mods_edit_commands_ru.png)
 
-Во вкладке Fast Rcon вы можете определить свои дополнительные команды RCON. Например команда статуса сервера или 
+Во вкладке Fast Rcon вы можете определить свои дополнительные команды RCON. Например, команда статуса сервера или 
 получение статистики.
 
-![](/images/tutorial_additional_games/game_mods_edit_fast_rcon_ru.png)
+![Вкладка Fast RCON с пользовательскими командами](/images/tutorial_additional_games/game_mods_edit_fast_rcon_ru.png)

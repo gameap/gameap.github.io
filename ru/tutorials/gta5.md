@@ -42,7 +42,7 @@ GameAP обеспечивает полную поддержку игрового
 
 Перейдите на страницу **Администрирование** → **Игровые серверы** → **Создать**
 
-![](/images/ru/tutorials/fivem/create_form.png)
+![Форма создания игрового сервера FiveM](/images/ru/tutorials/fivem/create_form.png)
 
 * В поле "Имя" впишите любое название сервера, к примеру "Мой GTA V сервер".
 * В поле "Игра" выберите из списка FiveM.
@@ -56,17 +56,17 @@ GameAP обеспечивает полную поддержку игрового
 После установки вам необходимо указать ключ, который вы должны получить
 на [keymaster.fivem.net](https://keymaster.fivem.net)
 
-![](/images/ru/tutorials/fivem/generate_key.png)
+![Создание ключа сервера на keymaster.fivem.net](/images/ru/tutorials/fivem/generate_key.png)
 
 После генерации вы увидите сообщение.
 Вам необходимо скопировать значение ключа.
 
-![](/images/ru/tutorials/fivem/key.png)
+![Готовый ключ сервера FiveM](/images/ru/tutorials/fivem/key.png)
 
 Значение ключа нужно скопировать и указать в настройках в панели управления.
 Перейдите на страницу **Серверы** → выберите сервер FiveM → **Управление** → **Настройки**
 
-![](/images/ru/tutorials/fivem/set_key.png)
+![Поле для ключа FiveM в настройках игрового сервера](/images/ru/tutorials/fivem/set_key.png)
 
 Теперь вы можете запустить ваш FiveM сервер в панели.
 
@@ -78,4 +78,4 @@ GameAP обеспечивает полную поддержку игрового
 
 Перейдите в **Серверы** → выберите сервер FiveM → **Управление** → **Файлы**
 
-![](/images/ru/tutorials/fivem/server_config.png)
+![Файл конфигурации сервера FiveM в файловом менеджере](/images/ru/tutorials/fivem/server_config.png)

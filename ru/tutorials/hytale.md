@@ -31,7 +31,7 @@ GameAP Daemon является агентом, отвечающим за упр�
 
 Перейдите на страницу **Администрирование** → **Игровые серверы** → **Создать**
 
-![](/images/ru/tutorials/hytale/create_form.png)
+![Форма создания игрового сервера Hytale](/images/ru/tutorials/hytale/create_form.png)
 
 * В поле "Имя" впишите любое название сервера.
 * В поле "Игра" выберите опцию Hytale.
@@ -49,7 +49,7 @@ GameAP Daemon является агентом, отвечающим за упр�
 После первого запуска, вам необходимо авторизовать устройство, на котором запущен игровой сервер.
 В консоли игрового сервера найдите строку со ссылкой для авторизации, скопируйте её и откройте в браузере.
 
-![](/images/ru/tutorials/hytale/auth_download.png)
+![Ссылка для авторизации загрузчика в консоли сервера Hytale](/images/ru/tutorials/hytale/auth_download.png)
 
 > Обратите внимание! Чтобы файлы игрового сервера скачались, у вас должна быть куплена
 > игра. В случае, если игра не куплена, то вы увидите сообщение 
@@ -57,56 +57,56 @@ GameAP Daemon является агентом, отвечающим за упр�
 
 В процессе авторизации, на сайте разработчика, вам нужно будет ввести код, который придёт вам по email.
 
-![](/images/en/tutorials/hytale/auth_enter_code.png)
+![Ввод кода авторизации на сайте разработчика Hytale](/images/en/tutorials/hytale/auth_enter_code.png)
 
 После того, как вы введёте код, нужно нажать "Verify". 
 Затем, в открывшемся окне, нажать "Approve" для разрешения доступа к вашему аккаунту.
 
-![](/images/en/tutorials/hytale/auth_press_approve.png)
+![Подтверждение доступа кнопкой Approve](/images/en/tutorials/hytale/auth_press_approve.png)
 
 После этого вы увидите сообщение, что устройство авторизовано.
 
-![](/images/en/tutorials/hytale/auth_device_approved.png)
+![Сообщение об успешной авторизации устройства](/images/en/tutorials/hytale/auth_device_approved.png)
 
 Начнётся скачивание файлов игрового сервера, это может занять некоторое время, 
 в зависимости от скорости вашего интернет-соединения.
 
-![](/images/en/tutorials/hytale/files_downloading.png)
+![Загрузка файлов игрового сервера Hytale](/images/en/tutorials/hytale/files_downloading.png)
 
 #### Авторизация игрового сервера
 
 После того, как файлы игрового сервера скачались, вам нужно авторизовать сам игровой сервер.
 Для этого, в консоли игрового сервера введите команду `/auth login device`
 
-![](/images/ru/tutorials/hytale/auth_server.png)
+![Команда авторизации игрового сервера в консоли Hytale](/images/ru/tutorials/hytale/auth_server.png)
 
-После этого, в консоли игрового сервера появится строка с ссылкой для авторизации, 
+После этого, в консоли игрового сервера появится строка со ссылкой для авторизации, 
 аналогично тому, как это было при авторизации загрузчика файлов.
 Скопируйте ссылку и откройте её в браузере, затем повторите те же шаги, что и при авторизации загрузчика файлов.
 
 В случае успеха вы увидите сообщение в консоли игрового сервера, что авторизация прошла успешно (`Authentication successful! Mode: OAUTH_DEVICE`)
 
-![](/images/en/tutorials/hytale/auth_server_success.png)
+![Сообщение об успешной авторизации игрового сервера в консоли](/images/en/tutorials/hytale/auth_server_success.png)
 
 #### Автоматическая авторизация при каждом запуске
 
 По умолчанию, после авторизации, при каждом запуске игрового сервера вам нужно будет вводить команду 
 `/auth login device` для авторизации игрового сервера. Об этом вам будет говорить сообщение:
-```
+```text
 WARNING: Credentials stored in memory only - they will be lost on restart!
 To persist credentials, run: /auth persistence <type>
 Available types: Memory, Encrypted
 ```
 
 Чтобы избежать постоянного ввода команды авторизации, включите сохранение авторизационных данных, выполнив команду:
-```
+```text
 /auth persistence Encrypted
 ```
 
 После этого в корневом каталоге игрового сервера появится файл `auth.enc`, 
 в котором будут храниться зашифрованные авторизационные данные.
 
-![](/images/en/tutorials/hytale/auth_enc_file.png)
+![Файл с зашифрованными данными авторизации Hytale](/images/en/tutorials/hytale/auth_enc_file.png)
 
 ### Настройки игрового сервера
 
@@ -128,7 +128,7 @@ Available types: Memory, Encrypted
 
 Основные настройки находятся в файле `config.json`.
 
-![](/images/ru/tutorials/hytale/main_config.png)
+![Файл config.json с основными настройками сервера Hytale](/images/ru/tutorials/hytale/main_config.png)
 
 Здесь вы можете настроить следующие параметры:
 * `ServerName` — имя вашего сервера, которое будет отображаться в списке серверов.
@@ -143,7 +143,7 @@ Available types: Memory, Encrypted
 Настройки и данные мира находятся в каталоге `universe/worlds/`, там же есть папки с мирами. 
 В каждой папке мира есть файл `config.json` с настройками мира, например `universe/worlds/default/config.json`:
 
-![](/images/ru/tutorials/hytale/world_config.png)
+![Файл config.json с настройками мира Hytale](/images/ru/tutorials/hytale/world_config.png)
 
 Здесь вы можете настроить Seed (сид генерации мира), различные параметры генерации, настройки чанков, NPC, PVP, 
 и другие параметры.

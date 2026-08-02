@@ -7,9 +7,6 @@ order: 1
 
 GameAP is an open source panel for managing game servers and services.
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Features
 
 * Game server and service management (start, stop, restart)
@@ -20,28 +17,28 @@ GameAP is an open source panel for managing game servers and services.
 * Access control (users, roles, permissions)
 * API for integration with other systems and automation. API documentation is available at [openapi.gameap.io](https://openapi.gameap.io/)
 
-Panel functionality can be extended with plugins that add new features and capabilities.
-Plugins are available at [plugins.gameap.dev](https://plugins.gameap.dev/).
-Plugins are community-supported, and anyone can create their own plugin.
-Plugins can be written in any programming language that supports compilation to WASM, such as Rust, C/C++, Go, and others.
+Panel functionality is extended with plugins. Plugins are available in the [plugins.gameap.dev](https://plugins.gameap.dev/) catalog.
+Anyone can develop and publish their own plugin (publishing goes through moderation).
+Plugins can be written in any language that compiles to WASM: there is a ready-made SDK for Rust, and there are examples in Go and AssemblyScript.
+Read more: [Plugins](/en/plugins/index.html).
 
 ## Supported Games
 
 The panel supports starting, stopping, and restarting absolutely any games and services.
 
-| Game            | Query | Rcon | Notes                                                                      |
-|-----------------|-------|------|----------------------------------------------------------------------------|
-| Minecraft       | ✔     | ✔    | Many mods are supported                                                    |
-| Half-Life       | ✔     | ✔    | All versions and popular mods are supported (Sven Co-op, HeadCrab Frenzy)  |
-| Counter-Strike  | ✔     | ✔    | All versions are supported (1.6, Source, Global Offensive, Counter-Strike 2) |
-| Team Fortress 2 | ✔     | ✔    |                                                                            |
-| Garry's Mod     | ✔     | ✔    |                                                                            |
-| Quake           | ✔     | ✔    |                                                                            |
-| Rust            | ✔     | ✔    |                                                                            |
-| FiveM           | ✔     | ✘    | Grand Theft Auto V online mod                                              |
-| Hytale          | ✘     | ✘    |                                                                            |
-| Terraria        |       |      |                                                                            |
-| San Andreas: MP |       |      |                                                                            |
+| Game                                      | Query | Rcon | Notes                                                                      |
+|-------------------------------------------|-------|------|----------------------------------------------------------------------------|
+| [Minecraft](/en/tutorials/minecraft.html) | ✔     | ✔    | Many mods are supported                                                    |
+| Half-Life                                 | ✔     | ✔    | All versions and popular mods are supported (Sven Co-op, HeadCrab Frenzy)  |
+| [Counter-Strike](/en/tutorials/cs2.html)  | ✔     | ✔    | All versions are supported (1.6, Source, Global Offensive, Counter-Strike 2) |
+| Team Fortress 2                           | ✔     | ✔    |                                                                            |
+| Garry's Mod                               | ✔     | ✔    |                                                                            |
+| [Quake](/en/tutorials/quake3.html)        | ✔     | ✔    |                                                                            |
+| [Rust](/en/tutorials/rust.html)           | ✔     | ✔    |                                                                            |
+| FiveM                                     | ✔     | ✘    | Grand Theft Auto V online mod                                              |
+| [Hytale](/en/tutorials/hytale.html)       | ✘     | ✘    |                                                                            |
+| Terraria                                  |       |      |                                                                            |
+| San Andreas: MP                           |       |      |                                                                            |
 
 and many more...
 

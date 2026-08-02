@@ -31,7 +31,7 @@ Add a new dedicated server (VDS) on which you will then install game servers.
 After installing the panel, log in and select **"Administration"** **"Dedicated servers"** → **"Create"** from the menu. After
 that, a window with instructions will open, follow them.
 
-![](/images/en/get_started/add_dedicated_server.gif)
+![Adding a dedicated server in the GameAP panel](/images/en/get_started/add_dedicated_server.gif)
 
 For more detailed information on installation and configuration, read the [Dedicated servers](/en/gameap_configure/dedicated_servers.html) page.
 
@@ -39,6 +39,6 @@ For more detailed information on installation and configuration, read the [Dedic
 
 Go to **"Administration"** → **"Game servers"** → **"Create"**.
 
-![](/images/en/get_started/add_game_server.gif)
+![Creating a game server in the GameAP panel](/images/en/get_started/add_game_server.gif)
 
 For details see [game servers](/en/gameap_configure/game_servers.html) page.

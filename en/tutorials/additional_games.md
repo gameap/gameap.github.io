@@ -14,15 +14,15 @@ This manual covers making a new game by the example of Sven Co-op. Each step wil
 First, go to the add game page. Go to **"Administration"** menu, then select 
 **"Games"**.
 
-![](/images/en/tutorials/additional_games/game_menu.png)
+![The Games item in the administration menu](/images/en/tutorials/additional_games/game_menu.png)
 
 Next, find the **"Add Game"** button on the top of the page and click on it.
 
-![](/images/en/tutorials/additional_games/add_game_menu.png)
+![The Add game button on the games list page](/images/en/tutorials/additional_games/add_game_menu.png)
 
 You will be redirected to the new game add page. Here you specify some details of your new game.
 
-![](/images/en/tutorials/additional_games/example_add_svencoop.png)
+![Add game form using Sven Co-op as an example](/images/en/tutorials/additional_games/example_add_svencoop.png)
 
 You must fill in the following fields:
 * **Code**. Enter the abbreviated game name
@@ -36,7 +36,7 @@ Note! To enable automatic installation, you must fill in one of the following fi
 * [**Steam APP ID**](/en/gameap_configure/games.html#steam-app-id). Find out the value for the game you are interested in at 
 [Steam official wiki](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List), or in the database 
 [SteamDB](https://steamdb.info/)
-* [**Remote repository**](/en/gameap_configure/games.html#remote-repository). You can find some archives in the [GameAP repository](http://files.gameap.ru/)
+* [**Remote repository**](/en/gameap_configure/games.html#remote-repository). A link to an archive over HTTP or FTP
 * [**Local repository**](/en/gameap_configure/games.html#local-repository).
 
 All these fields are optional, but one of them must have a value.
@@ -53,7 +53,7 @@ the base server build.
 
 To add a new mod for a specific game, select the game in the list and click **"Add the first mod"**.
 
-![](/images/en/tutorials/additional_games/example_menu_add_mod_svencoop.png)
+![The Add first mod button for the Sven Co-op game](/images/en/tutorials/additional_games/example_menu_add_mod_svencoop.png)
 
 If the game already has at least one mod, then at the very top of the game list page, select 
 **"Add mod"**.
@@ -62,7 +62,7 @@ On the mod adding page, specify the mod name depending on the
 game mode features (GunGame, Jail, etc.), or availability of any modules (AMXX, ReAMXX for Counter-Strike,
  IndustrialCraft, BuildCraft for Minecraft, etc.).
  
-![](/images/en/tutorials/additional_games/example_add_svencoop_mod.png)
+![Create mod form for the Sven Co-op game](/images/en/tutorials/additional_games/example_add_svencoop_mod.png)
 
 If you have an archive with additional plugins to be written over the base build, then specify the path to
 it in the local or remote repository fields. 
@@ -72,9 +72,12 @@ running GameAP Daemon; path example `/srv/gameap/repo/svencoop_op4_maps.tar.xz`.
 See details on [Game Settings](/en/gameap_configure/games.html#local-repository-1) page.
 
 In the **remote repository** field, specify the URL to the HTTP or FTP archive. 
-Path example `http://files.gameap.ru/svencoop/svencoop_op4_maps.tar.xz`.
+Path example `https://cdn.gameap.com/svencoop/svencoop_op4_maps.tar.xz`.
 See details on [Game Settings](/en/gameap_configure/games.html#remote-repository-1) page. 
-You can see examples of archives in the [GameAP repository](http://files.gameap.ru/)
+Ready-made archives for many games live in the GameAP repository (`cdn.gameap.com`,
+`cdn.gameap.ru`), but the file list cannot be browsed — directory listing is disabled and only
+direct links work. It is usually easier to take the bundled game configuration with the
+**Upgrade games** button: the URLs are already set there.
 
 ## Mod configuring
 
@@ -84,7 +87,7 @@ After making a mod, you can further configure it by specifying additional parame
 Default startup commands should be specified. If you do not specify them, then the startup command will be empty
 when creating a new game server, but it must be specified, otherwise the server will not start.
 
-![](/images/en/tutorials/additional_games/game_mods_edit_basic.png)
+![Main mod settings with the default start command](/images/en/tutorials/additional_games/game_mods_edit_basic.png)
 
 Examples of default startup commands for some Linux games:
 * Sven Co-op: 
@@ -122,16 +125,16 @@ FPS and others.
 Some parameters can be changed only by administrators, and some are available for change to ordinary users. 
 The list of variables and their names are specified in the mod settings, on the "Variables" tab.
 
-![](/images/en/tutorials/additional_games/game_mods_edit_vars.png)
+![The Variables tab in the mod settings](/images/en/tutorials/additional_games/game_mods_edit_vars.png)
 
 The variables specified in the mod for each game server can then be changed individually in the settings.
 
 The next tab in the mod settings is "RCON commands". You can specify RCON commands for player kick, ban, 
 map change, and other RCON commands, they are used for advanced game server administration.
 
-![](/images/en/tutorials/additional_games/game_mods_edit_commands.png)
+![The RCON commands tab in the mod settings](/images/en/tutorials/additional_games/game_mods_edit_commands.png)
 
 You can specify your optional RCON commands on the Fast Rcon tab. For example, the server status command or 
 statistics.
 
-![](/images/en/tutorials/additional_games/game_mods_edit_fast_rcon.png)
+![The Fast RCON tab with user-defined commands](/images/en/tutorials/additional_games/game_mods_edit_fast_rcon.png)
