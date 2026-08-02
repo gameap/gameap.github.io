@@ -6,9 +6,6 @@ category: Администрирование
 order: 334
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Панель настраивается переменными окружения. Значения читаются из файла `config.env`:
 
 * Linux — `/etc/gameap/config.env`

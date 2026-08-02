@@ -7,9 +7,6 @@ order: 1
 
 GameAP is an open source panel for managing game servers and services.
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Features
 
 * Game server and service management (start, stop, restart)

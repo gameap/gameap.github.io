@@ -6,9 +6,6 @@ category: Настройка панели
 order: 310
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Страница игрового сервера
 
 Откройте **Список серверов** и выберите сервер. Страница разделена на вкладки; их набор зависит

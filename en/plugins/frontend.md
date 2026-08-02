@@ -6,9 +6,6 @@ category: Plugins
 order: 343
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## How the frontend is embedded
 
 A plugin may contain an interface — Vue 3 components bundled into JS and CSS and embedded into the same `.wasm` file. The panel serves the concatenated frontend bundles of all loaded plugins at `/plugins.js` and `/plugins.css` (for authenticated users only). The panel loader imports this code as a module and registers every exported `PluginDefinition` object.

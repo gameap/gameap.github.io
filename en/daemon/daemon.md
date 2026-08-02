@@ -6,9 +6,6 @@ category: GameAP Daemon
 order: 400
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 GameAP Daemon is a background application that runs on a dedicated server and manages game
 servers: it installs, removes, starts, and stops them, monitors their state, and executes
 commands from the panel.

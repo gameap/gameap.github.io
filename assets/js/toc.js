@@ -8,36 +8,44 @@
   var TOC = {
     config: {
       contentSelector: '#content',
-      tocSelector: '#toc',
+      tocSelector: '.js-toc',
       headingSelector: 'h2, h3, h4, h5, h6',
       scrollOffset: 100
     },
 
     headings: [],
+    containers: [],
     currentActiveId: null,
 
     init: function() {
-      var tocContainer = document.querySelector(this.config.tocSelector);
+      var tocContainers = document.querySelectorAll(this.config.tocSelector);
       var contentContainer = document.querySelector(this.config.contentSelector);
+      var i;
 
-      if (!tocContainer || !contentContainer) {
+      if (tocContainers.length === 0 || !contentContainer) {
         return;
       }
 
+      this.containers = Array.prototype.slice.call(tocContainers);
       this.headings = contentContainer.querySelectorAll(this.config.headingSelector);
 
       if (this.headings.length === 0) {
-        tocContainer.style.display = 'none';
+        for (i = 0; i < this.containers.length; i++) {
+          this.containers[i].style.display = 'none';
+        }
         return;
       }
 
       this.ensureHeadingIds(this.headings);
 
       var tocHTML = this.buildTocHTML(this.headings);
-      tocContainer.innerHTML = tocHTML;
+
+      for (i = 0; i < this.containers.length; i++) {
+        this.containers[i].innerHTML = tocHTML;
+        this.setupSmoothScroll(this.containers[i]);
+      }
 
       this.initScrollSpy();
-      this.setupSmoothScroll(tocContainer);
     },
 
     ensureHeadingIds: function(headings) {
@@ -203,18 +211,20 @@
         return;
       }
 
-      var tocContainer = document.querySelector(this.config.tocSelector);
-      var links = tocContainer.querySelectorAll('.toc-link');
+      for (var c = 0; c < this.containers.length; c++) {
+        var links = this.containers[c].querySelectorAll('.toc-link');
 
-      for (var i = 0; i < links.length; i++) {
-        links[i].classList.remove('active');
+        for (var i = 0; i < links.length; i++) {
+          links[i].classList.remove('active');
+        }
+
+        var activeLink = this.containers[c].querySelector('.toc-link[href="#' + id + '"]');
+        if (activeLink) {
+          activeLink.classList.add('active');
+        }
       }
 
-      var activeLink = tocContainer.querySelector('.toc-link[href="#' + id + '"]');
-      if (activeLink) {
-        activeLink.classList.add('active');
-        this.currentActiveId = id;
-      }
+      this.currentActiveId = id;
     },
 
     setupSmoothScroll: function(tocContainer) {

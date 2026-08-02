@@ -6,9 +6,6 @@ category: Administration
 order: 334
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 The panel is configured with environment variables. Values are read from the `config.env` file:
 
 * Linux — `/etc/gameap/config.env`

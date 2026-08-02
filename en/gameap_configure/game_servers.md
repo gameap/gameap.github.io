@@ -6,9 +6,6 @@ category: Panel settings
 order: 310
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Game server page
 
 Open **Servers List** and select a server. The page is split into tabs; which ones are present

@@ -6,9 +6,6 @@ category: Администрирование
 order: 333
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Панель умеет обслуживать HTTPS самостоятельно, без обратного прокси. Сертификат можно взять
 из файлов, задать прямо в конфигурации или получать автоматически через Let's Encrypt.
 

@@ -6,9 +6,6 @@ category: Установка GameAP
 order: 102
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Панель распространяется готовым образом `gameap/gameap`. Демон в Docker не запускают: он должен
 управлять процессами игровых серверов на выделенном сервере напрямую.
 

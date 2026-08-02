@@ -6,9 +6,6 @@ category: Plugins
 order: 341
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## The Plugins page
 
 Plugin management is available to an administrator on the **Administration** → **Plugins** page. The page has two tabs:

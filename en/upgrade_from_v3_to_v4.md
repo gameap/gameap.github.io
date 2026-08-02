@@ -6,9 +6,6 @@ category: Install GameAP
 order: 191
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Upgrading from GameAP 3 while keeping the existing database is possible only to
 **versions 4.0 and 4.1**. They recognize a third-version database, extend its schema with their
 own tables, and keep working with the same users, servers, and games.

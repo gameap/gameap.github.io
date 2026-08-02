@@ -6,9 +6,6 @@ category: Administration
 order: 332
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Access in the panel is built from three concepts:
 
 * **Permission** — a single allowed action, for example "start a game server".

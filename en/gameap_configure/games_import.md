@@ -6,9 +6,6 @@ category: Panel settings
 order: 330
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Game and mod settings can be moved between GameAP installations and taken from other control
 panels. This capability appeared in GameAP 4.1.
 

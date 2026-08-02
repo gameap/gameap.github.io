@@ -6,9 +6,6 @@ category: Администрирование
 order: 332
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Доступ в панели строится из трёх понятий:
 
 * **Право** — одно разрешённое действие, например «запуск игрового сервера».

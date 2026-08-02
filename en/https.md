@@ -6,9 +6,6 @@ category: Administration
 order: 333
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 The panel can serve HTTPS on its own, without a reverse proxy. A certificate can be taken from
 files, set directly in the configuration, or obtained automatically via Let's Encrypt.
 

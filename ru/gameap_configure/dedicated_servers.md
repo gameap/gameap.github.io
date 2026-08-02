@@ -6,9 +6,6 @@ category: Настройка панели
 order: 300
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Новый выделенный сервер
 
 В самом начале работы с панелью необходимо добавить выделенный сервер (VDS/VPS, контейнер, физический

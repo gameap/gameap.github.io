@@ -6,9 +6,6 @@ category: Install GameAP
 order: 102
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 The panel is distributed as a ready-made `gameap/gameap` image. The daemon is not run in Docker:
 it has to manage game server processes on the dedicated server directly.
 

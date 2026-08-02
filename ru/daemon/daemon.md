@@ -6,9 +6,6 @@ category: GameAP Daemon
 order: 400
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 GameAP Daemon — фоновое приложение, которое работает на выделенном сервере и управляет игровыми
 серверами: устанавливает, удаляет, запускает, останавливает, следит за их состоянием и выполняет
 команды панели.

@@ -6,9 +6,6 @@ category: Plugins
 order: 344
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## The plugin catalog
 
 The GameAP plugin catalog is available at [plugins.gameap.dev](https://plugins.gameap.dev/) (English version) and [plugins.gameap.ru](https://plugins.gameap.ru/) (Russian version). The public part of the catalog includes:

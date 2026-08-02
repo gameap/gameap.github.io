@@ -6,9 +6,6 @@ category: GameAP Daemon
 order: 405
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Starting with GameAP 4.2 and GameAP Daemon 4.0, the panel and the daemon exchange data over gRPC
 using a bidirectional stream (bidirectional streaming). This method has replaced the old exchange
 over BINN and the REST API.

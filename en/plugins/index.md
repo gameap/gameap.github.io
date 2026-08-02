@@ -6,9 +6,6 @@ category: Plugins
 order: 340
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Plugins extend the functionality of the GameAP panel: they add new pages, tabs on the game server page, file editors, buttons on the home page, and integrations with external services.
 
 A plugin is a single `.wasm` file (a WASM module targeting `wasm32-wasip1`). Plugins can be written in any language that compiles to WASM: there is a ready-made SDK for Rust, and development in AssemblyScript is possible. A plugin may include a Vue 3 frontend embedded in the same `.wasm` file — the plugin's pages and components run directly inside the panel interface.

@@ -6,9 +6,6 @@ category: Настройка панели
 order: 330
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 Настройки игр и модификаций можно переносить между установками GameAP и брать из других панелей
 управления. Возможность появилась в GameAP 4.1.
 

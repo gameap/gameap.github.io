@@ -6,9 +6,6 @@ category: Troubleshooting
 order: 400
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 This page describes some possible errors and how to fix them.
 
 ## Where to Start

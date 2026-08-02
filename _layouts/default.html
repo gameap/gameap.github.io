@@ -44,11 +44,16 @@
 
                     <section id="content" class="col-sm-12 col-md-9 col-lg-6 markdown-body entry-content">
                         <h1>{{ page.title }}</h1>
+                        {%- comment -%}
+                            Inline table of contents for narrow screens: the sidebar one below
+                            is hidden under the lg breakpoint. Both are filled by assets/js/toc.js.
+                        {%- endcomment -%}
+                        <nav id="toc-inline" class="js-toc noprint d-lg-none"></nav>
                         {{ content }}
                     </section>
 
                     <aside class="col-lg-3 noprint d-none d-lg-block">
-                        <nav id="toc" class="sticky-top"></nav>
+                        <nav id="toc" class="js-toc sticky-top"></nav>
                     </aside>
                 {% else %}
                     <div id="content" class="col-md-12">

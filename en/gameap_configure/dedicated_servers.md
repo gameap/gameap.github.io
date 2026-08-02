@@ -6,9 +6,6 @@ category: Panel settings
 order: 300
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## New dedicated server
 
 When getting started with the panel, you should add a dedicated server (VDS/VPS, container, physical

@@ -6,9 +6,6 @@ category: Main
 order: 10
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 GameAP 4 is a single executable with a built-in web interface. No web server, PHP, composer, or
 Node.js is needed to run the panel.
 

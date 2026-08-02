@@ -6,9 +6,6 @@ category: Общее
 order: 10
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 GameAP 4 — один исполняемый файл со встроенным веб-интерфейсом. Веб-сервер, PHP, composer и Node.js
 для работы панели не нужны.
 

@@ -6,9 +6,6 @@ category: Plugins
 order: 342
 ---
 
-* This will become a table of contents (this text will be scraped).
-{:toc}
-
 ## Architecture
 
 A GameAP plugin is a WASM module for the `wasm32-wasip1` target (WASI preview 1), built as a reactor. The panel runs each plugin in an isolated [wazero](https://github.com/tetratelabs/wazero) runtime: no file system, no network, no environment variables; stdout and stderr are discarded.
