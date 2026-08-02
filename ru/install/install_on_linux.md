@@ -1,5 +1,6 @@
 ---
 title: Установка на Linux
+description: "Установка панели GameAP на Linux одной командой: выбор базы данных, параметры хоста и порта, установка без вопросов и вместе с демоном."
 layout: default
 lang: ru
 category: Установка GameAP
@@ -48,7 +49,7 @@ bash <(curl -s https://gameap.com/install.sh)
 В конце установки будут отображены данные для доступа к панели.
 Не забудьте сохранить эти данные, чтобы иметь доступ к панели.
 
-![](/images/en/gameapctl/gameap_finished_installation.png)
+![Данные для входа в панель, показанные по завершении установки](/images/en/gameapctl/gameap_finished_installation.png)
 
 ## Дополнительные параметры установки
 

@@ -1,5 +1,6 @@
 ---
 title: Импорт игр
+description: "Перенос настроек игр между установками GameAP, импорт заготовок Pterodactyl и Pelican, обновление игр из каталога."
 layout: default
 lang: ru
 category: Настройка панели
@@ -11,7 +12,7 @@ order: 330
 
 Всё это находится на странице **Администрирование** → **Игры**.
 
-![](/images/ru/gameap_configure/games_import/import_button.png)
+![Кнопки импорта и экспорта на странице «Игры» в администрировании](/images/ru/gameap_configure/games_import/import_button.png)
 
 ## Собственный формат GameAP
 
@@ -34,7 +35,7 @@ GET /api/games/{code}/export
 **Администрирование** → **Игры** → **Импорт GameAP YAML**, загрузите файл и нажмите
 **Импортировать**.
 
-![](/images/ru/gameap_configure/games_import/import_page.png)
+![Страница импорта игр с выбором YAML-файла настроек](/images/ru/gameap_configure/games_import/import_page.png)
 
 Через API:
 
@@ -102,4 +103,4 @@ Docker и Podman [процесс менеджерах](/ru/daemon/process_manage
 Вам необходимо сконфигурировать GameAP Daemon для работы с одним из этих процесс менеджером.
 Для этого при добавлении новой ноды, в разделе "Дополнительные настройки" выберите нужный процесс менеджер.
 
-![](/images/ru/gameap_configure/games_import/daemon_process_manager.png)
+![Выбор менеджера процессов Docker при добавлении выделенного сервера](/images/ru/gameap_configure/games_import/daemon_process_manager.png)

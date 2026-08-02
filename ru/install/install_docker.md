@@ -1,5 +1,6 @@
 ---
 title: Установка в Docker
+description: "Запуск панели GameAP в Docker: готовый образ, docker compose, тома с данными и два параметра, без которых демоны не подключатся."
 layout: default
 lang: ru
 category: Установка GameAP

@@ -33,7 +33,7 @@ GameAP полностью поддерживает Counster-Strike 2, включ
 
 Перейдите на страницу **Администрирование** → **Игровые серверы** → **Создать**
 
-![](/images/ru/tutorials/cs2/create_form.png)
+![Форма создания игрового сервера Counter-Strike 2](/images/ru/tutorials/cs2/create_form.png)
 
 * В поле "Имя" впишите любое название сервера, например "Мой Counter-Strike 2 сервер".
 * В поле "Игра" выберите опцию Counter-Strike 2.
@@ -50,16 +50,16 @@ GameAP полностью поддерживает Counster-Strike 2, включ
 Чтобы сгенерировать, перейдите на страницу 
 [https://steamcommunity.com/dev/managegameservers](https://steamcommunity.com/dev/managegameservers).
 
-![](/images/ru/tutorials/cs2/token_generation.png)
+![Генерация токена игрового сервера на сайте Steam](/images/ru/tutorials/cs2/token_generation.png)
 
 После генерации значение токена появится в таблице, используйте значение из 32 символов:
 
-![](/images/ru/tutorials/cs2/token_table.png)
+![Таблица с созданным токеном игрового сервера Steam](/images/ru/tutorials/cs2/token_table.png)
  
 Значение токена нужно скопировать и указать в настройках в панели управления.
 Перейдите на страницу **Серверы** → выберите сервер → **Управление** → **Настройки**
 
-![](/images/ru/tutorials/cs2/set_token.png)
+![Поле для токена Steam в настройках игрового сервера](/images/ru/tutorials/cs2/set_token.png)
 
 После этого вы можете запускать ваш сервер.
 
@@ -70,4 +70,4 @@ GameAP полностью поддерживает Counster-Strike 2, включ
 
 Основной файл конфигурации сервера Counter-Strike 2 это `server.cfg`
 
-![](/images/ru/tutorials/cs2/server_config.png)
+![Файл server.cfg сервера Counter-Strike 2 в файловом менеджере](/images/ru/tutorials/cs2/server_config.png)

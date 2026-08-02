@@ -1,5 +1,6 @@
 ---
 title: База данных
+description: "Строки подключения для PostgreSQL, MySQL и SQLite, миграции при обновлении, резервное копирование и переключение на другую СУБД."
 layout: default
 lang: ru
 category: Администрирование

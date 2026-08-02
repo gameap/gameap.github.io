@@ -1,5 +1,6 @@
 ---
 title: Устранение ошибок
+description: "Сервер не запускается, статус отображается неверно, демон не подключается к панели, файл не загружается, вход заблокирован — причины и решения."
 layout: default
 lang: ru
 category: Устранение ошибок
@@ -132,11 +133,11 @@ dpkg-reconfigure tzdata
 
 Неправильно сформированный архив для GTA: San Andreas Multiplayer:
 
-![](/images/errors/source_archive_wrong.jpg)
+![Неправильный архив установки: файлы игрового сервера лежат во вложенном каталоге](/images/errors/source_archive_wrong.jpg)
 
 Правильно:
 
-![](/images/errors/source_archive_right.jpg)
+![Правильный архив установки: файлы игрового сервера лежат в корне архива](/images/errors/source_archive_right.jpg)
 
 ### Неправильно указан источник установки
 

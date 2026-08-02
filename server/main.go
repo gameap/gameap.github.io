@@ -29,6 +29,27 @@ type Config struct {
 
 var cfg Config
 
+// pathRedirects maps addresses of removed documentation pages to their current
+// location. The set is fixed and known, so it lives here rather than in an env
+// var: these URLs are still in search results and in external links, and a 301
+// is what carries their accumulated ranking over to the replacement page.
+//
+// Keys are stored without the .html suffix; both forms are looked up.
+var pathRedirects = map[string]string{
+	"/install":            "/install/install_on_linux.html",
+	"/auto_install":       "/install/install_on_linux.html",
+	"/gameap_daemon":      "/daemon/daemon.html",
+	"/gameap_daemon_spec": "/daemon/daemon.html",
+}
+
+// lookupRedirect resolves a request path against pathRedirects, accepting both
+// /page and /page.html.
+func lookupRedirect(urlPath string) (string, bool) {
+	key := strings.TrimSuffix(strings.TrimSuffix(urlPath, "/"), ".html")
+	target, ok := pathRedirects[key]
+	return target, ok
+}
+
 func init() {
 	// Create sub-filesystem rooted at "site"
 	var err error
@@ -91,6 +112,11 @@ func (w gzipWriter) Write(b []byte) (int, error) {
 
 func gzipMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// Announced on every response, compressed or not: a shared cache that
+		// stored the identity variant without it would later hand that same
+		// entry to a client expecting gzip, and vice versa.
+		w.Header().Set("Vary", "Accept-Encoding")
+
 		if !strings.Contains(r.Header.Get("Accept-Encoding"), "gzip") {
 			next.ServeHTTP(w, r)
 			return
@@ -127,6 +153,13 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Pages that were removed from the docs - send their visitors to the
+	// replacement instead of a dead end.
+	if target, ok := lookupRedirect(urlPath); ok {
+		http.Redirect(w, r, target, http.StatusMovedPermanently)
+		return
+	}
+
 	// Static assets (css, images) - check BEFORE language prefix
 	// because paths like /css/ look like language codes
 	if isStaticAsset(urlPath) {
@@ -148,7 +181,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, fmt.Sprintf("https://%s/%s", domain, suffix), http.StatusMovedPermanently)
 		} else {
 			// Language not in REDIRECTS - 404
-			http.NotFound(w, r)
+			notFound(w, r)
 		}
 		return
 	}
@@ -192,6 +225,24 @@ func isStaticAsset(urlPath string) bool {
 	return urlPath == "/favicon.ico"
 }
 
+// notFound serves the site's own 404 page with a 404 status. The response is
+// explicitly not cached: handleRequest sets an hour-long Cache-Control before
+// it knows whether the page exists, and caching a miss for a URL that was just
+// published is worse than paying for one extra request.
+func notFound(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Cache-Control", "no-store")
+
+	page, err := fs.ReadFile(siteFS, path.Join(cfg.Lang, "404.html"))
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusNotFound)
+	_, _ = w.Write(page)
+}
+
 func serveFile(w http.ResponseWriter, r *http.Request, filePath string) {
 	// Clean the path and ensure no leading slash (fs.FS uses relative paths)
 	filePath = path.Clean(filePath)
@@ -212,7 +263,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, filePath string) {
 			if _, err := fs.Stat(siteFS, indexPath); err == nil {
 				filePath = indexPath
 			} else {
-				http.NotFound(w, r)
+				notFound(w, r)
 				return
 			}
 		}
@@ -226,7 +277,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, filePath string) {
 		if _, err := fs.Stat(siteFS, indexPath); err == nil {
 			filePath = indexPath
 		} else {
-			http.NotFound(w, r)
+			notFound(w, r)
 			return
 		}
 	}
@@ -234,7 +285,7 @@ func serveFile(w http.ResponseWriter, r *http.Request, filePath string) {
 	// Read file content from embedded filesystem
 	content, err := fs.ReadFile(siteFS, filePath)
 	if err != nil {
-		http.NotFound(w, r)
+		notFound(w, r)
 		return
 	}
 

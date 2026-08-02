@@ -1,5 +1,6 @@
 ---
 title: HTTPS и сертификаты
+description: "HTTPS для панели GameAP: сертификат из файлов, автоматический выпуск через Let’s Encrypt по http-01 и dns-01, продление и работа за обратным прокси."
 layout: default
 lang: ru
 category: Администрирование

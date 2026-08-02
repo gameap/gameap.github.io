@@ -1,5 +1,6 @@
 ---
 title: Обновление
+description: "Обновление панели и демона GameAP через gameapctl на Linux и Windows, установка конкретной версии и что учесть перед обновлением."
 layout: default
 lang: ru
 category: Установка GameAP
@@ -48,7 +49,7 @@ C:\path\to\gameapctl.exe panel upgrade
 Либо воспользуйтесь UI. Запустите gameapctl.exe,
 а в открывшемся окне в браузере нажмите **"Upgrade"** в разделе Web/API
 
-![](/images/en/gameapctl/ui.png)
+![Кнопка Upgrade в разделе Web/API интерфейса gameapctl](/images/en/gameapctl/ui.png)
 
 ### Обновление до конкретной версии
 
@@ -77,4 +78,4 @@ C:\path\to\gameapctl.exe daemon upgrade
 Либо воспользуйтесь UI. Запустите gameapctl.exe, а в открывшемся окне в браузере нажмите **"Upgrade"**
 в разделе GameAP Daemon
 
-![](/images/en/gameapctl/ui.png)
+![Кнопка Upgrade в разделе GameAP Daemon интерфейса gameapctl](/images/en/gameapctl/ui.png)

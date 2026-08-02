@@ -1,5 +1,6 @@
 ---
 title: GRPC API
+description: "Обмен данными панели и демона по gRPC: переменные GRPC_*, отдельный порт 31718, сертификаты и mTLS, переподключение и переход со старого протокола."
 layout: default
 lang: ru
 category: GameAP Daemon
