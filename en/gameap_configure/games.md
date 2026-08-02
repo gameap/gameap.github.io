@@ -78,7 +78,7 @@ Example game server working directory `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_gungame.zip` | Valid, if the archive exists on the dedicated server | The `cs16_gungame.zip` archive contents will be unzipped into `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_public` | Valid, if the directory exists on the dedicated server | The directory contents will be copied to `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_gungame.rar` | Invalid. RAR archives not supported | Installation method from the local repository will be skipped or the server will not be installed
-| `http://files.gameap.ru/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Invalid. Value for remote repository is specified | Installation method from the local repository will be skipped or the server will not be installed
+| `https://cdn.gameap.com/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Invalid. Value for remote repository is specified | Installation method from the local repository will be skipped or the server will not be installed
 
 
 #### Remote repository
@@ -87,7 +87,11 @@ Link to a remote source. This must be a URL to an HTTP or FTP resource. Archive 
 without any intermediate pages that require waiting or additional action. Links to Yandex Disk, Google Drive, 
 etc. are not supported.
 
-You can find some builds on the [official GameAP repository](http://files.gameap.ru/).
+Ready-made builds live in the GameAP repository — `cdn.gameap.com` worldwide and `cdn.gameap.ru`
+for Russia. The file list cannot be browsed: directory listing is disabled and only direct links
+work. Rather than looking for them by hand, use the **Upgrade games** button — the bundled game
+configurations already contain the right URLs, see
+[Games Import](/en/gameap_configure/games_import.html#upgrading-games-from-the-gameap-catalog).
 
 ##### Examples
 
@@ -95,7 +99,7 @@ Example game server working directory `/srv/gameap/servers/example-server`
 
 | Remote Repository field value | Value validity | Installation result
 | ------ | ------- | ------ |
-| `http://files.gameap.ru/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Valid | The `rehlds-amxx-reunion.tar.xz` will be loaded and unzipped to `/srv/gameap/servers/example-server`
+| `https://cdn.gameap.com/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Valid | The `rehlds-amxx-reunion.tar.xz` will be loaded and unzipped to `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_gungame.zip` | Invalid. The http or ftp resource must be specified | Installation method will be skipped or the game server will not be installed.
 
 ## Adding new mods
@@ -147,7 +151,7 @@ Example game server working directory `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_gungame.zip` | Valid, if the archive exists on the dedicated server | The `cs16_gungame.zip` archive contents will be unzipped into `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_cs16_gungame` | Valid, if the directory exists on the dedicated server | The directory contents will be copied to `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_gungame.rar` | Invalid. RAR archives not supported | Archive unzipping will be skipped
-| `http://files.gameap.ru/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Invalid. Remote repository value is specified | Mod installation will be skipped
+| `https://cdn.gameap.com/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Invalid. Remote repository value is specified | Mod installation will be skipped
 
 
 ##### Remote repository
@@ -156,7 +160,11 @@ Link to a remote source. This must be a URL to an HTTP or FTP resource. Archive 
 without any intermediate pages that require waiting or additional action. Links to Yandex Disk, Google Drive, 
 etc. are not supported.
 
-You can find some builds on the [official GameAP repository](http://files.gameap.ru/).
+Ready-made builds live in the GameAP repository — `cdn.gameap.com` worldwide and `cdn.gameap.ru`
+for Russia. The file list cannot be browsed: directory listing is disabled and only direct links
+work. Rather than looking for them by hand, use the **Upgrade games** button — the bundled game
+configurations already contain the right URLs, see
+[Games Import](/en/gameap_configure/games_import.html#upgrading-games-from-the-gameap-catalog).
 
 ###### Examples
 
@@ -164,7 +172,7 @@ Example game server working directory `/srv/gameap/servers/example-server`
 
 | Remote Repository field value | Value validity | Installation result
 | ------ | ------- | ------ |
-| `http://files.gameap.ru/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Valid | The `rehlds-amxx-reunion.tar.xz` will be loaded and unzipped to `/srv/gameap/servers/example-server`
+| `https://cdn.gameap.com/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Valid | The `rehlds-amxx-reunion.tar.xz` will be loaded and unzipped to `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_gungame.zip` | Invalid. Http or ftp resource must be specified | Mod installation will be skipped
 
 ## Editing mods

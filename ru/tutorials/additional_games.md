@@ -36,7 +36,7 @@ order: 299
 * [**Steam APP ID**](/ru/gameap_configure/games.html#steam-app-id). Значение для интересующей вас игры узнать на 
 [официальной вики Steam](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List), либо в базе данных 
 [SteamDB](https://steamdb.info/)
-* [**Удалённый репозиторий**](/ru/gameap_configure/games.html#удалённый-репозиторий). Некоторые архивы есть в [хранилище GameAP](http://files.gameap.ru/)
+* [**Удалённый репозиторий**](/ru/gameap_configure/games.html#удалённый-репозиторий). Ссылка на архив по HTTP или FTP
 * [**Локальный репозиторий**](/ru/gameap_configure/games.html#локальный-репозиторий).
 
 Все эти поля указывать не обязательно, но значение в каком-то одном из них обязательно должно быть.
@@ -72,9 +72,11 @@ order: 299
 Подробнее на странице [Настройка игр](/ru/gameap_configure/games.html#локальный-репозиторий-1).
 
 В поле **удалённый репозиторий** нужно указывать url к архиву на HTTP или FTP. 
-Пример пути `http://files.gameap.ru/svencoop/svencoop_op4_maps.tar.xz`.
+Пример пути `https://cdn.gameap.ru/svencoop/svencoop_op4_maps.tar.xz`.
 Подробнее на странице [Настройка игр](/ru/gameap_configure/games.html#удалённый-репозиторий-1). 
-Примеры архивов можете посмотреть в [хранилище GameAP](http://files.gameap.ru/)
+Готовые архивы для многих игр есть в хранилище GameAP (`cdn.gameap.ru`, `cdn.gameap.com`), но
+посмотреть их список нельзя — каталог закрыт, работают только прямые ссылки. Обычно проще взять
+готовые настройки игры кнопкой **«Обновить игры»**: в них адреса уже указаны.
 
 ## Конфигурирование модификации
 

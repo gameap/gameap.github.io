@@ -91,7 +91,7 @@ If successful, you will see a message in the game server console that authorizat
 
 By default, after authorization, you will need to enter the `/auth login device` command
 to authorize the game server on each startup. You will see this message:
-```http
+```text
 WARNING: Credentials stored in memory only - they will be lost on restart!
 To persist credentials, run: /auth persistence <type>
 Available types: Memory, Encrypted

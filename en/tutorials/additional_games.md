@@ -36,7 +36,7 @@ Note! To enable automatic installation, you must fill in one of the following fi
 * [**Steam APP ID**](/en/gameap_configure/games.html#steam-app-id). Find out the value for the game you are interested in at 
 [Steam official wiki](https://developer.valvesoftware.com/wiki/Dedicated_Servers_List), or in the database 
 [SteamDB](https://steamdb.info/)
-* [**Remote repository**](/en/gameap_configure/games.html#remote-repository). You can find some archives in the [GameAP repository](http://files.gameap.ru/)
+* [**Remote repository**](/en/gameap_configure/games.html#remote-repository). A link to an archive over HTTP or FTP
 * [**Local repository**](/en/gameap_configure/games.html#local-repository).
 
 All these fields are optional, but one of them must have a value.
@@ -72,9 +72,12 @@ running GameAP Daemon; path example `/srv/gameap/repo/svencoop_op4_maps.tar.xz`.
 See details on [Game Settings](/en/gameap_configure/games.html#local-repository-1) page.
 
 In the **remote repository** field, specify the URL to the HTTP or FTP archive. 
-Path example `http://files.gameap.ru/svencoop/svencoop_op4_maps.tar.xz`.
+Path example `https://cdn.gameap.com/svencoop/svencoop_op4_maps.tar.xz`.
 See details on [Game Settings](/en/gameap_configure/games.html#remote-repository-1) page. 
-You can see examples of archives in the [GameAP repository](http://files.gameap.ru/)
+Ready-made archives for many games live in the GameAP repository (`cdn.gameap.com`,
+`cdn.gameap.ru`), but the file list cannot be browsed — directory listing is disabled and only
+direct links work. It is usually easier to take the bundled game configuration with the
+**Upgrade games** button: the URLs are already set there.
 
 ## Mod configuring
 

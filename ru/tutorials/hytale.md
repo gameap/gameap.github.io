@@ -92,7 +92,7 @@ GameAP Daemon является агентом, отвечающим за упр�
 
 По умолчанию, после авторизации, при каждом запуске игрового сервера вам нужно будет вводить команду 
 `/auth login device` для авторизации игрового сервера. Об этом вам будет говорить сообщение:
-```http
+```text
 WARNING: Credentials stored in memory only - they will be lost on restart!
 To persist credentials, run: /auth persistence <type>
 Available types: Memory, Encrypted

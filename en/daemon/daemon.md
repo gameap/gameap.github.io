@@ -196,6 +196,10 @@ remote_repository_replacements:
       priority: 10
 ```
 
+The first line covers the most common case: `files.gameap.ru` is a retired address, and game
+entries created before it was switched off still point at it. This replacement fixes them without
+editing every game.
+
 The value can be a single address or a list. List items may specify a `priority` — the higher
 the number, the higher the priority.
 

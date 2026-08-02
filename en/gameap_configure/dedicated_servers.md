@@ -43,7 +43,7 @@ dedicated server.
 Copy the command from the Linux tab and run it on the dedicated server **as root**:
 
 ```bash
-bash <(curl -s 'http://your-panel/nodes/setup/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx')
+bash <(curl -fsSL 'https://your-panel/nodes/setup/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx')
 ```
 
 The script checks the environment, installs `gameapctl` into `/usr/local/bin` (or updates it if it is
@@ -56,7 +56,7 @@ survive `sudo`, and the script will stop with an error. If you are not working a
 script to a file and run it:
 
 ```bash
-curl -fsSL 'http://your-panel/nodes/setup/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx' -o gameap-setup.sh
+curl -fsSL 'https://your-panel/nodes/setup/zItWHWlI4RKPl9ZsYc3y3WgdKq7mNvBx' -o gameap-setup.sh
 sudo bash gameap-setup.sh
 ```
 

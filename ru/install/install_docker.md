@@ -22,7 +22,7 @@ docker run -d \
   -e DATABASE_DRIVER=sqlite \
   -e 'DATABASE_URL=file:/var/lib/gameap/db.sqlite?_busy_timeout=5000&_journal_mode=WAL&cache=shared' \
   -e AUTH_SECRET=$(openssl rand -base64 24) \
-  -e ENCRYPTION_KEY=$(openssl rand -base64 24) \
+  -e ENCRYPTION_KEY=$(openssl rand -hex 32) \
   -e GRPC_EXTERNAL_HOST=panel.example.com \
   -v gameap-data:/var/lib/gameap \
   gameap/gameap:latest
@@ -101,11 +101,15 @@ LOGGER_LEVEL=info
 ```
 
 > В примере `docker-compose.yml` значения `AUTH_SECRET` и `ENCRYPTION_KEY` по умолчанию —
-> `change-me-in-production`. С такими ключами токены сессий подделываются тривиально. Задайте
-> свои значения до первого запуска.
+> `change-me-in-production`. С такими ключами токены сессий подделываются тривиально.
+> **Замените оба значения до первого `docker compose up`** — не после, а до.
 >
-> Учтите: если сменить `ENCRYPTION_KEY` на работающей установке, у всех пользователей перестанет
-> работать двухфакторная аутентификация. См. [Безопасность](/ru/security.html).
+> Позже сменить `ENCRYPTION_KEY` уже не получится безболезненно: сохранённые секреты TOTP станут
+> нечитаемыми, и всем пользователям придётся подключать двухфакторную аутентификацию заново.
+> См. [Безопасность](/ru/security.html).
+
+Длина у ключей разная: `AUTH_SECRET` приводится ровно к 32 байтам, а `ENCRYPTION_KEY` хешируется
+целиком. Поэтому команды генерации в примере выше отличаются.
 
 ## Данные и тома
 
