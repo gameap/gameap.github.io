@@ -71,10 +71,14 @@ The directory with the database file must be writable by the user the panel runs
 
 ```dotenv
 DATABASE_DRIVER=inmemory
+DATABASE_URL=inmemory
 ```
 
 Data is kept in RAM only and is lost on restart. Meant for tests; not suitable for a production
 installation.
+
+`DATABASE_URL` has to be set even here: the panel checks it for emptiness before it learns the
+driver, and will not start without it. The value itself is not used.
 
 ## Migrations
 

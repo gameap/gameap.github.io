@@ -153,8 +153,20 @@ Para restablecer también la cuenta atrás de 30 días, elimine la clave `mfa_fi
 UPDATE users SET metadata = metadata - 'mfa_first_shown_at' WHERE login = 'admin';
 ```
 
-En MySQL y SQLite el campo se almacena como texto JSON; lo más sencillo es limpiarlo por completo:
-`UPDATE users SET metadata = NULL WHERE login = 'admin';`
+En MySQL el campo se almacena como texto JSON, y la clave se elimina así:
+
+```sql
+UPDATE users SET metadata = JSON_REMOVE(metadata, '$.mfa_first_shown_at') WHERE login = 'admin';
+```
+
+En SQLite, a partir de la versión 3.38:
+
+```sql
+UPDATE users SET metadata = json_remove(metadata, '$.mfa_first_shown_at') WHERE login = 'admin';
+```
+
+> No limpie el campo `metadata` por completo (`SET metadata = NULL`): además de la cuenta atrás de
+> 2FA puede contener otros datos del usuario, y se perderían.
 
 Después, inicie el panel y active 2FA de nuevo.
 
@@ -356,11 +368,30 @@ automáticamente.
 | `AUTH_SECRET`    | sí          | Clave de firma de los tokens de sesión. Sin ella el panel no arrancará |
 | `ENCRYPTION_KEY` | no          | Clave de cifrado de los secretos en la base de datos                |
 
-Ambos valores deben ser **exactamente 32 bytes aleatorios**, no una frase de contraseña:
+Ambos valores deben ser aleatorios, no una frase de contraseña. Pero sus requisitos de longitud
+son **distintos**: el panel los trata de forma diferente.
+
+**`AUTH_SECRET` se usa tal cual y se ajusta exactamente a 32 bytes:** un valor más corto se rellena,
+uno más largo se **trunca**, y al registro solo llega una advertencia. Por eso indique exactamente
+32 caracteres:
 
 ```bash
-openssl rand -hex 16
+openssl rand -base64 24
 ```
+
+No use aquí `openssl rand -hex 32`: obtendrá 64 caracteres, el panel descartará la mitad y la
+robustez seguirá siendo la misma.
+
+**`ENCRYPTION_KEY` se hashea por completo con SHA-256**, su longitud no está limitada y no se pierde
+nada. Aquí puede usar un valor más largo:
+
+```bash
+openssl rand -hex 32
+```
+
+El hasheo conserva la entropía del valor original, pero no la aumenta, así que la clave debe ser
+aleatoria de todos modos. Una frase de contraseña no es segura aquí: puede obtenerse por fuerza
+bruta si el valor cifrado se filtra.
 
 > `AUTH_SECRET` se ajusta silenciosamente a 32 bytes: un valor más corto se rellena, uno más largo
 > se trunca, y solo una advertencia llega al registro. Un `AUTH_SECRET` corto o predecible significa

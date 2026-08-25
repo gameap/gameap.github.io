@@ -39,6 +39,10 @@ Navigate to **Administration** → **Game Servers** → **Create**
 * In the IP field, select the desired address for your server, then you can choose an available port or use the suggested one.
 * Enter the game server port, default is 5520. You don't need to enter rcon and query ports.
 
+> Hytale communicates over QUIC, that is **UDP**. Open and forward the selected game port as UDP
+> in the firewall and on NAT — with TCP-only forwarding the server starts, but clients cannot
+> connect to it.
+
 ### Configuration After First Launch
 
 After the first launch, you need to complete several authorization steps.

@@ -73,10 +73,14 @@ usuario con el que se ejecuta el panel.
 
 ```dotenv
 DATABASE_DRIVER=inmemory
+DATABASE_URL=inmemory
 ```
 
 Los datos se mantienen solo en la RAM y se pierden al reiniciar. Está pensado para pruebas; no
 es adecuado para una instalación en producción.
+
+`DATABASE_URL` hay que definirla incluso aquí: el panel comprueba que no esté vacía antes de
+conocer el driver y sin ella no arranca. El valor en sí no se utiliza.
 
 ## Migraciones
 

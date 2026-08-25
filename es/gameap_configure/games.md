@@ -107,7 +107,7 @@ Directorio de trabajo de ejemplo del servidor de juego `/srv/gameap/servers/exam
 Cada juego puede tener muchos mods; cada uno tiene sus propias características, configuraciones, 
 parámetros de inicio, archivos de configuración, etc.
 
-Para agregar un nuevo juego, vaya a **"Administración"** → **"Juegos"** y seleccione 
+Para agregar un nuevo mod, vaya a **"Administración"** → **"Juegos"** y seleccione 
 **"Agregar mod"**
 
 ### Campos

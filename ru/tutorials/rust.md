@@ -73,6 +73,7 @@ GameAP обеспечивает полную поддержку игрового
 Карта на сервере. По умолчанию процедурно генерируемая карта Procedural Map
 Возможные значения:
 
+* Procedural Map
 * Barren
 * Craggy Island
 * Hapis

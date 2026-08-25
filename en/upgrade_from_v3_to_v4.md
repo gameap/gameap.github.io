@@ -165,7 +165,8 @@ ENCRYPTION_KEY=replace_with_32_random_bytes
 HTTP_PORT=8025
 ```
 
-The keys are easy to generate with `openssl rand -hex 16`.
+Generate the keys with `openssl rand -base64 24` for `AUTH_SECRET` and `openssl rand -hex 32` for
+`ENCRYPTION_KEY`: the first is coerced to exactly 32 bytes, the second is hashed in full.
 
 Run:
 

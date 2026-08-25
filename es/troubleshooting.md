@@ -51,9 +51,9 @@ Counter-Strike 1.6 será algo así:
 ./hlds_run -game cstrike +ip {ip} +port {port} +map {default_map} +maxplayers {maxplayers} +sys_ticrate {fps}
 ```
 
-Consulte la [configuración de servidores de juego](/es/gameap_configure/game_servers.html#run-command)
+Consulte la [configuración de servidores de juego](/es/gameap_configure/game_servers.html#comando-de-inicio)
 para más detalles. El comando de inicio predeterminado se puede establecer
-[en la configuración del mod](/es/gameap_configure/games.html#default-startup-commands).
+[en la configuración del mod](/es/gameap_configure/games.html#comandos-de-inicio-predeterminados).
 
 ### La ventana modal de información no cambia durante mucho tiempo
 
@@ -166,7 +166,7 @@ chmod 755 steamcmd.sh && chown gameap:gameap steamcmd.sh
 
 Algunos juegos no se pueden descargar de forma anónima: se necesita una cuenta con una copia
 comprada. Especifíquela en la sección `steam_config` de la configuración del daemon; consulte
-[GameAP Daemon](/es/daemon/daemon.html#steam-account).
+[GameAP Daemon](/es/daemon/daemon.html#cuenta-de-steam).
 
 La autenticación de dos factores debe estar desactivada en esta cuenta; de lo contrario, el daemon
 no podrá iniciar sesión.

@@ -33,8 +33,13 @@ wss://panel.example.com:8025/api/ws/servers/1/console?token=<token>
 ```
 
 **Solo se aceptan tokens de corta duración** con el prefijo `glst_` **en el parámetro `token`**.
-Un token de acceso personal no se puede pasar ahí — así se mantiene fuera de los registros del
-servidor web y del historial del navegador.
+Un token de acceso personal no se puede pasar ahí, de modo que una clave de acceso de larga
+duración no acabará en la URL ni por error.
+
+> El propio token de corta duración sí permanece en la dirección y puede quedar registrado en los
+> registros de un proxy inverso, de un servidor web o de los sistemas de observabilidad. Que sea de
+> un solo uso y viva 10 segundos deja esa entrada sin valor, pero si los registros se conservan
+> mucho tiempo, es mejor recortar de ellos el parámetro `token`.
 
 Obtención de un token de corta duración:
 
@@ -109,7 +114,7 @@ luego envía los nuevos valores a medida que llegan. El cambio se marca con un f
 Las métricas son recolectadas por el daemon y pasadas al panel. El intervalo de muestreo y el
 tiempo de retención se configuran en la configuración del daemon con
 `metrics.collection_interval` (5 segundos por defecto) y `metrics.retention_duration` (10
-minutos por defecto); consulte [GameAP Daemon](/es/daemon/daemon.html#metrics-collection).
+minutos por defecto); consulte [GameAP Daemon](/es/daemon/daemon.html#recolección-de-métricas).
 
 ### Servidor de juego
 

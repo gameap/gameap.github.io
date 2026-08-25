@@ -24,8 +24,8 @@ process_manager:
 ```
 
 **Gestores disponibles:**
-- Linux: `systemd` (predeterminado), `docker`, `podman`, `tmux`
-- Windows: `shawl` (predeterminado), `winsw`
+- Linux: `systemd` (predeterminado), `docker`, `podman`, `tmux`, `simple`
+- Windows: `shawl` (predeterminado), `winsw`, `simple`
 
 ## Linux
 
@@ -215,4 +215,39 @@ WinSW no requiere configuración adicional.
 ```yaml
 process_manager:
   name: winsw
+```
+
+## Linux y Windows
+
+### Simple
+
+Simple no recurre a ningún servicio del sistema. Inicia el servidor de juego mediante las plantillas
+de comandos configuradas para el servidor dedicado y no sabe nada del proceso más allá de lo que
+informan esos comandos.
+
+En Linux el Daemon recurre a él automáticamente cuando no hay ni systemd ni tmux disponibles.
+En Windows puede seleccionarse de forma explícita.
+
+| Función                                |    |
+|----------------------------------------|----|
+| Inicio, detención y reinicio de servidores | ✅  |
+| Estadísticas                           | ❌  |
+| Límites de recursos (CPU / RAM)        | ❌  |
+| Lectura de consola                     | ✅  |
+| Envío de comandos a la consola         | ✅  |
+| Aislamiento                            | ❌  |
+
+El Daemon no guarda el identificador del proceso, por lo que al panel solo llega el indicador de
+«servidor en ejecución»: no hay gráficos de CPU, memoria ni red, y no se pueden aplicar límites de
+recursos. Elija Simple solo cuando no haya ninguna otra opción disponible en el sistema.
+
+#### Configuración de Simple
+
+Simple no requiere configuración adicional.
+
+##### Ejemplo de configuración
+
+```yaml
+process_manager:
+  name: simple
 ```

@@ -214,6 +214,11 @@ Los certificados, la clave de la cuenta ACME y los datos auxiliares se almacenan
 terminan en S3 — esto es lo que permite que varias instancias del panel compartan un mismo
 certificado.
 
+El almacenamiento compartido por sí solo no basta para varias instancias: el bloqueo que impide
+que soliciten un certificado al mismo tiempo funciona a través de Redis y está activo solo con
+`CACHE_DRIVER=redis`. Con la caché en memoria el bloqueo es local a cada instancia, y estas se
+estorbarán entre sí. Consulte [Varias instancias del panel](/es/multi_instance.html).
+
 ## Estado del certificado
 
 El estado actual está disponible para un administrador en `GET /api/admin/letsencrypt/status`:

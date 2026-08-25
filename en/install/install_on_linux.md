@@ -76,10 +76,15 @@ additional input from you.
 ```shell
 bash <(curl -s https://gameap.com/install.sh) \
   --non-interactive \
-  --host=127.0.0.1 \
+  --host=panel.example.com \
   --port=8025 \
   --database=sqlite
 ```
+
+> Put the address the panel is reached at into `--host` — a domain name or the server's external
+> IP. It becomes `HTTP_HOST`, and the panel derives the listening address from it: with
+> `--host=127.0.0.1` the HTTP and gRPC listeners come up on loopback only, and neither remote
+> administrators nor daemons on other machines will be able to connect.
 
 Main flags:
 

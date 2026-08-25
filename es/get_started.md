@@ -28,7 +28,7 @@ bash <(curl -s https://gameap.com/install.sh) --with-daemon
 ## Añadir un servidor dedicado
 
 Añada un nuevo servidor dedicado (VDS) en el que después instalará los servidores de juego. 
-Después de instalar el panel, inicie sesión y seleccione **"Administración"** **"Servidores dedicados"** → **"Crear"** en el menú. A continuación,
+Después de instalar el panel, inicie sesión y seleccione **"Administración"** → **"Servidores dedicados"** → **"Crear"** en el menú. A continuación,
 se abrirá una ventana con instrucciones, sígalas.
 
 ![Añadir un servidor dedicado en el panel de GameAP](/images/en/get_started/add_dedicated_server.gif)

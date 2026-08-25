@@ -16,7 +16,7 @@ que crean y comparten diversas creaciones, mods y skins.
 
 ## Preparación del entorno
 
-Para comenzar, es necesario [instalar GameAP](/es/get_started.html#panel-installation), lo que tomará unos minutos:
+Para comenzar, es necesario [instalar GameAP](/es/get_started.html#instalación-del-panel), lo que tomará unos minutos:
 
 * [Instalación de GameAP en Linux](/es/install/install_on_linux.html)
 * [Instalación de GameAP en Windows](/es/install/install_on_windows.html)

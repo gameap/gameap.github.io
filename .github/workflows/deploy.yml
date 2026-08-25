@@ -14,6 +14,9 @@ jobs:
     name: Build Jekyll Site
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -49,6 +52,10 @@ jobs:
     name: Deploy to S3 (${{ matrix.endpoint.name }})
     runs-on: ubuntu-latest
     needs: build
+
+    # The artifact actions authenticate against the Actions service, not the
+    # repository, so the job needs no GITHUB_TOKEN scopes at all.
+    permissions: {}
 
     strategy:
       fail-fast: false
@@ -117,7 +124,11 @@ jobs:
       - name: Check if endpoint is configured
         id: check
         run: |
-          if [ -z "${{ steps.creds.outputs.url }}" ] || [ -z "${{ steps.creds.outputs.bucket }}" ] || [ -z "${{ steps.creds.outputs.locale }}" ]; then
+          if [ -z "${{ steps.creds.outputs.url }}" ] \
+            || [ -z "${{ steps.creds.outputs.bucket }}" ] \
+            || [ -z "${{ steps.creds.outputs.locale }}" ] \
+            || [ -z "${{ steps.creds.outputs.access_key }}" ] \
+            || [ -z "${{ steps.creds.outputs.secret_key }}" ]; then
             echo "configured=false" >> $GITHUB_OUTPUT
             echo "::warning::Endpoint ${{ matrix.endpoint.name }} is not configured, skipping..."
           else

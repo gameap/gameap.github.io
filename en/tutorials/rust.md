@@ -73,6 +73,7 @@ The map on the server.
 By default, the procedurally generated map Procedural Map. 
 Possible values:
 
+* Procedural Map
 * Barren
 * Craggy Island
 * Hapis

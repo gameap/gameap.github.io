@@ -183,7 +183,7 @@ Nombre del servidor dedicado. Puede tomar cualquier valor no vacío; no afecta a
 
 Este directorio contiene los scripts básicos para gestionar los procesos de los servidores de juego.
 Los subdirectorios del directorio de trabajo contienen los archivos de los servidores de juego. Para
-la ruta especificada se asigna el [directorio del servidor de juego](/es/gameap_configure/game_servers.html#directory).
+la ruta especificada se asigna el [directorio del servidor de juego](/es/gameap_configure/game_servers.html#directorio).
 El valor por defecto es `/srv/gameap`.
 
 ##### Ruta a SteamCMD

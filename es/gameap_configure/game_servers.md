@@ -35,7 +35,7 @@ servidor aún no se ha iniciado.
 **Estadísticas** — gráficos de uso de CPU, memoria y red. Los datos son recopilados por el daemon
 cada `metrics.collection_interval` (5 segundos de forma predeterminada) y se conservan durante
 `metrics.retention_duration` (10 minutos de forma predeterminada), consulte
-[GameAP Daemon](/es/daemon/daemon.html#metrics-collection).
+[GameAP Daemon](/es/daemon/daemon.html#recolección-de-métricas).
 
 ### Archivos
 
@@ -97,7 +97,7 @@ Contraseña para administrar el servidor de juego a través de RCON.
 
 ##### Directorio
 
-Directorio del servidor de juego relativo al [directorio de trabajo del servidor dedicado](/es/gameap_configure/dedicated_servers.html#working-directory).
+Directorio del servidor de juego relativo al [directorio de trabajo del servidor dedicado](/es/gameap_configure/dedicated_servers.html#directorio-de-trabajo).
 
 Por ejemplo, si el directorio es `servers/my_server` y el directorio de trabajo del servidor dedicado es `/srv/gameap`, entonces el
 servidor de juego se ubicará en `/srv/gameap/servers/my_server`.

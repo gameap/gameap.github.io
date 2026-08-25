@@ -9,6 +9,6 @@ lang: en
 
 Select your language:
 
-* ![](/images/flags/kingdom.png) [English](/en)
-* ![](/images/flags/russia.png) [Russian](/ru)
-* ![](/images/flags/spain.png) [Spanish](/es)
+* ![Flag of the United Kingdom](/images/flags/kingdom.png) [English](/en)
+* ![Flag of Russia](/images/flags/russia.png) [Russian](/ru)
+* ![Flag of Spain](/images/flags/spain.png) [Spanish](/es)

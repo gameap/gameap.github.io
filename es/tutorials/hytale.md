@@ -15,7 +15,7 @@ El juego incluye numerosos biomas, mobs y objetos, además de compatibilidad con
 
 Con GameAP, puede crear, administrar y configurar fácilmente un servidor de juego de Hytale.
 
-Primero, debe [instalar GameAP](/es/get_started.html#panel-installation):
+Primero, debe [instalar GameAP](/es/get_started.html#instalación-del-panel):
 
 * [Instalación de GameAP en Linux](/es/install/install_on_linux.html)
 * [Instalación de GameAP en Windows](/es/install/install_on_windows.html)
@@ -38,6 +38,10 @@ Vaya a **Administración** → **Servidores de juego** → **Crear**
 * En el campo "Servidor dedicado", seleccione el nodo deseado donde se alojará el servidor de juego.
 * En el campo IP, seleccione la dirección deseada para su servidor; a continuación, puede elegir un puerto disponible o utilizar el sugerido.
 * Introduzca el puerto del servidor de juego; el valor predeterminado es 5520. No es necesario introducir los puertos rcon y query.
+
+> Hytale funciona sobre QUIC, es decir, sobre **UDP**. Abra y redirija el puerto de juego elegido
+> como UDP en el cortafuegos y en el NAT: si solo se redirige TCP, el servidor arranca pero los
+> clientes no pueden conectarse.
 
 ### Configuración después del primer inicio
 
