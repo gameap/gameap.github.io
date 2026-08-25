@@ -47,7 +47,7 @@ In the Rust SDK the interface is represented by the `Plugin` trait with neutral 
 | `author` | Author |
 | `license` | License (for example, `MIT`) |
 | `homepage` | Link to the plugin page |
-| `required_permissions` | Declared permissions (not checked in the current version of the panel) |
+| `required_permissions` | Permissions the plugin declares: recorded on install and checked on every host function call (see below) |
 | `api_version` | Plugin API version, must be `"1"` |
 
 **Requirements for `id`.** Use a stable identifier made of base32 alphabet characters `a-z2-7`, without hyphens. The panel normalizes the id: a string with hyphens or other characters is replaced by a hash, which breaks the `/api/plugins/{id}/...` and `/plugins/{id}/...` paths. Avoid purely numeric ids as well: such an identifier is treated as a decimal numeric ID (id parsing first tries to parse the string as a number). Examples of valid ids from real plugins: `hexeditor4jm2`, `ezvdsxmlu6fbk`, `dshdabjp2l73a`.
@@ -100,16 +100,24 @@ All calls from a plugin to the panel and the outside world go through host funct
 | `gameap-gamemods` | `find_game_mods`, `get_game_mod` | Game mods |
 | `gameap-daemontasks` | `find_daemon_tasks`, `create_daemon_task` | Daemon tasks |
 | `gameap-serversettings` | `find_server_settings`, `save_server_setting` | Game server settings |
-| `gameap-nodefs` | `read_dir`, `mk_dir`, `copy`, `move`, `download`, `upload`, `remove`, `get_file_info`, `chmod` | File operations on a node |
+| `gameap-nodefs` | `read_dir`, `mk_dir`, `copy`, `move`, `download`, `upload`, `remove`, `get_file_info`, `chmod`, `hash`, `create_archive`, `extract_archive`, `start_create_archive`, `start_extract_archive`, `cancel_archive`, `get_archive_operation` | File operations on a node |
 | `gameap-nodecmd` | `execute_command` | Executing a command on a node |
 
 Details:
 
 * `gameap-http` proxies requests through the panel with SSRF protection: by default only the `https` scheme is allowed, private and service IPs are blocked, and the response body is limited to 10 MB. The policy is configured with the `PLUGIN_HTTP_*` environment variables (see [Installation and management](/en/plugins/management.html)).
 * `gameap-storage` is the plugin's persistent storage, isolated by `plugin_id`, with optional binding of records to an entity (`entity_type`, `entity_id`). Use it for plugin settings: the separate configuration mechanism (`config` in `InitializeRequest`) is not used in the current version of the panel.
-* `gameap-nodefs` and `gameap-nodecmd` work with files and commands on the dedicated server (node) through GameAP Daemon.
+* `gameap-nodefs` and `gameap-nodecmd` work with files and commands on the dedicated server (node) through GameAP Daemon. Reads (`read_dir`, `download`, `get_file_info`, `hash`, `get_archive_operation`) need the `files_read` permission; everything that writes — `chmod` and the archive functions included — needs `files`, which includes `files_read`.
+* `gameap-nodefs.download` without `offset`/`length` returns the whole file in one message and is capped by `PLUGIN_NODEFS_MAX_INLINE`; a larger file is refused with an error naming both sizes. Naming an `offset`/`length` window makes such a file readable one piece at a time: only the window has to fit the cap, and a `length` above the cap is refused rather than quietly clamped. The answer echoes `offset` and carries `total_size`, and `length: 0` together with an `offset` reads as much as the cap allows — so a paging loop advances by the length of `content` until it reaches `total_size`. Reading at or past the end of the file is not an error: the answer is empty `content`.
 
-**Important:** host functions run with the panel's own privileges, without additional checks. That is why installing plugins is entrusted to administrators only — install plugins only from sources you trust.
+**Checks on a host call.** Host functions run with the panel's own privileges, but a call is not passed through unchecked:
+
+* **Permissions.** Privileged modules are gated on the grants recorded for the plugin: `files_read`, `files`, `manage_servers`, `node_commands`, `listen_events`, `manage_rbac`, `secrets`, `ssh`, `manage_nodes` (`manage_games`, `manage_game_mods` and `manage_users` are reserved for write operations that do not exist yet). A wider grant satisfies a narrower one: `files` includes `files_read`. Enforcement is transitional — `PLUGIN_PERMISSIONS_ENFORCE` defaults to `false`, so grants are recorded, displayed and editable while every check still passes; a future release will default it to `true`, so declare the permissions your plugin needs now. The mutating `gameap-nodes` calls check their grant regardless of that setting. A refused call answers `plugin permission <name> required`.
+* **Paths.** Every path handed to `gameap-nodefs`, the `work_dir` of `gameap-nodecmd` and a node file referenced by an HTTP response is checked on the panel before it reaches the daemon. A path with a `..` segment or a NUL byte is always refused. `PLUGIN_NODEFS_PATH_POLICY` may additionally confine paths to the node's `work_path` or to the game server directories on it; in every restricted mode the plugin's own service directory, `<work_path>/.plugins/<plugin id>`, stays open — that is where node-side working files belong. A refused call answers `path policy: <reason>: <path>`.
+* **Rate limits.** Each plugin has its own token bucket per class: `gameap-nodefs` 50 calls/s (burst 200), `gameap-http` 20/s (50), `gameap-ssh` 20/s (60), `gameap-rbac` 10/s (50), `gameap-nodecmd` and server control 5/s (20). A refused call answers `rate limited: ...`; the plugin is never disabled for it.
+* **Audit log.** Privileged operations — server control, node commands, file writes, SSH, RBAC changes — are recorded with the plugin as the actor, refusals included.
+
+Installing plugins is nevertheless entrusted to administrators only — install plugins only from sources you trust.
 
 ## Runtime limits
 
@@ -121,6 +129,7 @@ Details:
 | Size of an uploaded `.wasm` file | 100 MB |
 | Body of an HTTP request to a plugin | 1 MB |
 | Body of a `gameap-http` response | 10 MB |
+| One `gameap-nodefs` `download` / `upload` message | 32 MB (`PLUGIN_NODEFS_MAX_INLINE`); a windowed `download` is measured by the window |
 
 When a call timeout is exceeded, the panel disables the plugin until a restart. The file system and the network are not available from WASM — only through host functions.
 

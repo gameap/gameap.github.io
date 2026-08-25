@@ -11,3 +11,4 @@ Select your language:
 
 * ![](/images/flags/kingdom.png) [English](/en)
 * ![](/images/flags/russia.png) [Russian](/ru)
+* ![](/images/flags/spain.png) [Spanish](/es)

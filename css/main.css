@@ -205,6 +205,81 @@ pre:hover .code-copy-btn {
     color: #0366d6;
 }
 
+.lang-menu {
+    position: relative;
+}
+
+.lang-menu summary {
+    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: #24292e;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.lang-menu summary::-webkit-details-marker {
+    display: none;
+}
+
+.lang-menu summary:hover,
+.lang-menu[open] summary {
+    color: #0366d6;
+    border-color: #0366d6;
+}
+
+.lang-menu[open] .chevron {
+    transform: rotate(180deg);
+}
+
+.lang-menu ul {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    min-width: 140px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    z-index: 1030;
+}
+
+.lang-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #24292e;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+a.lang-item:hover {
+    background: #f6f8fa;
+    color: #24292e;
+    text-decoration: none;
+}
+
+.lang-item.is-current {
+    color: #999;
+}
+
+.lang-item.is-current::after {
+    content: "✓";
+    color: #1a7f37;
+}
+
 #footer {
     margin: 20px 0;
     font-size: 0.85em;

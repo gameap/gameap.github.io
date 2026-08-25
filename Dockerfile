@@ -5,13 +5,16 @@ COPY --chown=1000:1000 . /site
 WORKDIR /site
 
 RUN jekyll build --trace && \
-    mkdir -p _site/en/css _site/ru/css && \
+    mkdir -p _site/en/css _site/ru/css _site/es/css && \
     cp css/*.css _site/en/css/ && \
     cp css/*.css _site/ru/css/ && \
+    cp css/*.css _site/es/css/ && \
     find _site/en -name "*.html" -exec sed -i 's|href="/en/|href="/|g' {} \; && \
     find _site/en -name "*.html" -exec sed -i 's|src="/en/|src="/|g' {} \; && \
     find _site/ru -name "*.html" -exec sed -i 's|href="/ru/|href="/|g' {} \; && \
-    find _site/ru -name "*.html" -exec sed -i 's|src="/ru/|src="/|g' {} \;
+    find _site/ru -name "*.html" -exec sed -i 's|src="/ru/|src="/|g' {} \; && \
+    find _site/es -name "*.html" -exec sed -i 's|href="/es/|href="/|g' {} \; && \
+    find _site/es -name "*.html" -exec sed -i 's|src="/es/|src="/|g' {} \;
 
 
 FROM golang:1.25-alpine as gobuilder

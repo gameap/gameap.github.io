@@ -26,13 +26,16 @@ jobs:
             -e JEKYLL_ENV=production \
             jekyll/jekyll:4.2.2@sha256:400b8d1569f118bca8a3a09a25f32803b00a55d1ea241feaf5f904d66ca9c625 \
             sh -c "jekyll build --trace && \
-              mkdir -p _site/en/css _site/ru/css && \
+              mkdir -p _site/en/css _site/ru/css _site/es/css && \
               cp css/*.css _site/en/css/ && \
               cp css/*.css _site/ru/css/ && \
+              cp css/*.css _site/es/css/ && \
               find _site/en -name '*.html' -exec sed -i 's|href=\"/en/|href=\"/|g' {} \; && \
               find _site/en -name '*.html' -exec sed -i 's|src=\"/en/|src=\"/|g' {} \; && \
               find _site/ru -name '*.html' -exec sed -i 's|href=\"/ru/|href=\"/|g' {} \; && \
-              find _site/ru -name '*.html' -exec sed -i 's|src=\"/ru/|src=\"/|g' {} \;"
+              find _site/ru -name '*.html' -exec sed -i 's|src=\"/ru/|src=\"/|g' {} \; && \
+              find _site/es -name '*.html' -exec sed -i 's|href=\"/es/|href=\"/|g' {} \; && \
+              find _site/es -name '*.html' -exec sed -i 's|src=\"/es/|src=\"/|g' {} \;"
 
       - name: Upload site artifact
         uses: actions/upload-artifact@v6
@@ -57,6 +60,8 @@ jobs:
             index: 2
           - name: tertiary
             index: 3
+          - name: quaternary
+            index: 4
 
     steps:
       - name: Download site artifact
@@ -98,6 +103,14 @@ jobs:
               echo "secret_key=${{ secrets.S3_ENDPOINT_3_SECRET_KEY }}" >> $GITHUB_OUTPUT
               echo "region=${{ secrets.S3_ENDPOINT_3_REGION }}" >> $GITHUB_OUTPUT
               echo "locale=${{ secrets.S3_ENDPOINT_3_LOCALE }}" >> $GITHUB_OUTPUT
+              ;;
+            4)
+              echo "url=${{ secrets.S3_ENDPOINT_4_URL }}" >> $GITHUB_OUTPUT
+              echo "bucket=${{ secrets.S3_ENDPOINT_4_BUCKET }}" >> $GITHUB_OUTPUT
+              echo "access_key=${{ secrets.S3_ENDPOINT_4_ACCESS_KEY }}" >> $GITHUB_OUTPUT
+              echo "secret_key=${{ secrets.S3_ENDPOINT_4_SECRET_KEY }}" >> $GITHUB_OUTPUT
+              echo "region=${{ secrets.S3_ENDPOINT_4_REGION }}" >> $GITHUB_OUTPUT
+              echo "locale=${{ secrets.S3_ENDPOINT_4_LOCALE }}" >> $GITHUB_OUTPUT
               ;;
           esac
 
