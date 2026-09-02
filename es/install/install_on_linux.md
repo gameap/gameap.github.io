@@ -81,10 +81,12 @@ bash <(curl -s https://gameap.com/install.sh) \
   --database=sqlite
 ```
 
-> En `--host` indique la dirección por la que el panel estará accesible: un nombre de dominio o la
-> IP externa del servidor. El valor pasa a `HTTP_HOST`, y de él el panel deduce la dirección de
-> escucha: con `--host=127.0.0.1` los listeners HTTP y gRPC se levantan solo en la interfaz de
-> loopback, y no podrán conectarse ni los administradores remotos ni los daemons de otras máquinas.
+> En `--host` indique la dirección por la que el panel estará accesible: un nombre de dominio o una
+> IP asignada a una interfaz de red del propio servidor. El valor pasa a `HTTP_HOST`, y de él el
+> panel deduce la dirección de escucha: con `--host=127.0.0.1` los listeners HTTP y gRPC se levantan
+> solo en la interfaz de loopback, y no podrán conectarse ni los administradores remotos ni los
+> daemons de otras máquinas. Detrás de NAT la IP externa no está asignada a ninguna interfaz local:
+> indique aquí la dirección interna y deje la externa para el DNS y el reenvío de puertos.
 
 Parámetros principales:
 

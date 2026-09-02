@@ -365,8 +365,9 @@ one is **truncated**, and a warning goes to the log. So give it exactly 32 chara
 openssl rand -base64 24
 ```
 
-Do not use `openssl rand -hex 32` here: it produces 64 characters, the panel discards half of them,
-and the strength stays the same.
+Do not use `openssl rand -hex 32` here: it produces 64 characters, the panel keeps only the first
+32, and those 32 hex characters carry just 16 random bytes — weaker than the 24 random bytes of
+`openssl rand -base64 24`.
 
 **`ENCRYPTION_KEY` is hashed in full with SHA-256**, its length is not limited and nothing is lost.
 A longer value can be used here:

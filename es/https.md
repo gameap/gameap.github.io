@@ -254,6 +254,11 @@ TLS_FORCE_HTTPS=true
 Todas las peticiones HTTP reciben una redirección `301`, excepto `/.well-known/acme-challenge/` —
 de lo contrario, el desafío `http-01` dejaría de funcionar.
 
+Cuando ACME está activado, una petición cuya cabecera `Host` no coincide con ninguna entrada de
+`ACME_DOMAINS` se redirige al primer dominio de la lista que no sea wildcard, así que ponga el
+dominio principal del panel primero. Las entradas wildcard (`*.example.com`) nunca se usan como
+destino de la redirección; si la lista solo las contiene, se conserva el host solicitado.
+
 La misma variable afecta a otros dos mecanismos: la cabecera HSTS empieza a enviarse incluso
 cuando TLS termina en un proxy inverso, y el origen CORS se calcula con el esquema `https`.
 

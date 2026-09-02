@@ -38,8 +38,9 @@ duración no acabará en la URL ni por error.
 
 > El propio token de corta duración sí permanece en la dirección y puede quedar registrado en los
 > registros de un proxy inverso, de un servidor web o de los sistemas de observabilidad. Que sea de
-> un solo uso y viva 10 segundos deja esa entrada sin valor, pero si los registros se conservan
-> mucho tiempo, es mejor recortar de ellos el parámetro `token`.
+> un solo uso y viva 10 segundos estrecha la ventana, pero hasta que se usa o caduca el token sigue
+> sirviendo, así que si los registros se conservan mucho tiempo, es mejor recortar de ellos el
+> parámetro `token`.
 
 Obtención de un token de corta duración:
 

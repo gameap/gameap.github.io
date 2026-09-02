@@ -250,6 +250,11 @@ TLS_FORCE_HTTPS=true
 All HTTP requests get a `301` redirect, except `/.well-known/acme-challenge/` — otherwise the
 `http-01` challenge would stop working.
 
+When ACME is enabled, a request whose `Host` header matches none of the `ACME_DOMAINS` entries is
+redirected to the first non-wildcard domain in the list, so put the panel's primary domain first.
+Wildcard entries (`*.example.com`) are never used as the redirect target; when the list contains
+only wildcards, the requested host is kept.
+
 The same variable affects two other mechanisms: the HSTS header starts being sent even when TLS
 terminates at a reverse proxy, and the CORS origin is computed with the `https` scheme.
 

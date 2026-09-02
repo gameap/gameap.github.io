@@ -22,6 +22,9 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Build Jekyll site
+        # Every locale is synced to the root of its own bucket, so the language
+        # prefix is stripped from in-page links. Spanish is the exception: it is
+        # served from docs.gameap.com/es, and its links keep the /es/ prefix.
         run: |
           chmod -R 777 .
           docker run --rm \
@@ -37,7 +40,6 @@ jobs:
               find _site/en -name '*.html' -exec sed -i 's|src=\"/en/|src=\"/|g' {} \; && \
               find _site/ru -name '*.html' -exec sed -i 's|href=\"/ru/|href=\"/|g' {} \; && \
               find _site/ru -name '*.html' -exec sed -i 's|src=\"/ru/|src=\"/|g' {} \; && \
-              find _site/es -name '*.html' -exec sed -i 's|href=\"/es/|href=\"/|g' {} \; && \
               find _site/es -name '*.html' -exec sed -i 's|src=\"/es/|src=\"/|g' {} \;"
 
       - name: Upload site artifact

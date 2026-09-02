@@ -102,6 +102,9 @@ Con `TLS_FORCE_HTTPS=true`, toda solicitud HTTP recibe una redirección `301`, e
 ACME solo se activa cuando `ACME_ENABLED=true`, `ACME_EMAIL` y `ACME_DOMAINS` están definidos.
 Si falta algo, el panel continúa silenciosamente sin ACME.
 
+Con `TLS_FORCE_HTTPS=true`, las peticiones HTTP con un host que no figura en `ACME_DOMAINS` se
+redirigen a la primera entrada de la lista que no sea wildcard.
+
 El valor predeterminado es el directorio de producción de Let's Encrypt, con sus estrictos límites
 sobre el número de intentos. Mientras depura su configuración, use staging:
 `ACME_DIRECTORY_URL=https://acme-staging-v02.api.letsencrypt.org/directory`.

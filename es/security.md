@@ -379,8 +379,9 @@ uno más largo se **trunca**, y al registro solo llega una advertencia. Por eso 
 openssl rand -base64 24
 ```
 
-No use aquí `openssl rand -hex 32`: obtendrá 64 caracteres, el panel descartará la mitad y la
-robustez seguirá siendo la misma.
+No use aquí `openssl rand -hex 32`: obtendrá 64 caracteres, el panel conservará solo los primeros
+32, y esos 32 caracteres hex llevan apenas 16 bytes aleatorios: menos que los 24 bytes aleatorios
+de `openssl rand -base64 24`.
 
 **`ENCRYPTION_KEY` se hashea por completo con SHA-256**, su longitud no está limitada y no se pierde
 nada. Aquí puede usar un valor más largo:

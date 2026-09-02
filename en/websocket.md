@@ -36,9 +36,9 @@ A personal access token cannot be passed there — a long-lived access key will 
 URL even by mistake.
 
 > The short-lived token itself does stay in the address and can settle in the logs of a reverse
-> proxy, a web server or a monitoring system. Being single-use and living for 10 seconds makes such
-> a record worthless, but if logs are kept for a long time, it is better to strip the `token`
-> parameter out of them.
+> proxy, a web server or a monitoring system. Being single-use and living for 10 seconds keeps the
+> window narrow, but until it is used or expires the token still works, so if logs are kept for a
+> long time, it is better to strip the `token` parameter out of them.
 
 Getting a short-lived token:
 
