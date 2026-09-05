@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         {% assign lang = site.data.lang[page.lang] %}
-        {% assign clean_path = page.url | replace: '/ru/', '/' | replace: '/en/', '/' %}
+        {% assign clean_path = page.url | replace: '/ru/', '/' | replace: '/en/', '/' | replace: '/es/', '/' %}
         {% assign page_url = site.domains[page.lang] | append: clean_path %}
 
         {%- comment -%}
@@ -32,8 +32,16 @@
             {% assign page_description = content | strip_html | normalize_whitespace | strip | truncate: 160 %}
         {% endif %}
 
-        {% if page.lang == 'ru' %}{% assign og_locale = 'ru_RU' %}{% else %}{% assign og_locale = 'en_US' %}{% endif %}
-        {% assign og_image = site.domains[page.lang] | append: '/images/gameap.png' %}
+        {% if page.lang == 'ru' %}{% assign og_locale = 'ru_RU' %}{% elsif page.lang == 'es' %}{% assign og_locale = 'es_ES' %}{% else %}{% assign og_locale = 'en_US' %}{% endif %}
+
+        {%- comment -%}
+            Images are served from the host root, not from under the language path.
+            The Spanish site lives in a subdirectory of the English domain, so its
+            assets resolve against that domain — `domains.es` would point the crawler
+            at /es/images/, where nothing is published.
+        {%- endcomment -%}
+        {% if page.lang == 'es' %}{% assign image_domain = site.domains.en %}{% else %}{% assign image_domain = site.domains[page.lang] %}{% endif %}
+        {% assign og_image = image_domain | append: '/images/gameap.png' %}
 
         <title>{{ page_title }}</title>
         <meta name="description" content="{{ page_description | escape }}">
@@ -47,6 +55,7 @@
         <!-- Hreflang tags for language alternatives -->
         <link rel="alternate" hreflang="en" href="{{ site.domains.en }}{{ clean_path }}">
         <link rel="alternate" hreflang="ru" href="{{ site.domains.ru }}{{ clean_path }}">
+        <link rel="alternate" hreflang="es" href="{{ site.domains.es }}{{ clean_path }}">
         <link rel="alternate" hreflang="x-default" href="{{ site.domains.en }}{{ clean_path }}">
 
         <!-- Open Graph -->

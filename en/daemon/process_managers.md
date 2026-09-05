@@ -24,8 +24,8 @@ process_manager:
 ```
 
 **Available managers:**
-- Linux: `systemd` (default), `docker`, `podman`, `tmux`
-- Windows: `shawl` (default), `winsw`
+- Linux: `systemd` (default), `docker`, `podman`, `tmux`, `simple`
+- Windows: `shawl` (default), `winsw`, `simple`
 
 ## Linux
 
@@ -215,4 +215,39 @@ WinSW does not require additional configuration.
 ```yaml
 process_manager:
   name: winsw
+```
+
+## Linux and Windows
+
+### Simple
+
+Simple does not delegate to any system service. It starts the game server through the command
+templates configured for the dedicated server and knows nothing about the process beyond what those
+commands report.
+
+On Linux the daemon falls back to it automatically when neither systemd nor tmux is available.
+On Windows it can be selected explicitly.
+
+| Feature                                |    |
+|----------------------------------------|----|
+| Start, stop, restart servers           | ✅  |
+| Statistics                             | ❌  |
+| Resource limits (CPU / RAM)            | ❌  |
+| Console reading                        | ✅  |
+| Sending commands to console            | ✅  |
+| Isolation                              | ❌  |
+
+The daemon does not track the process ID, so only the "server is running" flag reaches the panel —
+there are no CPU, memory or network charts, and resource limits cannot be applied. Choose Simple
+only when nothing else is available on the system.
+
+#### Simple Configuration
+
+Simple does not require additional configuration.
+
+##### Configuration Example
+
+```yaml
+process_manager:
+  name: simple
 ```

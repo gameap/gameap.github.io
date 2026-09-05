@@ -14,11 +14,17 @@ jobs:
     name: Build Jekyll Site
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
 
       - name: Build Jekyll site
+        # Every locale is synced to the root of its own bucket, so the language
+        # prefix is stripped from in-page links. Spanish is the exception: it is
+        # served from docs.gameap.com/es, and its links keep the /es/ prefix.
         run: |
           chmod -R 777 .
           docker run --rm \
@@ -26,13 +32,15 @@ jobs:
             -e JEKYLL_ENV=production \
             jekyll/jekyll:4.2.2@sha256:400b8d1569f118bca8a3a09a25f32803b00a55d1ea241feaf5f904d66ca9c625 \
             sh -c "jekyll build --trace && \
-              mkdir -p _site/en/css _site/ru/css && \
+              mkdir -p _site/en/css _site/ru/css _site/es/css && \
               cp css/*.css _site/en/css/ && \
               cp css/*.css _site/ru/css/ && \
+              cp css/*.css _site/es/css/ && \
               find _site/en -name '*.html' -exec sed -i 's|href=\"/en/|href=\"/|g' {} \; && \
               find _site/en -name '*.html' -exec sed -i 's|src=\"/en/|src=\"/|g' {} \; && \
               find _site/ru -name '*.html' -exec sed -i 's|href=\"/ru/|href=\"/|g' {} \; && \
-              find _site/ru -name '*.html' -exec sed -i 's|src=\"/ru/|src=\"/|g' {} \;"
+              find _site/ru -name '*.html' -exec sed -i 's|src=\"/ru/|src=\"/|g' {} \; && \
+              find _site/es -name '*.html' -exec sed -i 's|src=\"/es/|src=\"/|g' {} \;"
 
       - name: Upload site artifact
         uses: actions/upload-artifact@v6
@@ -47,6 +55,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
 
+    # The artifact actions authenticate against the Actions service, not the
+    # repository, so the job needs no GITHUB_TOKEN scopes at all.
+    permissions: {}
+
     strategy:
       fail-fast: false
       matrix:
@@ -57,6 +69,8 @@ jobs:
             index: 2
           - name: tertiary
             index: 3
+          - name: quaternary
+            index: 4
 
     steps:
       - name: Download site artifact
@@ -99,12 +113,24 @@ jobs:
               echo "region=${{ secrets.S3_ENDPOINT_3_REGION }}" >> $GITHUB_OUTPUT
               echo "locale=${{ secrets.S3_ENDPOINT_3_LOCALE }}" >> $GITHUB_OUTPUT
               ;;
+            4)
+              echo "url=${{ secrets.S3_ENDPOINT_4_URL }}" >> $GITHUB_OUTPUT
+              echo "bucket=${{ secrets.S3_ENDPOINT_4_BUCKET }}" >> $GITHUB_OUTPUT
+              echo "access_key=${{ secrets.S3_ENDPOINT_4_ACCESS_KEY }}" >> $GITHUB_OUTPUT
+              echo "secret_key=${{ secrets.S3_ENDPOINT_4_SECRET_KEY }}" >> $GITHUB_OUTPUT
+              echo "region=${{ secrets.S3_ENDPOINT_4_REGION }}" >> $GITHUB_OUTPUT
+              echo "locale=${{ secrets.S3_ENDPOINT_4_LOCALE }}" >> $GITHUB_OUTPUT
+              ;;
           esac
 
       - name: Check if endpoint is configured
         id: check
         run: |
-          if [ -z "${{ steps.creds.outputs.url }}" ] || [ -z "${{ steps.creds.outputs.bucket }}" ] || [ -z "${{ steps.creds.outputs.locale }}" ]; then
+          if [ -z "${{ steps.creds.outputs.url }}" ] \
+            || [ -z "${{ steps.creds.outputs.bucket }}" ] \
+            || [ -z "${{ steps.creds.outputs.locale }}" ] \
+            || [ -z "${{ steps.creds.outputs.access_key }}" ] \
+            || [ -z "${{ steps.creds.outputs.secret_key }}" ]; then
             echo "configured=false" >> $GITHUB_OUTPUT
             echo "::warning::Endpoint ${{ matrix.endpoint.name }} is not configured, skipping..."
           else

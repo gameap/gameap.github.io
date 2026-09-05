@@ -147,8 +147,20 @@ In PostgreSQL, where this field is of type `JSONB`:
 UPDATE users SET metadata = metadata - 'mfa_first_shown_at' WHERE login = 'admin';
 ```
 
-In MySQL and SQLite the field is stored as JSON text — the easiest way is to clear it entirely:
-`UPDATE users SET metadata = NULL WHERE login = 'admin';`
+In MySQL the field is stored as JSON text, and the key is removed like this:
+
+```sql
+UPDATE users SET metadata = JSON_REMOVE(metadata, '$.mfa_first_shown_at') WHERE login = 'admin';
+```
+
+In SQLite — starting with version 3.38:
+
+```sql
+UPDATE users SET metadata = json_remove(metadata, '$.mfa_first_shown_at') WHERE login = 'admin';
+```
+
+> Do not clear the `metadata` field entirely (`SET metadata = NULL`): besides the 2FA countdown it
+> may hold other information about the user, and that would be lost.
 
 After that, start the panel and enable 2FA again.
 
@@ -343,11 +355,29 @@ automatically.
 | `AUTH_SECRET`    | yes      | Signing key for session tokens. Without it the panel will not start   |
 | `ENCRYPTION_KEY` | no       | Encryption key for secrets in the database                            |
 
-Both values must be **exactly 32 random bytes**, not a passphrase:
+Both values must be random rather than a passphrase. Their length requirements, however, are
+**different** — the panel handles them differently.
+
+**`AUTH_SECRET` is used as is and coerced to exactly 32 bytes:** a shorter value is padded, a longer
+one is **truncated**, and a warning goes to the log. So give it exactly 32 characters:
 
 ```bash
-openssl rand -hex 16
+openssl rand -base64 24
 ```
+
+Do not use `openssl rand -hex 32` here: it produces 64 characters, the panel keeps only the first
+32, and those 32 hex characters carry just 16 random bytes — weaker than the 24 random bytes of
+`openssl rand -base64 24`.
+
+**`ENCRYPTION_KEY` is hashed in full with SHA-256**, its length is not limited and nothing is lost.
+A longer value can be used here:
+
+```bash
+openssl rand -hex 32
+```
+
+Hashing preserves the entropy of the original value but does not increase it, so the key still has
+to be random. A passphrase is unsafe here: it can be brute-forced if the encrypted value leaks.
 
 > `AUTH_SECRET` is silently coerced to 32 bytes: a shorter value is padded, a longer one is
 > truncated, and only a warning goes to the log. A short or predictable `AUTH_SECRET` means session

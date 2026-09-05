@@ -8,11 +8,12 @@
 {%- for p in pages -%}
 {%- assign head = p.url | slice: 0, 4 -%}
 {%- if head == prefix and p.layout == 'default' and p.hidden != true -%}
-{%- assign clean_path = p.url | replace: '/en/', '/' | replace: '/ru/', '/' %}
+{%- assign clean_path = p.url | replace: '/en/', '/' | replace: '/ru/', '/' | replace: '/es/', '/' %}
   <url>
     <loc>{{ site.domains.en }}{{ clean_path }}</loc>
     <xhtml:link rel="alternate" hreflang="en" href="{{ site.domains.en }}{{ clean_path }}"/>
     <xhtml:link rel="alternate" hreflang="ru" href="{{ site.domains.ru }}{{ clean_path }}"/>
+    <xhtml:link rel="alternate" hreflang="es" href="{{ site.domains.es }}{{ clean_path }}"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="{{ site.domains.en }}{{ clean_path }}"/>
   </url>
 {%- endif -%}

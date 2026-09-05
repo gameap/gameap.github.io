@@ -107,7 +107,7 @@ Example game server working directory `/srv/gameap/servers/example-server`
 Each game can have many mods, each has its own features, settings, 
 startup parameters, configuration files, etc.
 
-To add a new game, go to **"Administration"** → **"Games"**, then select 
+To add a new mod, go to **"Administration"** → **"Games"**, then select 
 **"Add Mod"**
 
 ### Fields

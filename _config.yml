@@ -5,6 +5,7 @@ title: 'GameAP Documentation'
 domains:
   en: "https://docs.gameap.com"
   ru: "https://docs.gameap.ru"
+  es: "https://docs.gameap.com/es"
 
 # if you wish to integrate disqus on pages set your shortname here
 disqus_shortname: ''
@@ -24,7 +25,8 @@ navigation: 1
 # Default categories (in order) to appear in the navigation
 sections: [
     ['ru', 'Russian'],
-    ['en', 'English']
+    ['en', 'English'],
+    ['es', 'Spanish']
 ]
 
 # Use the kramdown Markdown renderer

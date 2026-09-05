@@ -210,6 +210,11 @@ Certificates, the ACME account key, and housekeeping data are stored in the `ACM
 directory inside the panel's file storage. With `FILES_DRIVER=s3` they end up in S3 — this is
 what lets several panel instances share one certificate.
 
+Shared storage alone is not enough for several instances: the lock that keeps them from requesting
+a certificate at the same time works through Redis and is active only with `CACHE_DRIVER=redis`.
+With the in-memory cache the lock is local to each instance, and they will get in each other's way.
+See [Multiple Panel Instances](/en/multi_instance.html).
+
 ## Certificate status
 
 The current status is available to an administrator at `GET /api/admin/letsencrypt/status`:
@@ -244,6 +249,11 @@ TLS_FORCE_HTTPS=true
 
 All HTTP requests get a `301` redirect, except `/.well-known/acme-challenge/` — otherwise the
 `http-01` challenge would stop working.
+
+When ACME is enabled, a request whose `Host` header matches none of the `ACME_DOMAINS` entries is
+redirected to the first non-wildcard domain in the list, so put the panel's primary domain first.
+Wildcard entries (`*.example.com`) are never used as the redirect target; when the list contains
+only wildcards, the requested host is kept.
 
 The same variable affects two other mechanisms: the HSTS header starts being sent even when TLS
 terminates at a reverse proxy, and the CORS origin is computed with the `https` scheme.

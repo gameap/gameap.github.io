@@ -32,8 +32,13 @@ wss://panel.example.com:8025/api/ws/servers/1/console?token=<token>
 ```
 
 **Only short-lived tokens** with the `glst_` prefix **are accepted in the `token` parameter**.
-A personal access token cannot be passed there — this keeps it out of web server logs and
-browser history.
+A personal access token cannot be passed there — a long-lived access key will not end up in the
+URL even by mistake.
+
+> The short-lived token itself does stay in the address and can settle in the logs of a reverse
+> proxy, a web server or a monitoring system. Being single-use and living for 10 seconds keeps the
+> window narrow, but until it is used or expires the token still works, so if logs are kept for a
+> long time, it is better to strip the `token` parameter out of them.
 
 Getting a short-lived token:
 
