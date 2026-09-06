@@ -118,7 +118,7 @@ attempts. While debugging your setup, use staging:
 | Variable                        | Type     | Default  | Purpose                                                                  |
 |---------------------------------|----------|----------|---------------------------------------------------------------------------|
 | `AUTH_SECRET`                   | string   | —        | **Required.** Token signing key, exactly 32 random bytes                  |
-| `ENCRYPTION_KEY`                | string   | `""`     | Encryption key for secrets in the database, exactly 32 random bytes       |
+| `ENCRYPTION_KEY`                | string   | `""`     | Encryption key for secrets in the database, 32 random bytes recommended   |
 | `AUTH_SERVICE`                  | string   | `paseto` | Token format: `paseto` or `jwt`. Any other value — the panel will not start |
 | `AUTH_BCRYPT_COST`              | number   | `13`     | bcrypt cost, 10 to 14                                                     |
 | `AUTH_ALLOW_WEAK_PASSWORDS`     | bool     | `false`  | Disables the check against the compromised password list                  |
@@ -574,4 +574,5 @@ HTTP_PORT=8025
 
 Everything else falls back to the defaults. `ENCRYPTION_KEY` is not formally required, but without
 it plugins cannot store secrets: with the default `PLUGINS_SECRETS_REQUIRE_ENCRYPTION=true` such
-writes are refused.
+writes are refused. Its length is not checked: the value is hashed in full, so 32 random bytes is a
+recommendation rather than a requirement.

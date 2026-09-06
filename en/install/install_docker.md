@@ -166,9 +166,17 @@ The main variables:
 | `ENCRYPTION_KEY`     | Secrets encryption key, 32 random bytes                  |
 | `GRPC_EXTERNAL_HOST` | Panel address daemons use to connect                     |
 
-The first three are required: without them the panel will not start. `ENCRYPTION_KEY` is formally
-optional, but without it the daemon connection password is stored in plain text and plugins cannot
-store secrets — see [Security](/en/security.html). `GRPC_EXTERNAL_HOST` is needed when the address
+`DATABASE_URL` and `AUTH_SECRET` are the ones the panel really needs: `AUTH_SECRET` has no default
+at all, and the only default for `DATABASE_URL` is the `file:/db.sqlite` set in the image itself —
+at the container root, outside the mounted volume. `DATABASE_DRIVER` is defaulted too (`sqlite` in
+the image, `mysql` in the panel), so it has to be set for any other database, as the compose
+example with PostgreSQL does. Set all three explicitly.
+
+`ENCRYPTION_KEY` is formally optional, but without it the daemon connection password is stored in
+plain text and plugins cannot store secrets: with the default
+`PLUGINS_SECRETS_REQUIRE_ENCRYPTION=true` such writes are refused, and with
+`PLUGINS_SECRETS_REQUIRE_ENCRYPTION=false` they are kept in plain text — see
+[Security](/en/security.html). `GRPC_EXTERNAL_HOST` is needed when the address
 the panel takes from the request is not reachable from outside; inside a container that is the
 usual case — see [Panel address for daemons](#panel-address-for-daemons).
 
@@ -213,9 +221,34 @@ directly. See [HTTPS and Certificates](/en/https.html) for details.
 First back up the database and the data volume: migrations are applied at startup and are
 irreversible.
 
+The command depends on which database the installation uses. PostgreSQL from the example
+`docker-compose.yml`:
+
 ```bash
 docker compose exec postgres pg_dump -U gameap gameap > gameap-backup.sql
 ```
+
+MySQL or MariaDB in a neighbouring container, under its own service name:
+
+```bash
+docker compose exec mysql mysqldump -u gameap -p gameap > gameap-backup.sql
+```
+
+An external database is backed up with its own tools, on the host where it runs. A SQLite database
+lies inside the volume and is covered by the copy below — provided the container is stopped, so
+that the WAL journal does not leave the copy inconsistent.
+
+The volume holds the gRPC certificates as well, and without them daemons stop connecting:
+
+```bash
+docker stop gameap
+docker run --rm -v gameap-data:/data -v "$PWD:/backup" alpine \
+  tar czf /backup/gameap-data.tar.gz -C /data .
+```
+
+Take the volume name from your own configuration: `gameap-data` in the quick start above,
+`gameap-storage` in the example `docker-compose.yml`. What else has to be saved, and how to
+restore it, is on the [Database](/en/database.html) page.
 
 Then bump the image tag in `docker-compose.yml` rather than relying on `latest` — see
 [Image Tags](#image-tags) — and pull the new image:

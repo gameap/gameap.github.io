@@ -114,7 +114,7 @@ when the panel or the daemon is built from source — the `--github` option of
 `gameapctl panel install` and `gameapctl daemon install`, and of the matching `upgrade` commands.
 See [Install on Linux](/en/install/install_on_linux.html).
 
-* GameAP 4.5.0: Go 1.27, Node.js with npm and git;
+* GameAP 4.5.0: Go 1.27, Node.js with npm and git (releases are built with Node.js 24);
 * GameAP Daemon 4.1.2: Go 1.26.5 or newer, and git (Node.js is not needed);
 * outbound access to `github.com` and the Go module proxy (`proxy.golang.org`).
 

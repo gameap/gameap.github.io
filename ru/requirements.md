@@ -114,7 +114,7 @@ GameAP 4 — один исполняемый файл со встроенным 
 у команд `gameapctl panel install` и `gameapctl daemon install`, а также у соответствующих
 команд `upgrade`. См. [Установка на Linux](/ru/install/install_on_linux.html).
 
-* GameAP 4.5.0: Go 1.27, Node.js с npm и git;
+* GameAP 4.5.0: Go 1.27, Node.js с npm и git (релизы собираются с Node.js 24);
 * GameAP Daemon 4.1.2: Go 1.26.5 и новее, а также git (Node.js не нужен);
 * исходящий доступ к `github.com` и к прокси Go-модулей (`proxy.golang.org`).
 

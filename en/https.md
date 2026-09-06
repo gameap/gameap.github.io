@@ -190,6 +190,10 @@ What is needed:
 > ```
 >
 > Substitute the `HTTP_PORT` value from `config.env` for `8025` in `--to-port`.
+>
+> Such a rule only lives until the next reboot. Persist it with the firewall tooling of the
+> distribution — the one that restores rules at boot — or, instead of forwarding, put a reverse
+> proxy listening on port 80 in front of the panel.
 
 Port 80 is needed not only for the first issuance: the challenge is repeated on every renewal,
 so it must not be closed afterwards.
