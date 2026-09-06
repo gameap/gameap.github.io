@@ -1,5 +1,6 @@
 ---
 title: How GameAP Works
+description: "How GameAP is built: the panel, the daemon and game servers, who connects to whom, which ports and protocols are used and where the data is stored."
 layout: default
 lang: en
 category: Main
@@ -36,13 +37,15 @@ no external IP address — outbound access to the panel is enough.
 
 This differs from GameAP 3, where the panel connected to the daemon.
 
-| Direction                             | Port          | Protocol         |
-|---------------------------------------|---------------|------------------|
-| Administrator's browser → panel       | `8025`        | HTTP, HTTPS      |
-| Daemon → panel                        | `31718`       | gRPC             |
-| Panel → game server                   | game port     | Query, RCON      |
+| Direction                       | Default port | Protocol    | Variable     |
+|---------------------------------|--------------|-------------|--------------|
+| Administrator's browser → panel | `8025`       | HTTP        | `HTTP_PORT`  |
+| Administrator's browser → panel | `443`        | HTTPS       | `HTTPS_PORT` |
+| Daemon → panel                  | `31718`      | gRPC        | `GRPC_PORT`  |
+| Panel → game server             | game port    | Query, RCON | —            |
 
-Ports `8025` and `31718` are **separate listeners**, not one port with protocol detection.
+These are **three separate listeners**, not one port with protocol detection. HTTPS is started
+only when a certificate is configured, see [HTTPS and Certificates](/en/https.html).
 
 The panel performs Query and RCON requests to game servers itself, directly — they do not go
 through the daemon.
@@ -63,15 +66,16 @@ current state from the panel.
 
 ## What Is Stored Where
 
-| Data                                         | Where                                             |
-|----------------------------------------------|---------------------------------------------------|
-| Users, servers, games, tasks                 | Panel database                                    |
-| gRPC certificates, ACME data                 | Panel file storage                                |
-| Sessions, counters, setup key                | Panel cache                                       |
-| Panel configuration                          | `config.env`                                      |
-| Game server files                            | The dedicated server, in the daemon's working directory |
-| Daemon configuration                         | `gameap-daemon.yaml` on the dedicated server      |
-| Metrics                                      | The daemon's RAM, for no longer than an hour      |
+| Data                                       | Where                                                   |
+|--------------------------------------------|---------------------------------------------------------|
+| Users, servers, games, tasks               | Panel database                                          |
+| Plugin secrets                             | Panel database, encrypted with `ENCRYPTION_KEY`         |
+| gRPC certificates, ACME data               | Panel file storage                                      |
+| Sessions, counters, setup key, SSO tickets | Panel cache                                             |
+| Panel configuration                        | `config.env`                                            |
+| Game server files                          | The dedicated server, in the daemon's working directory |
+| Daemon configuration                       | `gameap-daemon.yaml` on the dedicated server            |
+| Metrics                                    | The daemon's RAM, for no longer than an hour            |
 
 Game server files are not copied to the panel: the file manager works with them through the
 daemon.
@@ -79,8 +83,11 @@ daemon.
 ## Extending
 
 **Plugins** run inside the panel in a WebAssembly sandbox. They add pages, tabs, and
-integrations, but have no system access of their own — only through the panel's controlled
-interface. See [Plugins](/en/plugins/index.html).
+integrations, but have no system access of their own: everything a plugin touches goes through
+the host libraries the panel provides, and the privileged ones are opened only by the permissions
+the administrator grants to each plugin. Among them is an SSH library that lets a plugin reach a
+host directly, bypassing the daemon — it is disabled by default and enabled with
+`PLUGINS_SSH_ENABLED=true`. See [Plugins](/en/plugins/index.html).
 
 **API** — everything the interface does is available through the HTTP API; the interface itself
 works through it. See [API and Tokens](/en/api.html).

@@ -42,9 +42,9 @@ every `metrics.collection_interval` (5 seconds by default) and kept for
 The file manager works within the game server directory. It lets you view and edit files,
 upload and download them, create directories, and change permissions.
 
-Uploads are restricted by file type: the type is detected from the content, not the extension,
-and by default **archives and arbitrary binary files are not allowed**. This is the most common
-reason an upload is rejected. How to allow them — [Security](/en/security.html).
+Uploads are checked by file type: the type is detected from the file content, not the extension.
+Whether archives and binary files may be uploaded is controlled by the `FILES_UPLOAD_ALLOW_ARCHIVES`
+and `FILES_UPLOAD_ALLOW_BINARY` variables, see [Security](/en/security.html).
 
 ### Task Scheduler
 
@@ -56,6 +56,35 @@ executed by the daemon on the dedicated server.
 Values of the variables declared in the game mod — for example, the default map or the number
 of slots. They are substituted into the run command in place of shortcodes. Which variables are
 available is defined [in the mod settings](/en/gameap_configure/games.html#variables).
+
+Each variable is rendered as the widget its type declares:
+
+| Type       | Widget                                                                                       |
+|------------|----------------------------------------------------------------------------------------------|
+| `string`   | Single-line text field                                                                       |
+| `text`     | Multi-line text area                                                                         |
+| `int`      | Integer field with a stepper, bounded by the variable's `min` and `max`                      |
+| `float`    | Number field, bounded by `min` and `max`                                                     |
+| `bool`     | Switch                                                                                       |
+| `select`   | Drop-down list with search. If the variable allows custom values, you can also type your own |
+| `password` | Masked field; the value can be revealed on click                                             |
+
+![The Settings tab of a game server with the two built-in switches and the mod variables marked Admin only](/images/en/gameap_configure/games/server_settings_widgets.png)
+
+The default value is shown as the placeholder, the variable's description as a hint under the
+field. Values are validated in the browser and again by the panel on save. If any value violates
+its rules, nothing is written: the offending fields are highlighted with the error text, and the
+message **Please check the highlighted fields.** appears.
+
+A variable marked **Admin Var** in the mod is shown to administrators with the **Admin only**
+badge and is hidden from other users entirely.
+
+Two built-in settings are always present on the tab. They belong to the panel, not to the mod:
+
+| Setting                           | Key                   |
+|-----------------------------------|-----------------------|
+| **Autostart on crash**            | `autostart`           |
+| **Update server before starting** | `update_before_start` |
 
 ## Editing game servers
 
@@ -114,9 +143,14 @@ A group of parameters that relates to a dedicated server (VDS, node) and connect
 
 ##### Dedicated server
 
+The node the game server runs on. It is selected when the server is created; on the edit form
+the field is shown but cannot be changed.
+
 ##### IP
 
-Game server IP or host. Examples are `127.0.0.1`,`my-server.gameap.ru`.
+Game server IP or host. Examples are `127.0.0.1`,`my-server.gameap.ru`. This is the address the
+daemon connects to. To show users a different address — for example, when the node is behind
+NAT — set the `public_ip` key in [Metadata](#metadata).
 
 ##### Server port
 
@@ -136,6 +170,13 @@ Server port for remote administration.
 
 In GoldSource and Source, it matches the main server port. In Minecraft, you can specify any port. In some
 other game servers, it may be one unit more or less.
+
+The server, query, and RCON ports accept any value from 1 to 65535. The panel only validates the
+range; the ports themselves must be open on the dedicated server.
+
+> Up to and including 4.4.1, panels running on PostgreSQL stored ports as `SMALLINT` and rejected
+> any value above 32767 with a database error. From 4.4.2 the columns are `INTEGER`, and the full
+> range works on PostgreSQL, MySQL/MariaDB, and SQLite alike.
 
 #### Resource limits
 
@@ -167,6 +208,22 @@ of specific game server. Shortcodes are words in braces `{` and `}`, for example
 
 Read on how to add your own shortcodes which will be automatically replaced by the settings value, on
 the [game settings](/en/gameap_configure/games.html#variables) page.
+
+#### Metadata
+
+Arbitrary key–value pairs stored with the server. The **Metadata** card includes a reference of
+the known keys with examples. They fall into two groups.
+
+**Panel keys.** The reserved key `public_ip` overrides the address shown for the server. When it
+is set, the server list and the server page show this value to everyone, administrators included,
+while the daemon keeps connecting to the address from the **IP** field (the API returns it as
+`internal_server_ip`). Use it for dedicated servers behind NAT whose LAN address must not be
+published. The value must be a bare IP address or hostname — a value with a port is rejected with
+`metadata.public_ip is not a valid IP address or hostname`. An empty value removes the override.
+
+**Container keys.** The `docker_*` keys (`docker_image`, `docker_workdir`,
+`docker_installation_script`, and others) are read by the Docker and Podman process managers on
+the daemon, see [Process Managers](/en/daemon/process_managers.html#docker).
 
 ## Sending commands to the console
 

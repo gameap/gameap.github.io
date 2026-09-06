@@ -20,11 +20,11 @@ docker run -d \
   -p 31718:31718 \
   -e DATABASE_DRIVER=sqlite \
   -e 'DATABASE_URL=file:/var/lib/gameap/db.sqlite?_busy_timeout=5000&_journal_mode=WAL&cache=shared' \
-  -e AUTH_SECRET=$(openssl rand -hex 16) \
-  -e ENCRYPTION_KEY=$(openssl rand -hex 16) \
+  -e AUTH_SECRET=$(openssl rand -base64 24) \
+  -e ENCRYPTION_KEY=$(openssl rand -hex 32) \
   -e GRPC_EXTERNAL_HOST=panel.example.com \
   -v gameap-data:/var/lib/gameap \
-  gameap/gameap:latest
+  gameap/gameap:4.5
 ```
 
 The panel will be available at `http://localhost:8025`. The first administrator's login and
@@ -72,11 +72,27 @@ environment:
   GRPC_EXTERNAL_PORT: 41718
 ```
 
-> `GRPC_EXTERNAL_HOST` goes into the name list of the self-signed gRPC certificate, and the
-> certificate is created on first start. Set the variable **before** the first start. If you
-> set it later, delete `certs/server/api-server.crt` and `certs/server/api-server.key` in the
-> panel's files directory and restart the container. See [GRPC API](/en/daemon/grpc.html) for
-> details.
+> `GRPC_EXTERNAL_HOST` goes into the name list of the self-signed gRPC certificate. Set the
+> variable before the first start if you can. If you set it later, just restart the container:
+> the panel notices that the required name is missing from the existing certificate and
+> re-issues it automatically — nothing needs to be deleted by hand. See
+> [GRPC API](/en/daemon/grpc.html) for details.
+
+## Image Tags
+
+Every release is published under several tags:
+
+| Tag                                             | What it points to                          |
+|-------------------------------------------------|--------------------------------------------|
+| `gameap/gameap:4.5.0`                           | The exact release                          |
+| `gameap/gameap:4.5`                             | The latest patch release of the 4.5 line   |
+| `gameap/gameap:4`                               | The latest release of the 4.x line         |
+| `gameap/gameap:latest`                          | The latest release                         |
+| `gameap/gameap:sha-<sha>`, `gameap/gameap:main` | Development builds from the `main` branch  |
+
+Migrations run automatically at container start and are irreversible, so pin at least the minor
+line (`4.5`) in `docker-compose.yml` and bump it deliberately after reading the notes for the new
+version on the [Upgrade](/en/upgrade.html) page. Do not use `latest` or `main` in production.
 
 ## Docker Compose
 
@@ -102,11 +118,16 @@ LOGGER_LEVEL=info
 ```
 
 > In the example `docker-compose.yml`, the default `AUTH_SECRET` and `ENCRYPTION_KEY` values
-> are `change-me-in-production`. With such keys, session tokens are trivial to forge. Set your
-> own values before the first start.
+> are `change-me-in-production`. With such keys, session tokens are trivial to forge.
+> **Replace both values before the first `docker compose up`** — before, not after.
 >
-> Keep in mind: changing `ENCRYPTION_KEY` on a running installation breaks two-factor
-> authentication for every user. See [Security](/en/security.html).
+> Changing `ENCRYPTION_KEY` later is not painless: the stored TOTP secrets become unreadable,
+> and every user has to set up two-factor authentication again. See
+> [Security](/en/security.html).
+
+The two keys are treated differently: `AUTH_SECRET` is reduced to exactly 32 bytes, while
+`ENCRYPTION_KEY` is hashed whole. That is why the generation commands in the example above
+differ: `openssl rand -base64 24` yields exactly 32 characters, `openssl rand -hex 32` yields 64.
 
 ## Data and Volumes
 
@@ -137,20 +158,33 @@ container.
 
 The bare minimum:
 
-| Variable             | Purpose                                                 |
+| Variable             | Purpose                                                  |
 |----------------------|----------------------------------------------------------|
-| `DATABASE_DRIVER`    | `postgres`, `mysql`, or `sqlite`                        |
+| `DATABASE_DRIVER`    | `postgres`, `mysql`, or `sqlite`                         |
 | `DATABASE_URL`       | Database connection string                               |
 | `AUTH_SECRET`        | Token signing key, 32 random bytes                       |
 | `ENCRYPTION_KEY`     | Secrets encryption key, 32 random bytes                  |
 | `GRPC_EXTERNAL_HOST` | Panel address daemons use to connect                     |
+
+Often useful as well:
+
+| Variable               | Default | Purpose                                                                                                           |
+|------------------------|---------|-------------------------------------------------------------------------------------------------------------------|
+| `DEFAULT_LANGUAGE`     | `""`    | Interface language for users who have not chosen one: `en`, `ru`, `es`, `de`. Empty — follow the browser language |
+| `UPDATE_CHECK_ENABLED` | `true`  | Check for new panel and daemon versions. Set `false` for installations without outbound internet access           |
+
+The update check queries the addresses from `UPDATE_CHECK_URLS` and caches the result for
+`UPDATE_CHECK_TTL` (`6h` by default).
+
+Plugin variables use the `PLUGINS_*` prefix since 4.5.0. If an older compose file sets
+`PLUGIN_*` variables, rename them — see [Upgrading to 4.5.0](#upgrading-to-450).
 
 ## Health Check
 
 The image includes a health check — a request to `/api/health`:
 
 ```bash
-docker inspect --format='{{.State.Health.Status}}' gameap
+{% raw %}docker inspect --format='{{.State.Health.Status}}' gameap{% endraw %}
 ```
 
 The panel log:
@@ -181,3 +215,34 @@ and are irreversible.
 ```bash
 docker compose exec postgres pg_dump -U gameap gameap > gameap-backup.sql
 ```
+
+Bump the image tag in `docker-compose.yml` rather than relying on `latest` — see
+[Image Tags](#image-tags). General upgrade notes are on the [Upgrade](/en/upgrade.html) page.
+
+### Upgrading to 4.5.0
+
+There is no `gameapctl` inside the container to rewrite the configuration, so the changes below
+are made by hand in `docker-compose.yml` or `.env`.
+
+**Plugin variables were renamed.** Every `PLUGIN_*` variable became `PLUGINS_*`, and
+`PLUGINS_CACHE_ENABLED` / `PLUGINS_CACHE_DIR` became `PLUGINS_RUNTIME_CACHE_ENABLED` /
+`PLUGINS_RUNTIME_CACHE_DIR`. The old names keep working for one release and produce a deprecation
+warning in the log; if both the old and the new name are set, the new one wins. Rename them
+anyway — the old names will be removed in a future release.
+
+Three variables also changed their value format and have **no** compatibility fallback: the old
+names are silently ignored, and the panel runs with the defaults.
+
+| Old name                          | New name                   | Value                                            |
+|-----------------------------------|----------------------------|--------------------------------------------------|
+| `PLUGIN_HTTP_MAX_TIMEOUT_SECONDS` | `PLUGINS_HTTP_MAX_TIMEOUT` | Duration with a unit: `30s`                      |
+| `PLUGIN_NET_MAX_TIMEOUT_SECONDS`  | `PLUGINS_NET_MAX_TIMEOUT`  | Duration with a unit: `10s`                      |
+| `PLUGIN_NET_READ_BUFFER_BYTES`    | `PLUGINS_NET_READ_BUFFER`  | Size, a plain byte count or with a suffix: `64K` |
+
+The full list of variables is in the [config.env Reference](/en/config.html).
+
+**Logins and e-mail addresses are lowercased.** On the first start of 4.5.0 a migration folds
+every stored login and e-mail to lower case; users who signed in with capital letters continue
+to sign in, because the panel lowercases what is typed on the login form as well. If two
+accounts fold to the same login or e-mail, only one of them keeps it and the panel log names
+both accounts — see [Upgrade](/en/upgrade.html).

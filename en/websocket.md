@@ -7,20 +7,22 @@ order: 337
 ---
 
 Over WebSocket the panel serves everything that updates in real time: task progress, the game
-server console, and metrics. The interface works through these same connections.
+server console, metrics, and the progress of archive operations in the file manager. The
+interface works through these same connections.
 
 ## Connecting
 
-Connections are opened at six addresses:
+Connections are opened at seven addresses:
 
-| Address                              | What it serves                                    |
-|--------------------------------------|----------------------------------------------------|
-| `/api/ws/tasks/{id}`                 | Task progress and its output                       |
-| `/api/ws/servers/{server}/console`   | The game server console, both directions           |
-| `/api/ws/servers/{server}/attach`    | An interactive session with the game server        |
-| `/api/ws/servers/{server}/metrics`   | Game server metrics                                |
-| `/api/ws/nodes/{id}/metrics`         | Dedicated server metrics                           |
-| `/api/ws/nodes/metrics`              | Metrics of all dedicated servers                   |
+| Address                                                    | What it serves                                     |
+|------------------------------------------------------------|----------------------------------------------------|
+| `/api/ws/tasks/{id}`                                       | Task progress and its output                       |
+| `/api/ws/servers/{server}/console`                         | The game server console, both directions           |
+| `/api/ws/servers/{server}/attach`                          | An interactive session with the game server        |
+| `/api/ws/servers/{server}/file-manager/archive-operations` | Progress of file manager archive operations        |
+| `/api/ws/servers/{server}/metrics`                         | Game server metrics                                |
+| `/api/ws/nodes/{id}/metrics`                               | Dedicated server metrics                           |
+| `/api/ws/nodes/metrics`                                    | Metrics of all dedicated servers                   |
 
 ### Authorization
 
@@ -34,6 +36,10 @@ wss://panel.example.com:8025/api/ws/servers/1/console?token=<token>
 **Only short-lived tokens** with the `glst_` prefix **are accepted in the `token` parameter**.
 A personal access token cannot be passed there — this keeps it out of web server logs and
 browser history.
+
+> The short-lived token itself still appears in the URL and may end up in the logs of a reverse
+> proxy, web server or monitoring system. Single use and the 10-second lifetime make such a
+> record worthless, but if logs are kept for long, strip the `token` parameter from them.
 
 Getting a short-lived token:
 
@@ -86,6 +92,19 @@ All messages are JSON of the same shape:
 |-----------------|-------------|--------------------------------|
 | `attach.input`  | To the panel | Input into the session        |
 | `attach.detach` | To the panel | Detach without stopping the server |
+
+**Archive operations** (`/api/ws/servers/{server}/file-manager/archive-operations`):
+
+| Type               | Direction      | Purpose                                               |
+|--------------------|----------------|-------------------------------------------------------|
+| `archive.progress` | From the panel | Progress of creating or unpacking an archive          |
+| `archive.complete` | From the panel | The operation finished, successfully or with an error |
+
+No initial state is sent on connection: open the socket **before** starting the operation and
+match frames to the `operation_id` returned in the `202` response to the create or extract
+request. Both payloads carry the `operation_id`, the kind of operation and the counts of
+processed files and bytes; `archive.complete` adds `success` and, on failure, `error`. See
+[File Manager](/en/gameap_configure/file_manager.html#archives).
 
 **Metrics**:
 

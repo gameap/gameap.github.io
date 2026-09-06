@@ -29,15 +29,16 @@ When installing GameAP, you can choose a full installation of the panel together
 
 ## Installing Hytale Server in GameAP
 
-Navigate to **Administration** → **Game Servers** → **Create**
+Navigate to **Administration** → **Game servers** → **Create**
 
 ![Create game server form for Hytale](/images/en/tutorials/hytale/create_form.png)
 
 * In the "Name" field, enter any name for your server.
 * In the "Game" field, select the Hytale option.
+* In the "Game Mod" field, leave "Default"; it is selected automatically.
 * In the "Dedicated Server" field, select the desired node where the game server will be hosted.
-* In the IP field, select the desired address for your server, then you can choose an available port or use the suggested one.
-* Enter the game server port, default is 5520. You don't need to enter rcon and query ports.
+* In the IP field, select the desired address for your server, then you can choose an available port or use the suggested one; the default Hytale port is 5520.
+* The query and RCON ports are filled in automatically, you don't need to enter them.
 
 ### Configuration After First Launch
 
@@ -108,6 +109,11 @@ which will store the encrypted authorization data.
 ![File holding the encrypted Hytale authorization data](/images/en/tutorials/hytale/auth_enc_file.png)
 
 ### Game Server Settings
+
+#### Settings in the Panel
+
+The **Settings** tab of the game server contains one Hytale-specific field, "Memory. Max heap size (Xmx)" — 
+the maximum Java heap size, 4G by default.
 
 #### File-Based Settings
 

@@ -76,6 +76,7 @@ For a ready-made example of a release-tag publishing workflow (build, sign, uplo
 
 * A single `.wasm` file (the `wasm32-wasip1` target); the frontend is embedded into the same file.
 * Valid `PluginInfo` metadata: `api_version` set to `"1"` and a stable `id` are mandatory (see the id requirements in [Plugin development](/en/plugins/development.html)).
+* Every permission the plugin needs is declared in `PluginInfo.required_permissions`. Installation grants exactly the declared set; anything the module imports or subscribes to without declaring it is shown as undeclared in the panel's upload preview, and — when the operator has enabled `PLUGINS_PERMISSIONS_ENFORCE` — the calls behind it are refused. A new version that needs more permissions does not get them automatically: the operator has to grant them (see [Plugin permissions](/en/plugins/management.html#plugin-permissions)).
 * Versions in semantic versioning format.
 
 When a plugin is installed from the catalog, the panel verifies the SHA-256 hash of the downloaded file. The GPG signature is not verified by the panel — it is there so that users can check the file's authenticity themselves.

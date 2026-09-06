@@ -27,8 +27,8 @@ you need to install GameAP Daemon.
 When installing GameAP, you can choose the option to perform 
 a full installation along with the Daemon.
 
-In the control panel, go to **"Administration"** → **"Dedicated Servers"** 
-→ **"Create"**. 
+In the control panel, go to **Administration** → **Dedicated servers** 
+→ **Create**. 
 A window with an offer for automatic installation will appear. 
 Copy the code and execute it on the dedicated server.
 
@@ -36,14 +36,14 @@ After this, you can proceed with the Counter-Strike server installation.
 
 ## Installing Counter-Strike in GameAP
 
-Go to **Administration** → **Game Servers** → **Create**
+Go to **Administration** → **Game servers** → **Create**
 
 ![Create game server form for Counter-Strike 2](/images/en/tutorials/cs2/create_form.png)
 
 * In the "Name" field, enter any server name, 
   for example, "My Counter-Strike 2 Server".
 * In the "Game" field, select Counter-Strike 2.
-* In the modification field, choose the modification.
+* In the "Game Mod" field, leave "Default"; it is selected automatically.
 * In the "Dedicated Server" field, select the desired node 
   on which the game server will be located.
 * In the IP field, select the desired address of your server, 
@@ -64,11 +64,16 @@ use the 32-character value:
 ![Table with the generated Steam game server token](/images/en/tutorials/cs2/token_table.png)
 
 You need to copy the token value and specify it in the control panel settings. 
-Go to **Servers** → select your server → **Management** → **Settings**
+Go to **Servers** → select your server → **Control** → **Settings** 
+and paste it into the "Server Token (sv_setsteamaccount)" field. 
+The field is a plain text box marked **Admin only**, so it is shown to administrators only.
 
 ![Steam token field in the game server settings](/images/en/tutorials/cs2/set_token.png)
 
 After this, you can launch your server.
+
+The same tab also contains the "Server hostname" field and the "Default Map" drop-down list 
+with 17 maps (`de_dust2` by default); a custom map name can be typed in as well.
 
 ## Configuring Counter-Strike 2 Server
 

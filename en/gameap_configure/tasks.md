@@ -90,15 +90,39 @@ GET /api/servers/{server}/tasks/{id}/executions
 
 ## Daemon Tasks
 
-The scheduler creates daemon tasks — the same ones visible in **Administration** →
-**GDaemon tasks**. Manually created tasks run there too: starting the server with a button,
-installation, updates.
+The scheduler creates daemon tasks — the same ones shown in the **GDaemon Tasks** list.
+Manually triggered actions run there too: starting the server with a button, installation,
+updates.
 
-A stuck or unneeded task can be canceled: open it and click **Cancel**. Via the API:
+The list is available to administrators only, and there is no separate sidebar item for it.
+Open **Administration** → **Dedicated servers** and click **GDaemon Tasks**, or open a node's
+card and click **GDaemon Tasks** in its details window — the list then opens filtered to that
+node (`?node=<id>` in the URL).
+
+The list can be filtered by task type, status, game server, and dedicated server. Each filter
+accepts several values; the **Clear** button resets them all.
+
+| Task type | Meaning             |
+|-----------|---------------------|
+| `gsstart` | Start game server   |
+| `gsstop`  | Stop game server    |
+| `gsrest`  | Restart game server |
+| `gsupd`   | Update game server  |
+| `gsinst`  | Install game server |
+| `gsdel`   | Delete game server  |
+| `gsmove`  | Move game server    |
+| `cmdexec` | Execute command     |
+
+Task statuses: `waiting`, `working`, `error`, `success`, `canceled`.
+
+A stuck or unneeded task can be canceled while it is in the `waiting` status: open it and click
+**Cancel** — the button is shown only for a waiting task. Via the API:
 
 ```http
 POST /api/gdaemon_tasks/{id}/cancel
 ```
+
+A task in any other status cannot be canceled; the request returns `422`.
 
 Cancellation helps when a task is stuck waiting — for example, because the daemon was
 unavailable when it was created. The panel itself periodically marks stuck tasks: the check
@@ -113,5 +137,6 @@ Working with the scheduler requires the `game-server-tasks` permission on the se
 ## Plugin Tasks
 
 Plugins can register their own periodic tasks — they are not related to game servers and do not
-appear in this section. Their limits are set with the `PLUGIN_SCHEDULER_*` variables, see the
-[config.env Reference](/en/config.html).
+appear in this section. Their limits are set with the `PLUGINS_SCHEDULER_*` variables, see the
+[config.env Reference](/en/config.html). The former `PLUGIN_SCHEDULER_*` names still work but
+log a deprecation warning.
