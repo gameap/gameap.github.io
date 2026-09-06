@@ -235,16 +235,25 @@ docker compose exec mysql mysqldump -u gameap -p gameap > gameap-backup.sql
 ```
 
 An external database is backed up with its own tools, on the host where it runs. A SQLite database
-lies inside the volume and is covered by the copy below — provided the container is stopped, so
-that the WAL journal does not leave the copy inconsistent.
+is covered by the volume archive below only when `DATABASE_URL` points inside the volume, as it does
+in the quick start. Left at the image default, `file:/db.sqlite`, the database lies at the container
+root and disappears together with the old container — save it separately.
 
-The volume holds the gRPC certificates as well, and without them daemons stop connecting:
+The volume holds the gRPC certificates as well, and without them daemons stop connecting. Stop the
+container first, so that the WAL journal does not leave the copies inconsistent:
 
 ```bash
 docker stop gameap
+
+# Only if DATABASE_URL was left at the image default
+docker cp gameap:/db.sqlite ./db.sqlite
+
 docker run --rm -v gameap-data:/data -v "$PWD:/backup" alpine \
   tar czf /backup/gameap-data.tar.gz -C /data .
 ```
+
+Better still, move such a database into the volume: set `DATABASE_URL` to a path inside it, as in
+the quick start, and put the file there. Then the volume archive covers it on its own.
 
 Take the volume name from your own configuration: `gameap-data` in the quick start above,
 `gameap-storage` in the example `docker-compose.yml`. What else has to be saved, and how to
