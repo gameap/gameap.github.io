@@ -69,7 +69,7 @@ gRPC работает на **отдельном порту 31718**, веб-ин�
 полученный адрес подключения со своим gRPC-сертификатом. Если адрес им не покрыт, в ответе
 `GET /api/nodes/setup` появляется массив `warnings` с текстом:
 
-```
+```text
 gRPC connect host "..." is not covered by the panel gRPC TLS certificate. Daemons will fail TLS verification when connecting via this address. Set GRPC_EXTERNAL_HOST in the panel configuration and restart the panel to regenerate the certificate.
 ```
 
@@ -275,10 +275,10 @@ nc -zv panel.example.com 31718
 в Linux, `C:\gameap\daemon\logs\output.log` в Windows.
 
 Проверка сертификата на стороне панели: от имени администратора запросите `GET /api/nodes/setup`
-(или откройте **«Администрирование»** → **«Выделенные серверы»** → **«Создать»**) и посмотрите
-поле `warnings` в ответе. Пустое или отсутствующее `warnings` означает, что адрес подключения,
-который панель выдаёт демонам, покрыт её gRPC-сертификатом (при `GRPC_TLS_ENABLED=false` проверять
-нечего). В журнале панели ищите строку `not covered by the panel gRPC TLS certificate`.
+и посмотрите поле `warnings` в ответе. Пустое или отсутствующее `warnings` означает, что адрес
+подключения, который панель выдаёт демонам, покрыт её gRPC-сертификатом (при
+`GRPC_TLS_ENABLED=false` проверять нечего). В журнале панели ищите строку
+`not covered by the panel gRPC TLS certificate`.
 
 > Каждый вызов `GET /api/nodes/setup` — и каждое открытие окна **«Создать»** — выпускает **новый**
 > ключ установки (действует 1 час) и заменяет предыдущий, поэтому ранее скопированная команда

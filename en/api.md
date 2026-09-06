@@ -251,7 +251,7 @@ Everywhere except the exchange endpoint the ticket is worthless: presented in th
 `Authorization` header, the query string or a cookie it is rejected with `401`.
 
 > Behind a load balancer the ticket may be issued on one panel instance and redeemed on another —
-> a shared cache (`CACHE_DRIVER=redis` or `postgres`) is required.
+> a shared cache (`CACHE_DRIVER=redis`, `mysql` or `postgres`) is required.
 > See [Multiple Panel Instances](/en/multi_instance.html).
 
 The threat model and the restrictions on administrators are described in

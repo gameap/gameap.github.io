@@ -218,6 +218,7 @@ Detach the server from the user — the remove button in the **Servers** block o
 server are kept: if the server is attached again later, the previous set applies again. If the
 assignment has to stay, switch the permissions off in **Edit Server Permission** instead.
 
-The user will be able to log in but will not see a single server. Active sessions are not
+The user will be able to log in but will no longer see that server; the other servers attached to
+them stay available. To take access away entirely, detach every server. Active sessions are not
 terminated by this — they keep working until they expire (24 hours, or 7 days for logins with
 "remember me" checked).

@@ -160,7 +160,7 @@ The contents of `process_manager.config` depend on the manager:
   process_manager.name=systemd`.
 * `docker` — connection parameters `host`, `cert_path` and `api_version`. If none of them is set,
   the client is configured from the standard Docker environment variables (`DOCKER_HOST`,
-  `DOCKER_CERT_PATH`, `DOCKER_API_VERSION`).
+  `DOCKER_CERT_PATH`, `DOCKER_TLS_VERIFY`, `DOCKER_API_VERSION`).
 * `podman` — `socket_path`, the path to the Podman API socket.
 
 ```yaml
@@ -170,11 +170,12 @@ process_manager:
     scope: user
 ```
 
-For `docker` and `podman` the same block also accepts any container parameter (`image`,
+For `docker` and `podman` the same block also accepts container parameters (`image`,
 `workdir`, `dns` and so on — with or without the `docker_` prefix) as a default for the whole
 node. Such a value is used only when the same key is not set in the server variables, the mod
-metadata or the game metadata. The list of container keys and examples are on the
-[Process Managers](/en/daemon/process_managers.html) page.
+metadata or the game metadata. Do not set `container_name` node-wide: it goes through the same
+lookup, so every server on the node would get the same container name. The list of container keys
+and examples are on the [Process Managers](/en/daemon/process_managers.html) page.
 
 ### Steam Account
 

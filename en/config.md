@@ -137,7 +137,7 @@ one instance and redeemed on another, so it needs a shared `CACHE_DRIVER`: `redi
 `postgres`, not `memory`.
 
 > `AUTH_SECRET` is silently coerced to 32 bytes: a short value is padded, a long one is truncated.
-> Set exactly 32 random bytes, for example `openssl rand -hex 16`.
+> Set exactly 32 characters, for example `openssl rand -base64 24`.
 
 ### First administrator
 
@@ -515,7 +515,7 @@ sufficient. An unknown `PUBSUB_DRIVER` value causes the panel to fail at startup
 | `LOGGER_LEVEL`                | string   | `info`                   | `debug`, `info`, `warn`, `error`                |
 | `LOGGER_LOG_DB_QUERIES`       | bool     | `false`                  | Log database queries. Debugging only            |
 | `DEFAULT_LANGUAGE`            | string   | `""`                     | Default interface language: `en`, `ru`, `es`, `de`. Empty — the browser language |
-| `GLOBAL_API_URL`              | string   | `https://api.gameap.com` | Global API address — game updates               |
+| `GLOBAL_API_URL`              | string   | `https://api.gameap.com` | Global API address — bug reports                |
 | `GAMES_CDN_URLS`              | list     | see below                | Game catalog sources, tried in order            |
 | `TASK_REAPER_INTERVAL`        | duration | `1m`                     | How often to look for stuck tasks               |
 | `TASK_REAPER_STALE_THRESHOLD` | duration | `10m`                    | Idle time after which a task is considered stuck |

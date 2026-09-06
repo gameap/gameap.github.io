@@ -394,8 +394,9 @@ one is **truncated**, and a warning goes to the log. So give it exactly 32 chara
 openssl rand -base64 24
 ```
 
-Do not use `openssl rand -hex 32` here: that yields 64 characters, the panel will drop half of them,
-and the strength stays the same.
+Do not use `openssl rand -hex 32` here: that yields 64 characters, the panel keeps only the first
+32, and what remains is 128 bits of entropy. `openssl rand -base64 24` packs 24 random bytes —
+192 bits — into the same 32 characters.
 
 **`ENCRYPTION_KEY` is hashed in full with SHA-256**, its length is not limited and nothing is lost.
 A longer value is fine here:
@@ -559,8 +560,8 @@ normal session with the `mfa_nudge` reminder, after `AUTH_MFA_HARD_FAIL_DAYS` �
 > works with `AUDIT_CLIENT_IP_HEADER` configured — otherwise every browser looks like the proxy and
 > the binding is useless.
 
-Tickets live in the panel cache. Behind a load balancer a shared cache (`CACHE_DRIVER=redis` or
-`postgres`) is required: the ticket is issued on one instance and redeemed on another — see
+Tickets live in the panel cache. Behind a load balancer a shared cache (`CACHE_DRIVER=redis`,
+`mysql` or `postgres`) is required: the ticket is issued on one instance and redeemed on another — see
 [Multiple Panel Instances](/en/multi_instance.html).
 
 ## File uploads
@@ -592,8 +593,8 @@ outright (zip-slip). Password-protected archives are refused.
 
 The uncompressed size and the number of entries of one operation are capped by
 `FILES_ARCHIVE_MAX_BYTES` (`100G` by default) and `FILES_ARCHIVE_MAX_FILES` (`500000`) — protection
-against decompression bombs. The panel sends these limits with every operation; the daemon falls back
-to 10 GiB and 100,000 entries only if a request omits them.
+against decompression bombs. A limit set to `0` is omitted from the request, and the daemon then
+applies its own defaults: 10 GiB and 100,000 entries.
 
 7z and rar archives can only be extracted, not created, and are decoded by pure-Go libraries — no
 `unrar` or `p7zip` binary is run on the server.
@@ -611,7 +612,7 @@ are restricted separately:
 | `PLUGINS_DISABLED`               | `false` | Disable the plugin mechanism entirely                         |
 | `PLUGINS_HTTP_BLOCK_PRIVATE_IPS` | `true`  | Forbid requests to internal network addresses                 |
 | `PLUGINS_HTTP_ALLOWED_SCHEMES`   | `https` | Allowed schemes                                               |
-| `PLUGINS_HTTP_ALLOWED_HOSTS`     | `""`    | List of allowed hosts, empty — no host restrictions           |
+| `PLUGINS_HTTP_ALLOWED_HOSTS`     | `""`    | Hosts exempt from the private-IP block, empty — no exemptions |
 | `PLUGINS_HTTP_MAX_TIMEOUT`       | `30s`   | Request time limit                                            |
 | `PLUGINS_HTTP_MAX_REDIRECTS`     | `5`     | Redirect limit, each one is checked anew                      |
 

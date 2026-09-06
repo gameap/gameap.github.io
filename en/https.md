@@ -188,12 +188,17 @@ What is needed:
 > ```bash
 > iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8025
 > ```
+>
+> Substitute the `HTTP_PORT` value from `config.env` for `8025` in `--to-port`.
 
 Port 80 is needed not only for the first issuance: the challenge is repeated on every renewal,
 so it must not be closed afterwards.
 
-In a [rootless installation](/en/install/install_on_linux.html#rootless-installation) `http-01` is
-unavailable: an unprivileged process cannot bind port 80. Use `dns-01` there.
+In a [rootless installation](/en/install/install_on_linux.html#rootless-installation) the panel
+cannot bind port 80 itself — an unprivileged process is not allowed to. The challenge still
+succeeds when port 80 is forwarded to the panel's HTTP port or the panel is fronted by a reverse
+proxy: the panel serves `/.well-known/acme-challenge/` on its own HTTP port. Without such
+forwarding, use `dns-01` there.
 
 The `http-01` method **does not issue wildcard certificates** (`*.example.com`) — those require
 `dns-01`.
@@ -358,4 +363,4 @@ What matters in this setup:
 | The browser complains about the chain                | `TLS_CERT_FILE` contains only the certificate, without the intermediates                     |
 | The certificate was replaced, but the old one is served | The files are read at startup — `gameapctl panel restart` is needed                       |
 | `gameapctl panel https enable` stops with "ACME is enabled" | ACME takes priority over a certificate on disk. Run `gameapctl panel https letsencrypt disable` first |
-| The panel does not start after `TLS_*` was edited by hand | It cannot load the configured certificate or key. Fix the pair or remove the variables; `gameapctl panel https enable --cert --key` avoids this by verifying and rolling back |
+| The panel does not start after `TLS_*` was edited by hand | It cannot load the configured certificate or key. Fix the pair or remove the variables; `gameapctl panel https enable --cert=<path> --key=<path>` avoids this by verifying and rolling back |

@@ -76,7 +76,6 @@ GameAP 4 — один исполняемый файл со встроенным 
 |-----------------------------------------------------|------------------------------------------------|---------------------------------------------------------------|
 | `cdn.gameap.com`, `cdn.gameap.ru`, `api.github.com` | Проверка новых выпусков GameAP и GameAP Daemon | `UPDATE_CHECK_URLS`; отключается `UPDATE_CHECK_ENABLED=false` |
 | `cdn.gameap.ru`, `cdn.gameap.com`                   | Каталог игр                                    | `GAMES_CDN_URLS`                                              |
-| `api.gameap.com`                                    | Global API — обновление игр                    | `GLOBAL_API_URL`                                              |
 | `plugins.gameap.dev`                                | Каталог плагинов                               | `PLUGINS_STORE_URL`                                           |
 
 ## База данных
@@ -115,7 +114,7 @@ GameAP 4 — один исполняемый файл со встроенным 
 у команд `gameapctl panel install` и `gameapctl daemon install`, а также у соответствующих
 команд `upgrade`. См. [Установка на Linux](/ru/install/install_on_linux.html).
 
-* GameAP 4.5.0: Go 1.27, Node.js 24 и git;
+* GameAP 4.5.0: Go 1.27, Node.js с npm и git;
 * GameAP Daemon 4.1.2: Go 1.26.5 и новее, а также git (Node.js не нужен);
 * исходящий доступ к `github.com` и к прокси Go-модулей (`proxy.golang.org`).
 

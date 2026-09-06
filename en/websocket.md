@@ -38,8 +38,10 @@ A personal access token cannot be passed there — this keeps it out of web serv
 browser history.
 
 > The short-lived token itself still appears in the URL and may end up in the logs of a reverse
-> proxy, web server or monitoring system. Single use and the 10-second lifetime make such a
-> record worthless, but if logs are kept for long, strip the `token` parameter from them.
+> proxy, web server or monitoring system. Until it is used or expires the token is a working
+> credential: whoever reads it out of a log within those seconds can open the connection in your
+> place. Single use and the 10-second lifetime narrow that window but do not close it, so strip
+> the `token` parameter from any logs that are retained.
 
 Getting a short-lived token:
 

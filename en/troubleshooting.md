@@ -115,10 +115,11 @@ timedatectl status
 If systemd is not used, enable a time synchronization service such as `chronyd` or `ntpd`.
 
 Check the time zone separately: it does not affect clock accuracy, but because of it the time
-in the interface may be shown with an offset.
+in the interface may be shown with an offset. Substitute your own zone for `Region/City` —
+`timedatectl list-timezones` prints the available names.
 
 ```bash
-timedatectl set-timezone Europe/Moscow
+timedatectl set-timezone Region/City
 ```
 
 On Debian and Ubuntu the time zone can also be selected in a dialog: `dpkg-reconfigure tzdata`.
@@ -276,7 +277,7 @@ require GameAP Daemon 4.1.0 or newer.
 | Symptom                                                | Cause                                                                                                                                                                                                                               |
 |--------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `node does not support archive operations` — HTTP 502  | The daemon on this dedicated server is older than 4.1.0. Update it                                                                                                                                                                  |
-| ZIP download of a directory fails with HTTP 429        | Another download for this game server is still running (`FILES_ARCHIVE_CONCURRENT_PER_SERVER`, 2 by default). Wait for it to finish                                                                                                 |
+| ZIP download of a directory fails with HTTP 429        | The per-server limit on simultaneous downloads is reached (`FILES_ARCHIVE_CONCURRENT_PER_SERVER`, 2 by default). Wait for a running download to finish                                                                              |
 | ZIP download of a directory fails with HTTP 413        | The directory exceeds `FILES_ARCHIVE_MAX_BYTES` or `FILES_ARCHIVE_MAX_FILES`; the same limits apply when creating and unpacking archives                                                                                            |
 | `archive is encrypted, password required`              | The archive is password-protected; such archives cannot be unpacked                                                                                                                                                                 |
 | The operation starts, but its progress is not updating | Progress arrives over the `/api/ws/servers/{server}/file-manager/archive-operations` WebSocket, which the browser could not open — check WebSocket forwarding on the reverse proxy, see [WebSocket and Metrics](/en/websocket.html) |

@@ -70,7 +70,7 @@ Since 4.4.2 the panel detects this case itself. While building the installation 
 the resolved connect host against its own gRPC certificate. If the host is not covered, the
 `GET /api/nodes/setup` response contains a `warnings` array with the text:
 
-```
+```text
 gRPC connect host "..." is not covered by the panel gRPC TLS certificate. Daemons will fail TLS verification when connecting via this address. Set GRPC_EXTERNAL_HOST in the panel configuration and restart the panel to regenerate the certificate.
 ```
 
@@ -275,11 +275,10 @@ The daemon's connection status is visible in the panel on the **"Administration"
 **"Dedicated Servers"** page. The details are in the daemon log:
 `/var/log/gameap-daemon/output.log` on Linux, `C:\gameap\daemon\logs\output.log` on Windows.
 
-The certificate check on the panel side: as an administrator, request `GET /api/nodes/setup` (or
-open **Administration** → **Dedicated Servers** → **Create**) and look at the `warnings` field of
-the response. An empty or absent `warnings` means the connect host the panel hands out is covered
-by its gRPC certificate (with `GRPC_TLS_ENABLED=false` there is nothing to check). In the panel log,
-search for `not covered by the panel gRPC TLS certificate`.
+The certificate check on the panel side: as an administrator, request `GET /api/nodes/setup` and
+look at the `warnings` field of the response. An empty or absent `warnings` means the connect host
+the panel hands out is covered by its gRPC certificate (with `GRPC_TLS_ENABLED=false` there is
+nothing to check). In the panel log, search for `not covered by the panel gRPC TLS certificate`.
 
 > Every call to `GET /api/nodes/setup` — and every opening of the **Create** window — issues a
 > **new** setup key (valid for 1 hour) and replaces the previous one, so a previously copied

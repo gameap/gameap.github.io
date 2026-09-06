@@ -128,7 +128,7 @@ order: 343
 | `ServerControlProps`        | `server-control-buttons`, `server-control-blocks`              | `serverId`, `server`, `abilities: Record<string, boolean>`, `pluginId`     |
 | `ServersListActionProps`    | `servers-list-actions`                                         | `serverId`, `server`, `pluginId`                                           |
 | `DashboardWidgetProps`      | `dashboard-widgets`                                            | `isAdmin`, `pluginId`                                                      |
-| `ChromeSlotProps`           | `navbar-items`, `global-banners`, `admin-pages`                | `routeName`, `isAdmin`, `pluginId`                                         |
+| `ChromeSlotProps`           | `navbar-items`, `global-banners`, `admin-pages`                | `routeName` (в `navbar-items` не передаётся), `isAdmin`, `pluginId`        |
 | `SidebarSectionProps`       | `sidebar-sections`                                             | `minimized`, `isAdmin`, `pluginId`                                         |
 | `ProfileSlotProps`          | `profile-info-rows`, `profile-blocks`                          | `userId`, `user`, `pluginId`                                               |
 | `AdminUserInfoProps`        | `admin-user-info-above`, `admin-user-info-rows`, `admin-user-info` | `userId`, `user`, `pluginId`                                           |

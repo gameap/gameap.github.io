@@ -55,11 +55,14 @@ Read more about this in the [Games Import](/en/gameap_configure/games_import.htm
 
 ## Automatic Panel Installation
 
-Available for Linux and Windows. The panel is also distributed as a ready-made Docker image.
+Available for Linux and Windows.
 
 You need to run the script, and it will automatically install the necessary packages and the panel.
 Installation takes just a few minutes, and after it's complete, you can start using the panel right away.
 
 * [Panel installation on Linux](/en/install/install_on_linux.html)
 * [Panel installation on Windows](/en/install/install_on_windows.html)
-* [Panel installation in Docker](/en/install/install_docker.html) — the ready-made `gameap/gameap` image instead of a script
+
+The panel is also distributed as a ready-made Docker image:
+
+* [Panel installation in Docker](/en/install/install_docker.html) — the `gameap/gameap` image instead of a script

@@ -34,13 +34,13 @@ Actions in a plugin row:
 
 For paid plugins (marked `requires_subscription`), a subscription purchase button is offered instead of installation. To let the panel download paid plugins, set the license key in the `PLUGINS_STORE_LICENSE_KEY` environment variable.
 
-The plugin is granted exactly the permissions declared in its manifest (see [Plugin permissions](#plugin-permissions)).
+The plugin is granted the recognised permissions declared in its manifest (see [Plugin permissions](#plugin-permissions)).
 
 ## Installing from a file
 
 1. On the **Installed** tab, click the **Upload** button and select the plugin's `.wasm` file (no larger than 100 MB).
 2. Click **Validate**: the panel performs a trial module load (a dry run, without installing — `POST /api/admin/plugins/upload/dry-run`) and shows the plugin metadata: name, version, author, Plugin API version, the **Features** the build brings (HTTP routes, the game server abilities it registers, a frontend) together with the frontend bundle size, the permissions the plugin declares (**Required permissions**, `required_permissions`), a warning about the permissions the plugin uses but does not declare (`undeclared_permissions`), and a list of validation errors.
-3. If the plugin is valid, click **Install** — the panel installs the plugin (`POST /api/admin/plugins/upload/install`), grants it the declared permissions and reloads the page.
+3. If the plugin is valid, click **Install** — the panel installs the plugin (`POST /api/admin/plugins/upload/install`), grants it the recognised declared permissions and reloads the page.
 
 ![The Upload Plugin dialog after a successful check: the Valid badge, the plugin metadata, its features and the list of required permissions](/images/en/plugins/upload_dialog.png)
 
@@ -54,7 +54,7 @@ When a new version of a plugin installed from the catalog is released, an update
 
 An update — from the catalog or from a file — keeps the plugin's stored data (`gameap-storage`), secrets (`gameap-secrets`), configuration and granted permissions. Grants are never widened by an update: if the new build needs permissions it has not been granted, the panel logs a warning when it loads the module, and with `PLUGINS_PERMISSIONS_ENFORCE=true` the calls behind them are refused until an operator grants them in the **Permissions** dialog.
 
-Removal is performed with the **Uninstall** button, with confirmation (`DELETE /api/admin/plugins/{id}`). The panel unloads the plugin, deletes its `gameap-storage` entries and its encrypted secrets, then deletes the `.wasm` file, the plugin record and its scheduled tasks — a repeat installation starts from scratch. If the plugin's data cannot be deleted, the removal is aborted before the record is deleted, so the request can be retried.
+Removal is performed with the **Uninstall** button, with confirmation (`DELETE /api/admin/plugins/{id}`). The panel unloads the plugin, deletes its `gameap-storage` entries and its encrypted secrets, then deletes the `.wasm` file, the plugin record and its scheduled tasks — a repeat installation starts without the plugin's stored data, secrets and grants. Its `gameap-cache` entries are the exception: they are not deleted on uninstall and expire by TTL. If the plugin's data cannot be deleted, the removal is aborted before the record is deleted, so the request can be retried.
 
 After installation, updating and removal, the page reloads in order to refresh the plugin frontends (`/plugins.js`).
 
@@ -87,19 +87,19 @@ Privileged calls a plugin makes through the panel — managing servers, running 
 
 A wider permission covers a narrower one: a plugin granted `files` may do everything `files_read` allows. Read-only calls (lists of servers, nodes, users, games, mods), outbound HTTP requests, the key-value storage, the cache, the scheduler and logging are available to every plugin without a grant.
 
-A plugin declares the permissions it needs in its manifest (`PluginInfo.required_permissions`). Installing — from the catalog, from a file or through `PLUGINS_AUTOLOAD` — grants exactly the declared set; the upload preview shows it beforehand. Updating never widens the grants: a new build that needs more permissions has the calls behind them refused until an operator grants them.
+A plugin declares the permissions it needs in its manifest (`PluginInfo.required_permissions`). Installing — from the catalog, from a file or through `PLUGINS_AUTOLOAD` — grants the recognised declared permissions: a name the panel does not know is dropped instead of being stored as a grant. The upload preview shows the set beforehand. Updating never widens the grants: a new build that needs more permissions has the calls behind them refused until an operator grants them.
 
 Grants are edited in the **Permissions** dialog of the plugin row (`PUT /api/admin/plugins/{id}/permissions`). The dialog shows the permissions as checkboxes and warns when the plugin uses a capability it has not been granted; a permission the plugin neither declares nor uses cannot be granted. Changes take effect immediately after saving, on every panel instance. A refused call returns the error `plugin permission <name> required` to the plugin and is recorded in the audit log as `access.denied`; the plugin itself keeps running.
 
 ![The Permissions dialog of a plugin: the permission checkboxes and a warning that permission checks are disabled on this panel](/images/en/plugins/permissions_dialog.png)
 
-> In 4.5.0 enforcement is off by default: `PLUGINS_PERMISSIONS_ENFORCE=false`. Grants are recorded, shown and editable, but every check passes — host calls, event delivery and file references work without grants, and the **Permissions** dialog warns about it. Set `PLUGINS_PERMISSIONS_ENFORCE=true` to apply the grants; enforcement is planned to become the default in a future release, so record the grants your plugins need now. Independently of this setting, the `manage_nodes` check inside the nodes host library is always applied, SSH additionally requires `PLUGINS_SSH_ENABLED=true`, and rate limits and the node path policy (`PLUGINS_NODEFS_PATH_POLICY`) are always in force.
+> In 4.5.0 the default is `PLUGINS_PERMISSIONS_ENFORCE=false` — a compatibility mode, not a safe setting: grants are recorded, shown and editable, but every check passes, so every host call a plugin makes is ungated and event delivery and file references work without grants; the **Permissions** dialog warns about it. Set `PLUGINS_PERMISSIONS_ENFORCE=true` before installing plugins you do not fully trust, and record the grants your plugins need now — enforcement is planned to become the default in a future release. Independently of this setting, the `manage_nodes` check inside the nodes host library is always applied, SSH additionally requires `PLUGINS_SSH_ENABLED=true`, and rate limits and the node path policy (`PLUGINS_NODEFS_PATH_POLICY`) are always in force.
 
 ### Server abilities registered by a plugin
 
 Separately from its own grants, a plugin can register game server permissions of the form `plugin:{id}:{ability}`, for example `plugin:ezvdsxmlu6fbk:manage`. These permissions appear in the game server permission list alongside the built-in ones and are granted to users in the usual way (configuring a user's permissions for a server). Administrators receive all plugin permissions automatically.
 
-Based on these permissions, a plugin hides or shows interface elements (for example, a tab on the game server page), and can also restrict access to its HTTP routes with the `requires_auth` and `admin_only` flags.
+Based on these permissions, a plugin hides or shows interface elements (for example, a tab on the game server page), and it can check them itself through `gameap-authz` inside its handlers. They do not gate the plugin's HTTP routes: access to a route is controlled separately, by its own `requires_auth` and `admin_only` flags.
 
 ## Panel environment variables
 
@@ -125,6 +125,6 @@ The plugin subsystem is configured with 78 `PLUGINS_*` variables; the full list 
 
 ## Manual installation through the file system
 
-A plugin can be installed without the interface: copy the `.wasm` file into the panel's `plugins/` directory, add the file name to the `PLUGINS_AUTOLOAD` environment variable (names separated by commas) and restart the panel — the plugin will be registered and loaded at startup and granted exactly the permissions declared in its manifest. A plugin listed in `PLUGINS_AUTOLOAD` is set back to the `active` status on every start, whatever its previous status.
+A plugin can be installed without the interface: copy the `.wasm` file into the panel's `plugins/` directory, add the file name to the `PLUGINS_AUTOLOAD` environment variable (names separated by commas) and restart the panel — the plugin will be registered and loaded at startup and granted the recognised permissions declared in its manifest. A plugin listed in `PLUGINS_AUTOLOAD` is set back to the `active` status on every start, whatever its previous status.
 
 A plugin that fails to load at startup (missing file, compilation error, `Initialize` failure) is recorded with the `error` status and the reason; the remaining plugins keep loading and the panel starts. Plugins in the `active` and `error` statuses are attempted on every start. Set `PLUGINS_STRICT_LOAD=true` to make the panel refuse to start instead.

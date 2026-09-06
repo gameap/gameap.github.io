@@ -149,9 +149,13 @@ mysql -u root -p gameap_v4_test < /tmp/gameap.sql
 и распакуйте:
 
 ```shell
+mkdir -p /opt/gameap-v4-test
 curl -OL https://github.com/gameap/gameap/releases/download/v4.1.2/gameap-v4.1.2-linux-amd64.tar.gz
-tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /usr/bin
+tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /opt/gameap-v4-test
 ```
+
+> Не распаковывайте архив в `/usr/bin`: там лежит исполняемый файл рабочей панели
+> (`/usr/bin/gameap`), и архив перезапишет его.
 
 Создайте отдельный файл конфигурации `/etc/gameap-v4-test/config.env`:
 
@@ -159,9 +163,10 @@ tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /usr/bin
 DATABASE_DRIVER=mysql
 DATABASE_URL=gameap:пароль@tcp(127.0.0.1:3306)/gameap_v4_test?parseTime=true
 
-# получить значения: openssl rand -base64 24
-AUTH_SECRET=замените_на_32_случайных_байта
-ENCRYPTION_KEY=замените_на_32_случайных_байта
+# openssl rand -base64 24
+AUTH_SECRET=замените_на_32_случайных_символа
+# openssl rand -hex 32
+ENCRYPTION_KEY=замените_на_64_шестнадцатеричных_символа
 
 HTTP_PORT=8125
 GRPC_PORT=31818
@@ -174,7 +179,7 @@ GRPC_PORT=31818
 Запустите:
 
 ```shell
-gameap --env /etc/gameap-v4-test/config.env
+/opt/gameap-v4-test/gameap --env /etc/gameap-v4-test/config.env
 ```
 
 Панель будет доступна на порту 8125. Полный список параметров конфигурации —
@@ -212,7 +217,7 @@ Group=gameap-test
 
 WorkingDirectory=/var/lib/gameap-v4-test
 
-ExecStart=/usr/bin/gameap --env /etc/gameap-v4-test/config.env
+ExecStart=/opt/gameap-v4-test/gameap --env /etc/gameap-v4-test/config.env
 
 # Корректное завершение
 ExecStop=/bin/kill -TERM $MAINPID

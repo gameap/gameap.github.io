@@ -153,9 +153,13 @@ Download a version from the 4.1 line from the
 [releases page](https://github.com/gameap/gameap/releases) and unpack it:
 
 ```shell
+mkdir -p /opt/gameap-v4-test
 curl -OL https://github.com/gameap/gameap/releases/download/v4.1.2/gameap-v4.1.2-linux-amd64.tar.gz
-tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /usr/bin
+tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /opt/gameap-v4-test
 ```
+
+> Do not unpack the archive into `/usr/bin`: the binary of the production panel lives there
+> (`/usr/bin/gameap`), and the archive would overwrite it.
 
 Create a separate configuration file `/etc/gameap-v4-test/config.env`:
 
@@ -163,9 +167,10 @@ Create a separate configuration file `/etc/gameap-v4-test/config.env`:
 DATABASE_DRIVER=mysql
 DATABASE_URL=gameap:password@tcp(127.0.0.1:3306)/gameap_v4_test?parseTime=true
 
-# generate the values with: openssl rand -base64 24
-AUTH_SECRET=replace_with_32_random_bytes
-ENCRYPTION_KEY=replace_with_32_random_bytes
+# openssl rand -base64 24
+AUTH_SECRET=replace_with_32_random_characters
+# openssl rand -hex 32
+ENCRYPTION_KEY=replace_with_64_random_hex_characters
 
 HTTP_PORT=8125
 GRPC_PORT=31818
@@ -178,7 +183,7 @@ GRPC_PORT=31818
 Run:
 
 ```shell
-gameap --env /etc/gameap-v4-test/config.env
+/opt/gameap-v4-test/gameap --env /etc/gameap-v4-test/config.env
 ```
 
 The panel will be available on port 8125. The full list of configuration parameters is in the
@@ -216,7 +221,7 @@ Group=gameap-test
 
 WorkingDirectory=/var/lib/gameap-v4-test
 
-ExecStart=/usr/bin/gameap --env /etc/gameap-v4-test/config.env
+ExecStart=/opt/gameap-v4-test/gameap --env /etc/gameap-v4-test/config.env
 
 # Graceful stop
 ExecStop=/bin/kill -TERM $MAINPID

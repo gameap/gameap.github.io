@@ -121,6 +121,10 @@ dump.
 The panel does not make backups — neither by itself nor via `gameapctl`. Set up backups with
 the DBMS tools.
 
+Restore a full dump into an empty database — create it fresh, or drop and recreate the existing
+one, before running the commands below. A dump does not clear what is already in the target, so
+loading it over an existing schema fails on the tables that are already there.
+
 ### PostgreSQL
 
 ```bash

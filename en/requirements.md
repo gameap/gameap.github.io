@@ -76,7 +76,6 @@ plugin catalog.
 |-----------------------------------------------------|----------------------------------------------------|-----------------------------------------------------------------|
 | `cdn.gameap.com`, `cdn.gameap.ru`, `api.github.com` | Checking for new GameAP and GameAP Daemon releases | `UPDATE_CHECK_URLS`; disabled with `UPDATE_CHECK_ENABLED=false` |
 | `cdn.gameap.ru`, `cdn.gameap.com`                   | Games catalog                                      | `GAMES_CDN_URLS`                                                |
-| `api.gameap.com`                                    | Global API — game updates                          | `GLOBAL_API_URL`                                                |
 | `plugins.gameap.dev`                                | Plugin catalog                                     | `PLUGINS_STORE_URL`                                             |
 
 ## Database
@@ -115,7 +114,7 @@ when the panel or the daemon is built from source — the `--github` option of
 `gameapctl panel install` and `gameapctl daemon install`, and of the matching `upgrade` commands.
 See [Install on Linux](/en/install/install_on_linux.html).
 
-* GameAP 4.5.0: Go 1.27, Node.js 24 and git;
+* GameAP 4.5.0: Go 1.27, Node.js with npm and git;
 * GameAP Daemon 4.1.2: Go 1.26.5 or newer, and git (Node.js is not needed);
 * outbound access to `github.com` and the Go module proxy (`proxy.golang.org`).
 

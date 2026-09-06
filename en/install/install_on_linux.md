@@ -117,8 +117,9 @@ SQLite needs no connection parameters — the database file is created automatic
 
 If the default port is already taken, the installer takes the first free one of `8025`, `8026`,
 and so on (up to ten are probed) and prints which one it took. A port given explicitly — with
-`--port` or as `--host=example.com:8080` — is never replaced: the installer warns and names a free
-port instead.
+`--port` or as `--host=example.com:8080` — is never replaced: the installer warns, names a free
+port to re-run with, and asks whether to continue with the requested one. With
+`--non-interactive` it stops at that warning instead, unless `--skip-warnings` is given.
 
 `--version` cannot be combined with `--github`, `--branch`, or `--develop`.
 
@@ -144,7 +145,7 @@ With `--scope=user`, the panel — and, with `--with-daemon`, the daemon — is 
 root into the current user's home directory and runs as a systemd user unit. Linux only.
 
 ```shell
-gameapctl panel install --scope=user --host=<host> --database=sqlite
+gameapctl panel install --scope=user --host=example.com --database=sqlite
 ```
 
 The scope is recorded at install time, so the other commands — `start`, `stop`, `restart`,

@@ -116,8 +116,10 @@ bash <(curl -s https://gameap.com/install.sh) \
 
 Если порт по умолчанию занят, установщик берёт первый свободный из `8025`, `8026` и далее
 (проверяется до десяти портов) и сообщает, какой выбрал. Порт, заданный явно — через `--port` или
-как `--host=example.com:8080`, — никогда не подменяется: установщик предупредит и подскажет
-свободный.
+как `--host=example.com:8080`, — никогда не подменяется: установщик предупредит, подскажет
+свободный порт для повторного запуска и спросит, продолжать ли с запрошенным. С
+`--non-interactive` установка на этом предупреждении прерывается, если не передан
+`--skip-warnings`.
 
 `--version` нельзя сочетать с `--github`, `--branch` и `--develop`.
 
@@ -140,7 +142,7 @@ bash <(curl -s https://gameap.com/install.sh) --with-daemon
 каталог текущего пользователя и работает как пользовательский юнит systemd. Только для Linux.
 
 ```shell
-gameapctl panel install --scope=user --host=<хост> --database=sqlite
+gameapctl panel install --scope=user --host=example.com --database=sqlite
 ```
 
 Область установки запоминается, поэтому остальные команды — `start`, `stop`, `restart`, `status`,

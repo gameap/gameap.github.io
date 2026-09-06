@@ -156,7 +156,7 @@ The image is configured with the same variables as a regular installation — th
 the [config.env Reference](/en/config.html). No `config.env` file is needed inside the
 container.
 
-The bare minimum:
+The main variables:
 
 | Variable             | Purpose                                                  |
 |----------------------|----------------------------------------------------------|
@@ -165,6 +165,12 @@ The bare minimum:
 | `AUTH_SECRET`        | Token signing key, 32 random bytes                       |
 | `ENCRYPTION_KEY`     | Secrets encryption key, 32 random bytes                  |
 | `GRPC_EXTERNAL_HOST` | Panel address daemons use to connect                     |
+
+The first three are required: without them the panel will not start. `ENCRYPTION_KEY` is formally
+optional, but without it the daemon connection password is stored in plain text and plugins cannot
+store secrets — see [Security](/en/security.html). `GRPC_EXTERNAL_HOST` is needed when the address
+the panel takes from the request is not reachable from outside; inside a container that is the
+usual case — see [Panel address for daemons](#panel-address-for-daemons).
 
 Often useful as well:
 
@@ -204,20 +210,22 @@ directly. See [HTTPS and Certificates](/en/https.html) for details.
 
 ## Upgrading
 
-```bash
-docker compose pull
-docker compose up -d
-```
-
-Before upgrading, back up the database and the data volume: migrations are applied at startup
-and are irreversible.
+First back up the database and the data volume: migrations are applied at startup and are
+irreversible.
 
 ```bash
 docker compose exec postgres pg_dump -U gameap gameap > gameap-backup.sql
 ```
 
-Bump the image tag in `docker-compose.yml` rather than relying on `latest` — see
-[Image Tags](#image-tags). General upgrade notes are on the [Upgrade](/en/upgrade.html) page.
+Then bump the image tag in `docker-compose.yml` rather than relying on `latest` — see
+[Image Tags](#image-tags) — and pull the new image:
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+General upgrade notes are on the [Upgrade](/en/upgrade.html) page.
 
 ### Upgrading to 4.5.0
 
@@ -244,5 +252,6 @@ The full list of variables is in the [config.env Reference](/en/config.html).
 **Logins and e-mail addresses are lowercased.** On the first start of 4.5.0 a migration folds
 every stored login and e-mail to lower case; users who signed in with capital letters continue
 to sign in, because the panel lowercases what is typed on the login form as well. If two
-accounts fold to the same login or e-mail, only one of them keeps it and the panel log names
-both accounts — see [Upgrade](/en/upgrade.html).
+accounts fold to the same login or e-mail, only one of them keeps it and the panel log names both
+accounts by id, in the `user_id` and `kept_by_user_id` fields; the identifiers themselves are not
+logged — see [Upgrade](/en/upgrade.html).

@@ -110,8 +110,9 @@ way.
 ### What the importer creates
 
 * A game with the `pelican` engine. The code is generated from the egg name: lowercase, runs of
-  characters other than Latin letters and digits become `_`, at most 16 characters. Use
-  **Override settings** to pick a code of your own.
+  characters other than Latin letters and digits become `_`, at most 16 characters. If fewer than
+  two characters remain, the code becomes `gm`. Use **Override settings** to pick a code of your
+  own.
 * A single mod named **Default** with the Linux run command only. Importing an egg that yields the
   same code again updates this game and mod; their metadata is merged with the existing one.
 * The run command is rewritten to GameAP placeholders: `{% raw %}{{server.build.default.port}}{% endraw %}` and
