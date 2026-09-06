@@ -31,11 +31,15 @@ mysqldump -u root -p gameap > gameap-v3-backup.sql
 # PostgreSQL
 pg_dump -U gameap gameap > gameap-v3-backup.sql
 
-# SQLite — copying the file is enough
-cp /var/www/gameap/database.sqlite gameap-v3-backup.sqlite
+# SQLite
+sqlite3 /var/www/gameap/database.sqlite ".backup 'gameap-v3-backup.sqlite'"
 ```
 
 Check that the backup is not empty, and only then continue.
+
+> For SQLite use `.backup`, not `cp`. Simply copying the file while the panel is running can
+> produce a corrupted copy: at that moment part of the data is still in the WAL journal and has
+> not yet been written to the main file.
 
 ### Which databases can be upgraded in place
 
@@ -149,31 +153,40 @@ Download a version from the 4.1 line from the
 [releases page](https://github.com/gameap/gameap/releases) and unpack it:
 
 ```shell
+mkdir -p /opt/gameap-v4-test
 curl -OL https://github.com/gameap/gameap/releases/download/v4.1.2/gameap-v4.1.2-linux-amd64.tar.gz
-tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /usr/bin
+tar xvfz gameap-v4.1.2-linux-amd64.tar.gz -C /opt/gameap-v4-test
 ```
 
-Create the configuration file `/etc/gameap/config.env`:
+> Do not unpack the archive into `/usr/bin`: the binary of the production panel lives there
+> (`/usr/bin/gameap`), and the archive would overwrite it.
+
+Create a separate configuration file `/etc/gameap-v4-test/config.env`:
 
 ```dotenv
 DATABASE_DRIVER=mysql
 DATABASE_URL=gameap:password@tcp(127.0.0.1:3306)/gameap_v4_test?parseTime=true
 
-AUTH_SECRET=replace_with_32_random_bytes
-ENCRYPTION_KEY=replace_with_32_random_bytes
+# openssl rand -base64 24
+AUTH_SECRET=replace_with_32_random_characters
+# openssl rand -hex 32
+ENCRYPTION_KEY=replace_with_64_random_hex_characters
 
-HTTP_PORT=8025
+HTTP_PORT=8125
+GRPC_PORT=31818
 ```
 
-The keys are easy to generate with `openssl rand -hex 16`.
+> The paths, ports and service name here deliberately differ from the production ones. If the
+> trial installation is deployed on the same `/etc/gameap`, `8025` and `31718`, it will overwrite
+> the configuration of the production panel and take over its ports.
 
 Run:
 
 ```shell
-gameap --env /etc/gameap/config.env
+/opt/gameap-v4-test/gameap --env /etc/gameap-v4-test/config.env
 ```
 
-The panel will be available on port 8025. The full list of configuration parameters is in the
+The panel will be available on port 8125. The full list of configuration parameters is in the
 [config.env Reference](/en/config.html).
 
 Make sure the data is intact: users can log in, game servers and games are displayed. After
@@ -183,19 +196,19 @@ that you can upgrade the production installation.
 
 For convenient management of the trial installation, create a separate service.
 
-Create a user and a directory:
+Create a user and a directory — with names that differ from the production installation:
 
 ```shell
-useradd -r -s /usr/sbin/nologin -d /var/lib/gameap gameap
-mkdir -p /var/lib/gameap
-chown gameap:gameap /var/lib/gameap
+useradd -r -s /usr/sbin/nologin -d /var/lib/gameap-v4-test gameap-test
+mkdir -p /var/lib/gameap-v4-test
+chown gameap-test:gameap-test /var/lib/gameap-v4-test
 ```
 
-Then the file `/etc/systemd/system/gameap.service`:
+Then the file `/etc/systemd/system/gameap-v4-test.service`:
 
 ```ini
 [Unit]
-Description=GameAP - Game Server Control Panel
+Description=GameAP 4 (trial installation)
 Documentation=https://docs.gameap.com
 After=network.target
 Wants=network-online.target
@@ -203,15 +216,12 @@ Requires=network.target
 
 [Service]
 Type=simple
-User=gameap
-Group=gameap
+User=gameap-test
+Group=gameap-test
 
-WorkingDirectory=/var/lib/gameap
+WorkingDirectory=/var/lib/gameap-v4-test
 
-ExecStart=/usr/bin/gameap
-
-# Allow binding to privileged ports
-AmbientCapabilities=CAP_NET_BIND_SERVICE
+ExecStart=/opt/gameap-v4-test/gameap --env /etc/gameap-v4-test/config.env
 
 # Graceful stop
 ExecStop=/bin/kill -TERM $MAINPID
@@ -225,22 +235,20 @@ RestartSec=5
 StartLimitInterval=60
 StartLimitBurst=3
 
-EnvironmentFile=/etc/gameap/config.env
-
-RuntimeDirectory=gameap
-PIDFile=/run/gameap/gameap.pid
+RuntimeDirectory=gameap-v4-test
+PIDFile=/run/gameap-v4-test/gameap.pid
 
 # Filesystem permissions
 ProtectSystem=strict
 ProtectHome=true
 PrivateTmp=true
 
-ReadWritePaths=/var/lib/gameap
+ReadWritePaths=/var/lib/gameap-v4-test
 
 # Logging
 StandardOutput=journal
 StandardError=journal
-SyslogIdentifier=gameap
+SyslogIdentifier=gameap-v4-test
 
 [Install]
 WantedBy=multi-user.target
@@ -250,8 +258,17 @@ Enable and start the service:
 
 ```shell
 systemctl daemon-reload
-systemctl enable gameap
-systemctl start gameap
+systemctl enable gameap-v4-test
+systemctl start gameap-v4-test
+```
+
+When the trial installation is no longer needed, remove it entirely so that it does not start
+with the system:
+
+```shell
+systemctl disable --now gameap-v4-test
+rm /etc/systemd/system/gameap-v4-test.service
+systemctl daemon-reload
 ```
 
 ## If you need the latest version
@@ -266,3 +283,22 @@ You cannot upgrade from GameAP 3 straight to 4.2 or newer. The procedure is:
 
 Game server files do not need to be moved anywhere: they stay on the dedicated server; it is
 enough to describe the servers in the new panel with the same directories and ports.
+
+**Daemons, however, have to be registered again.** A clean panel has its own certificate
+authority, its own dedicated server ids and its own access keys, while the configuration of a
+running daemon still holds the `ds_id`, `api_key` and certificates of the old panel — pointing it
+at the same paths and ports is not enough.
+
+For each dedicated server:
+
+1. In the new panel open **"Administration"** → **"Dedicated servers"** → **"Create"** and take
+   the installation command or the connect URL from there.
+2. On the dedicated server run the enrollment:
+   `gameap-daemon enroll --connect=grpc://new-panel:31718/key`
+3. Restart the daemon: `systemctl restart gameap-daemon`.
+4. Make sure it has connected: the dedicated server appears in the panel, and the daemon log
+   contains no `gRPC connection failed`.
+
+> The `enroll` command overwrites the daemon configuration file entirely, without merging and
+> without a backup. Save the old file if it contained manual settings — the process manager, the
+> Steam account, repository address replacements.

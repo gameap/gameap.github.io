@@ -30,7 +30,7 @@ the [Dedicated Servers](/en/gameap_configure/dedicated_servers.html) page.
 ### Process Manager
 
 A process manager is a system utility that starts, stops, and restarts game servers and monitors
-their state. It can be chosen during installation, in the "Advanced Settings" block.
+their state. It can be chosen during installation, in the **Additional settings** block.
 
 If no manager is specified, the daemon picks one itself: on Linux — `systemd`, with a fallback
 when systemd is unavailable or the daemon runs in a container; on Windows —
@@ -153,8 +153,15 @@ After installation the log is written to `/var/log/gameap-daemon/output.log` on 
 | `process_manager.name`   | detected automatically | Process manager name                           |
 | `process_manager.config` | —                    | Additional manager parameters                    |
 
-The only supported additional parameter is `scope` with the value `system` or `user`, and only
-for `systemd`. For other managers it causes an error at startup.
+The contents of `process_manager.config` depend on the manager:
+
+* `systemd` — `scope`: `system` (default) or `user`. With any other manager a `scope` key keeps
+  the daemon from starting: `process_manager.config.scope is only valid for
+  process_manager.name=systemd`.
+* `docker` — connection parameters `host`, `cert_path` and `api_version`. If none of them is set,
+  the client is configured from the standard Docker environment variables (`DOCKER_HOST`,
+  `DOCKER_CERT_PATH`, `DOCKER_TLS_VERIFY`, `DOCKER_API_VERSION`).
+* `podman` — `socket_path`, the path to the Podman API socket.
 
 ```yaml
 process_manager:
@@ -162,6 +169,13 @@ process_manager:
   config:
     scope: user
 ```
+
+For `docker` and `podman` the same block also accepts container parameters (`image`,
+`workdir`, `dns` and so on — with or without the `docker_` prefix) as a default for the whole
+node. Such a value is used only when the same key is not set in the server variables, the mod
+metadata or the game metadata. Do not set `container_name` node-wide: it goes through the same
+lookup, so every server on the node would get the same container name. The list of container keys
+and examples are on the [Process Managers](/en/daemon/process_managers.html) page.
 
 ### Steam Account
 
@@ -181,6 +195,14 @@ user is used.
 
 > Two-factor authentication must be disabled on the Steam account used — otherwise the daemon
 > will not be able to log in to SteamCMD.
+>
+> For that reason, create a **separate account** used only for downloading server files, not your
+> main one: the password is stored in the configuration file in plain text, and an account with
+> two-factor authentication switched off is noticeably more vulnerable.
+
+The configuration file holds passwords and the panel access key. Keep it readable only by the user
+the daemon runs as, and do not include it in unencrypted backups or in logs you send anywhere. On
+registration the daemon creates the file with mode `0600` — preserve that when editing it by hand.
 
 ### Repository Address Replacement
 
@@ -222,6 +244,11 @@ users:
 
 A password can be written base64-encoded with the `base64:` prefix.
 
+> **`base64:` is encoding, not encryption.** Such a value is turned back into the original password
+> by a single command and protects nothing against someone reading the file. The prefix only exists
+> for passwords with special characters that break YAML parsing. The only protection here is the
+> file permissions.
+
 ## Configuration File Example
 
 ```yaml
@@ -249,6 +276,23 @@ parameters and comments is available
 [in the daemon repository](https://github.com/gameap/daemon/blob/master/config/gameap-daemon.yaml).
 
 ## Service Management
+
+### Daemon Version
+
+```bash
+gameap-daemon version
+```
+
+The command (short form `gameap-daemon v`) prints the daemon version, build date, OS and
+architecture, and the Go version — include this output when reporting a problem.
+
+The panel reports the same version on the **Administration** → **Dedicated Servers** page: the node
+card shows the version, and the **Overview** tab of the details window shows it together with the
+build date. Starting with panel 4.5.0 the version is compared with the latest stable GameAP Daemon
+release, and an outdated daemon gets the **New GameAP Daemon version available** banner — see
+[Dedicated Servers](/en/gameap_configure/dedicated_servers.html#daemon-version). The check is
+controlled by the `UPDATE_CHECK_*` variables — see the
+[config.env Reference](/en/config.html#update-check).
 
 ### Linux
 

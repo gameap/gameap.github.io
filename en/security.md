@@ -65,7 +65,10 @@ Two exceptions worth knowing about in advance:
 * **A full session issued before the deadline keeps working** until it expires. A "remember me" token
   obtained on day 29 will remain valid for another 7 days.
 * **Personal access tokens (PATs) are not restricted at all.** A token issued in advance will keep
-  working with the API after the deadline — a sensible fallback for automation.
+  working with the API after the deadline — a sensible fallback for automation. What a token may
+  never do is listed in [Personal access tokens](#personal-access-tokens) below; one consequence is
+  that an integration working through a PAT alone cannot enable 2FA for its own account — the 2FA
+  endpoints reject token sessions.
 
 ### Enabling 2FA
 
@@ -127,6 +130,10 @@ AUTH_MFA_HARD_FAIL_DAYS=0
 **5. Editing the database.** The only way left when both the device and the recovery codes are lost.
 Stop the panel, back up the database and run the query.
 
+> In all the queries below `login = 'admin'` is an example. Substitute the login of the account you
+> need and make sure it exists and is unique: `SELECT id, login FROM users WHERE login = '...';`
+> A query with no matching rows succeeds and silently changes nothing.
+
 PostgreSQL:
 
 ```sql
@@ -147,8 +154,20 @@ In PostgreSQL, where this field is of type `JSONB`:
 UPDATE users SET metadata = metadata - 'mfa_first_shown_at' WHERE login = 'admin';
 ```
 
-In MySQL and SQLite the field is stored as JSON text — the easiest way is to clear it entirely:
-`UPDATE users SET metadata = NULL WHERE login = 'admin';`
+In MySQL the field is stored as text containing JSON, and the key is removed like this:
+
+```sql
+UPDATE users SET metadata = JSON_REMOVE(metadata, '$.mfa_first_shown_at') WHERE login = 'admin';
+```
+
+In SQLite — starting with version 3.38:
+
+```sql
+UPDATE users SET metadata = json_remove(metadata, '$.mfa_first_shown_at') WHERE login = 'admin';
+```
+
+> Do not clear the `metadata` field entirely (`SET metadata = NULL`): besides the 2FA countdown it
+> may hold other information about the user, and that would be lost.
 
 After that, start the panel and enable 2FA again.
 
@@ -182,6 +201,24 @@ access.
 
 > The first administrator's password, set with the `ADMIN_PASSWORD` variable during initial database
 > seeding, is **not** checked. Choose it deliberately.
+
+### Logins and email addresses
+
+Logins and email addresses are stored **in lower case** regardless of how they were typed, and
+lookups — including sign-in — are case-insensitive. `POST /api/users` returns `409 Conflict` when
+the lowercased login or email is already taken. `PUT /api/users/{id}` accepts no login and makes no
+such pre-check: an update onto an email address that already belongs to another account is refused
+by the database unique index, not by a `409`.
+
+Upgrading to 4.5.0 runs migration 022, which folds the existing rows with the same function the
+panel applies to the value typed into the login form (Go's `strings.ToLower`, not SQL `LOWER()`),
+so the stored and the looked-up spellings agree for every alphabet.
+
+> If two accounts fold to the same value, only one keeps it — the row already in lower case,
+> otherwise the one with the lowest `id`. The others keep their old spelling and **can no longer sign
+> in with that identifier**; the migration logs a warning with the column, `user_id` and
+> `kept_by_user_id` (never the value itself), and the operator has to give those accounts a different
+> login or email. The folding cannot be rolled back.
 
 ## CAPTCHA
 
@@ -272,6 +309,10 @@ installation use `CACHE_DRIVER=redis`.
 Separately from this, second-factor verification allows no more than 5 code entry attempts per login
 attempt, after which the password has to be entered again.
 
+The single sign-on ticket exchange (`POST /api/auth/sso/exchange`) uses the same mechanism with its
+own counter — 60 failed attempts per IP address within the window — so a stale ticket does not spend
+the login budget.
+
 The panel has no account lockout — brute force is limited only by what is described above.
 
 ## HTTP headers and Content Security Policy
@@ -343,19 +384,43 @@ automatically.
 | `AUTH_SECRET`    | yes      | Signing key for session tokens. Without it the panel will not start   |
 | `ENCRYPTION_KEY` | no       | Encryption key for secrets in the database                            |
 
-Both values must be **exactly 32 random bytes**, not a passphrase:
+Both values must be random, not a passphrase. But their length requirements are **different** — the
+panel handles them differently.
+
+**`AUTH_SECRET` is used as-is and coerced to exactly 32 bytes:** a shorter value is padded, a longer
+one is **truncated**, and a warning goes to the log. So give it exactly 32 characters:
 
 ```bash
-openssl rand -hex 16
+openssl rand -base64 24
 ```
 
-> `AUTH_SECRET` is silently coerced to 32 bytes: a shorter value is padded, a longer one is
+Do not use `openssl rand -hex 32` here: that yields 64 characters, the panel keeps only the first
+32, and what remains is 128 bits of entropy. `openssl rand -base64 24` packs 24 random bytes —
+192 bits — into the same 32 characters.
+
+**`ENCRYPTION_KEY` is hashed in full with SHA-256**, its length is not limited and nothing is lost.
+A longer value is fine here:
+
+```bash
+openssl rand -hex 32
+```
+
+Hashing preserves the entropy of the original value but does not amplify it, so the key has to be
+random. A passphrase is unsafe here: it can be brute-forced if an encrypted value leaks.
+
+> `AUTH_SECRET` is coerced to 32 bytes silently: a shorter value is padded, a longer one is
 > truncated, and only a warning goes to the log. A short or predictable `AUTH_SECRET` means session
 > tokens can be forged.
 
 `ENCRYPTION_KEY` is used to encrypt TOTP secrets and the daemon connection password in the database.
 If it is not set, TOTP secrets are encrypted with a key derived from `AUTH_SECRET`, and the daemon
 password is stored in plain text — the panel warns about this at startup.
+
+Plugin secrets (the `gameap-secrets` host library) are also encrypted with `ENCRYPTION_KEY`:
+AES-256-GCM, with the ciphertext bound to the owning plugin and the secret's key, so a value copied
+into another plugin's row or under another key no longer decrypts. With
+`PLUGINS_SECRETS_REQUIRE_ENCRYPTION=true` (the default) writes are refused while `ENCRYPTION_KEY` is
+not set, instead of storing the credential in plain text.
 
 > **Do not set `ENCRYPTION_KEY` for the first time on a running installation that already has 2FA
 > enabled.** The encryption key for TOTP secrets will switch from `AUTH_SECRET` to `ENCRYPTION_KEY`,
@@ -377,11 +442,28 @@ these are irreversible transformations, and `ENCRYPTION_KEY` has nothing to do w
 
 What is recorded: successful and failed logins, rate limit hits, access denials, enabling and
 disabling 2FA, regenerating recovery codes, user changes and role assignments, token creation and
-revocation, changes to and deletion of dedicated servers, file operations, plugin installation and
-removal.
+revocation, issuing and redeeming single sign-on tickets, changes to and deletion of dedicated
+servers, file operations including archives, plugin installation, update and removal, and the
+privileged actions plugins perform through the host libraries.
 
 Each record contains: event type, category, outcome, the acting user's identifier and login,
 authentication method, IP address, User-Agent, request method and path, request identifier.
+
+Events added in 4.5.0:
+
+| Event                                                      | What it records                                                                  |
+|------------------------------------------------------------|----------------------------------------------------------------------------------|
+| `auth.sso.ticket.issue`                                    | Login ticket issued: `ip_bound`, `admin_self`                                    |
+| `auth.sso.ticket.redeem`                                   | Ticket redeemed: `issuer_id`; with `auth.login.success` when a session is issued |
+| `file.archive.create`                                      | Archive creation: `operation_id`, `format`, number of `sources`                  |
+| `file.archive.extract`                                     | Extraction: `operation_id`, `conflict_policy`                                    |
+| `file.archive.cancel`                                      | Cancellation: `operation_id`                                                     |
+| `plugin.ssh.connect`, `plugin.ssh.exec`, `plugin.ssh.file` | SSH connection, command and file transfer made by a plugin                       |
+
+The action of `auth.sso.ticket.redeem` says whether a session, a 2FA challenge or an enrollment-only
+session came out of it; a ticket rejected at the exchange (expired, already used, bound to another
+address) is recorded as `auth.token.rejected` with the reason. SSH records are written with the
+plugin as the actor and never contain the command text, stdin or key material.
 
 > The audit log is a set of structured application log lines with the `component=audit` field. There
 > is **no** separate database table, separate file, rotation, viewing interface or read API. If the
@@ -401,7 +483,8 @@ into a revocation list, which is checked on every request.
 
 For cases where the token has to be passed in the page address — WebSocket connections, file
 downloads — single-use short-lived tokens with the `glst_` prefix are issued. Their lifetime is
-limited to 10 seconds regardless of the value of `AUTH_SHORT_LIVED_TOKEN_TTL`.
+limited to 10 seconds regardless of the value of `AUTH_SHORT_LIVED_TOKEN_TTL`. Logging a user in
+from an external system is a separate mechanism — see [Single sign-on](#single-sign-on-login-tickets).
 
 The panel has no CSRF protection and does not need it: authentication goes through the
 `Authorization` header, not cookies.
@@ -409,6 +492,77 @@ The panel has no CSRF protection and does not need it: authentication goes throu
 The list of origins allowed to access the API from a browser is set with the `HTTP_ALLOWED_ORIGINS`
 variable (comma-separated values). If it is empty, a single origin computed from `HTTP_HOST` is
 allowed. The `*` character is not supported.
+
+## Personal access tokens
+
+A personal access token (PAT) acts on behalf of its owner and is limited by its abilities — see
+[API](/en/api.html). Since tokens live in third-party systems, several actions are closed to them
+even when the owner is an administrator and the token carries the matching ability. Each returns
+`403`:
+
+* assigning an administrative role to a user — `personal access tokens cannot assign administrative
+  roles`;
+* modifying a user who is an administrator — including attaching and detaching their servers —
+  `personal access tokens cannot modify administrators`;
+* changing any password — `personal access tokens cannot change passwords`;
+* enabling, confirming or disabling 2FA and regenerating recovery codes — `personal access tokens
+  cannot manage two-factor authentication`.
+
+Administrative routes that declare no token abilities are closed to tokens entirely
+(`personal access tokens cannot access this administrative endpoint`) — the token's scope would
+otherwise be bypassed, and only the owner's role would be checked. This is why deleting users,
+editing and deleting dedicated servers, creating and editing games, and managing plugins are
+available only from an interactive session. Where a route requires several abilities, the token has
+to carry all of them.
+
+## Single sign-on (login tickets)
+
+An external system that already knows the user — a billing panel with an "open my game panel"
+button — can log that user in without their password. A PAT does not fit here: it always logs in
+as its own owner. Instead, a **single-use login ticket** is issued for the specific user. There is
+no interface for this — only the API.
+
+**Issuing.** `POST /api/auth/sso/tickets` with an administrator session or a PAT carrying the
+`admin:user:sso` ability. Body:
+`{"user_id": 42, "redirect_to": "/servers/6", "client_ip": "203.0.113.7"}`, where `redirect_to`
+(a path inside the panel, up to 512 characters) and `client_ip` (a literal IP address) are optional.
+Response: `{"ticket": "glsso_…", "expires_in": 60, "redirect_to": "/servers/6"}`.
+
+**Delivery.** Send the browser to `https://panel.example.com/sso#t=<ticket>`. The ticket travels in
+the URL fragment, which is never sent to the server and does not end up in proxy logs or the
+`Referer` header; the page removes it from the address bar before doing anything else and posts it
+to `POST /api/auth/sso/exchange`.
+
+**Exchange.** The ticket is consumed atomically before it is checked, so a replay loses the race.
+The response is the same as for a password login: a session, or — if the account has 2FA enabled —
+`two_factor_required` with a `challenge_token` (`g2fa_`, 5 minutes), which is completed at
+`POST /api/auth/2fa/verify`. **SSO never bypasses the second factor.** Every rejection — expired,
+already used, unknown, bound to another IP address — is a `401` with the same message.
+
+The ticket is not a credential anywhere else: its prefix is unknown to the authentication middleware,
+so presenting it in the `Authorization` header, a query parameter or a cookie returns `401`. The
+cache stores only the SHA-256 of the secret part, so a cache dump yields no usable tickets.
+
+| Variable              | Default | Purpose                                                                             |
+|-----------------------|---------|-------------------------------------------------------------------------------------|
+| `AUTH_SSO_TICKET_TTL` | `60s`   | Ticket lifetime. Hard-capped at `120s`; a value of zero or less falls back to `60s` |
+
+**Administrators.** A ticket for an administrator can only be issued for the account the request is
+authenticated as — the token's owner or the session's own user; for any other administrator the
+response is `403` (`a login ticket for another administrator cannot be issued`). The exchange repeats
+the check, so a user promoted between issuing and redeeming gets `401`. Redeeming a ticket for an
+administrator without 2FA follows the same rules as a password login: within the grace period — a
+normal session with the `mfa_nudge` reminder, after `AUTH_MFA_HARD_FAIL_DAYS` —
+`mfa_enrollment_required` and a session restricted to the 2FA enrollment routes for
+`AUTH_MFA_ENROLLMENT_TOKEN_TTL`.
+
+> `client_ip` binds the ticket to the address that will redeem it. Behind a reverse proxy this only
+> works with `AUDIT_CLIENT_IP_HEADER` configured — otherwise every browser looks like the proxy and
+> the binding is useless.
+
+Tickets live in the panel cache. Behind a load balancer a shared cache (`CACHE_DRIVER=redis`,
+`mysql` or `postgres`) is required: the ticket is issued on one instance and redeemed on another — see
+[Multiple Panel Instances](/en/multi_instance.html).
 
 ## File uploads
 
@@ -419,35 +573,108 @@ HTML are deliberately forbidden — they can contain scripts.
 | Variable                      | Default | Purpose                                                     |
 |-------------------------------|---------|-------------------------------------------------------------|
 | `FILES_UPLOAD_ALLOWED_MIMES`  | `""`    | Extends the list of allowed types, does not replace it      |
-| `FILES_UPLOAD_ALLOW_ARCHIVES` | `false` | Allow archives: zip, tar, gzip, bzip2, 7z, xz               |
-| `FILES_UPLOAD_ALLOW_BINARY`   | `false` | Allow arbitrary binary files                                |
+| `FILES_UPLOAD_ALLOW_ARCHIVES` | `false` | Allow archives in uploads: zip, tar, gzip, bzip2, 7z, xz    |
+| `FILES_UPLOAD_ALLOW_BINARY`   | `false` | Allow arbitrary binary files in uploads                     |
 
-> The ban on archives and binary files is the most common reason for the question "why won't the file
-> upload". An archive can contain executables that will be unpacked on the dedicated server, which is
-> why uploading is forbidden by default. Enable these settings deliberately.
+> An archive can contain executables that will be extracted on the dedicated server. Enable these
+> settings deliberately.
 
 Rejected uploads go into the audit log with the detected file type and the reason for the rejection.
-The size limit for a single file is 100 MB and is not configurable.
+The size limit for a single-request upload is 100 MB and is not configurable; large files are
+transferred in chunks, and their ceiling is `FILES_UPLOAD_CHUNK_SIZE` × `FILES_UPLOAD_MAX_CHUNKS` —
+about 780 GB with the defaults, see the [config.env Reference](/en/config.html).
+
+### Archives
+
+Archives are created and extracted by the daemon on the dedicated server, inside the game server
+directory. Extraction is sandboxed with `os.Root`, so neither a symlink nor a `..` segment can lead
+outside that directory; entries with an absolute path or a path starting with `..` are rejected
+outright (zip-slip). Password-protected archives are refused.
+
+The uncompressed size and the number of entries of one operation are capped by
+`FILES_ARCHIVE_MAX_BYTES` (`100G` by default) and `FILES_ARCHIVE_MAX_FILES` (`500000`) — protection
+against decompression bombs. A limit set to `0` is omitted from the request, and the daemon then
+applies its own defaults: 10 GiB and 100,000 entries.
+
+7z and rar archives can only be extracted, not created, and are decoded by pure-Go libraries — no
+`unrar` or `p7zip` binary is run on the server.
+
+Operations require the `game-server-files` permission on the server and are recorded in the audit
+log as `file.archive.create`, `file.archive.extract` and `file.archive.cancel`.
 
 ## Plugins
 
 Plugins run in a WebAssembly sandbox and have no direct access to the system. Plugin network requests
 are restricted separately:
 
-| Variable                          | Default | Purpose                                                       |
-|-----------------------------------|---------|---------------------------------------------------------------|
-| `PLUGINS_DISABLED`                | `false` | Disable the plugin mechanism entirely                         |
-| `PLUGIN_HTTP_BLOCK_PRIVATE_IPS`   | `true`  | Forbid requests to internal network addresses                 |
-| `PLUGIN_HTTP_ALLOWED_SCHEMES`     | `https` | Allowed schemes                                               |
-| `PLUGIN_HTTP_ALLOWED_HOSTS`       | `""`    | List of allowed hosts, empty — no host restrictions           |
-| `PLUGIN_HTTP_MAX_TIMEOUT_SECONDS` | `30`    | Request time limit                                            |
-| `PLUGIN_HTTP_MAX_REDIRECTS`       | `5`     | Redirect limit, each one is checked anew                      |
+| Variable                         | Default | Purpose                                                       |
+|----------------------------------|---------|---------------------------------------------------------------|
+| `PLUGINS_DISABLED`               | `false` | Disable the plugin mechanism entirely                         |
+| `PLUGINS_HTTP_BLOCK_PRIVATE_IPS` | `true`  | Forbid requests to internal network addresses                 |
+| `PLUGINS_HTTP_ALLOWED_SCHEMES`   | `https` | Allowed schemes                                               |
+| `PLUGINS_HTTP_ALLOWED_HOSTS`     | `""`    | Hosts exempt from the private-IP block, empty — no exemptions |
+| `PLUGINS_HTTP_MAX_TIMEOUT`       | `30s`   | Request time limit                                            |
+| `PLUGINS_HTTP_MAX_REDIRECTS`     | `5`     | Redirect limit, each one is checked anew                      |
 
 The addresses of cloud provider metadata services are always blocked and cannot be unblocked. The
 `Set-Cookie`, `Authorization`, `WWW-Authenticate` and `Clear-Site-Data` headers are not passed to the
 plugin.
 
-See details on the [Plugins](/en/plugins/index.html) page.
+> Up to 4.4.2 these variables were spelled `PLUGIN_HTTP_*`. The old names still work and produce a
+> deprecation warning at startup, with one exception: `PLUGIN_HTTP_MAX_TIMEOUT_SECONDS` was replaced
+> by the duration-typed `PLUGINS_HTTP_MAX_TIMEOUT` and has no compatibility alias — it is silently
+> ignored and the default applies. See [Upgrade](/en/upgrade.html).
+
+### Permissions
+
+Each plugin has a set of permission grants (`manage_servers`, `files`, `secrets`, `ssh` and others),
+which gate the privileged host libraries; they are edited in the plugin's **Permissions** dialog.
+
+| Variable                      | Default | Purpose                                                                     |
+|-------------------------------|---------|-----------------------------------------------------------------------------|
+| `PLUGINS_PERMISSIONS_ENFORCE` | `false` | Apply the recorded grants. With `false` they are recorded but never checked |
+
+> With the default `PLUGINS_PERMISSIONS_ENFORCE=false` **no grant check blocks anything**, including
+> `secrets` and `listen_events`; the panel warns about this at startup and in the permissions dialog.
+> Set the grants now and enable the variable. Independently of it, the rate limits, the path policy
+> and `PLUGINS_SSH_ENABLED` are always in force.
+
+### Outbound SSH
+
+The `gameap-ssh` host library lets a plugin open SSH connections to hosts it names itself — outside
+the daemon and outside the node inventory; this is how a machine gets its daemon before it has one.
+
+| Variable                                | Default | Purpose                                                                    |
+|-----------------------------------------|---------|----------------------------------------------------------------------------|
+| `PLUGINS_SSH_ENABLED`                   | `false` | Enables the library; without it plugins cannot open SSH connections        |
+| `PLUGINS_SSH_BLOCK_PRIVATE_IPS`         | `true`  | Forbid connections to internal addresses; cloud metadata is always blocked |
+| `PLUGINS_SSH_ALLOWED_HOSTS`             | `""`    | Hosts exempt from the private-address block                                |
+| `PLUGINS_SSH_ALLOW_ACCEPT_ANY_HOST_KEY` | `true`  | Allow the `accept_any` host key policy (trust on first use)                |
+
+`PLUGINS_SSH_ENABLED` is the operator's only deliberate consent to outbound SSH from the panel:
+installing a plugin grants it everything it declares, so this switch is the only thing that keeps
+the library out of its reach. Set `PLUGINS_SSH_ALLOW_ACCEPT_ANY_HOST_KEY=false` as a hardening
+measure when your plugins can pin the host key or its fingerprint. Connections, commands and file
+transfers are recorded in the audit log as `plugin.ssh.connect`, `plugin.ssh.exec` and
+`plugin.ssh.file` — without the command text, stdin or key material.
+
+### Secrets, paths and rate limits
+
+* **Secrets.** `gameap-secrets` stores per-plugin credentials encrypted with `ENCRYPTION_KEY`; with
+  `PLUGINS_SECRETS_REQUIRE_ENCRYPTION=true` (the default) writes are refused while the key is not
+  set. See [Secret encryption](#secret-encryption).
+* **Path policy.** `PLUGINS_NODEFS_PATH_POLICY` confines the node paths `gameap-nodefs` and the
+  working directory of `gameap-nodecmd` may name: `unrestricted` (the default — any path),
+  `node_workpath` (inside the node's work path) or `server_dirs` (inside the game server directories
+  on that node). `PLUGINS_NODEFS_ALLOWED_PATHS` adds extra roots in the restricted modes; `..`
+  segments are refused in every mode.
+* **Rate limits.** `PLUGINS_RATELIMIT_*_RPS` / `_BURST` bound how often one plugin may call the
+  expensive host libraries (node commands, server control, node files, HTTP, RBAC, SSH), per plugin
+  and per panel instance. A refused call gets a "rate limited" error; the plugin is not disabled for
+  it. `0` for `RPS` removes the limit for that class.
+
+The full list of variables is in the [config.env Reference](/en/config.html); managing plugins is
+described on the [Plugins](/en/plugins/index.html) page.
 
 ## What is hard-coded
 

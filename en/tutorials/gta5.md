@@ -30,42 +30,46 @@ To install the game server on a machine (VDS), you need to install GameAP Daemon
 During the GameAP installation, you can choose to install it fully, 
 including Daemon.
 
-In the control panel, go to **"Administration"** → **"Dedicated Servers"** 
-→ **"Create"**. A window with an offer for automatic installation will appear. 
+In the control panel, go to **Administration** → **Dedicated servers** 
+→ **Create**. A window with an offer for automatic installation will appear. 
 Copy the code and execute it on the dedicated server.
 
 After this, you can proceed to install the FiveM server.
 
 ### Creating a FiveM Server in GameAP
 
-Go to **Administration** → **Game Servers** → **Create**
+Go to **Administration** → **Game servers** → **Create**
 
-![Create game server form for FiveM](/images/en/tutorials/fivem/create_form.png)
+![Create game server form for FiveM](/images/en/tutorials/gta5/create_form.png)
 
 * In the "Name" field, enter any server name, for example, "My GTA V Server".
 * In the "Game" field, select FiveM from the list.
-* In the modification field, select the modification, by default Vanilla.
+* In the "Game Mod" field, leave "Default"; it is selected automatically.
 * In the "Dedicated Server" field, select the desired node where the game server will be located.
-* In the IP field, choose the desired address of your server, then you can choose a free port for your server, or use the suggested one.
+* In the IP field, choose the desired address of your server, then you can choose a free port for your server, or use the suggested one (30120 by default).
 
 ## Server Key
 
 After installation, you need to specify a key that you must obtain from 
 [keymaster.fivem.net](https://keymaster.fivem.net)
 
-![Creating a server key on keymaster.fivem.net](/images/en/tutorials/fivem/generate_key.png)
+![Creating a server key on keymaster.fivem.net](/images/en/tutorials/gta5/generate_key.png)
 
 After generating, you will see a message. You need to copy the key value.
 
-![The generated FiveM server key](/images/en/tutorials/fivem/key.png)
+![The generated FiveM server key](/images/en/tutorials/gta5/key.png)
 
 You need to copy the key value and specify it in 
 the settings in the control panel. 
-Go to **Servers** → select your FiveM server → **Management** → **Settings**
+Go to **Servers** → select your FiveM server → **Control** → **Settings** 
+and paste it into the "License key from https://keymaster.fivem.net" field.
 
-![FiveM key field in the game server settings](/images/en/tutorials/fivem/set_key.png)
+![FiveM key field in the game server settings](/images/en/tutorials/gta5/set_key.png)
 
 Now you can start your FiveM server in the panel.
+
+The same tab also contains the "Server Hostname" field and the "Maximum players on server" field 
+(32 by default); the latter is marked **Admin only** and is shown to administrators only.
 
 ## Configuring the FiveM Server
 
@@ -73,6 +77,6 @@ The FiveM server configuration is located in the `server.cfg` file,
 which is located in the root directory. 
 You can edit this file in the panel's file manager.
 
-Go to **Servers** → select your FiveM server → **Management** → **Files**
+Go to **Servers** → select your FiveM server → **Control** → **Files**
 
-![FiveM server configuration file in the file manager](/images/en/tutorials/fivem/server_config.png)
+![FiveM server configuration file in the file manager](/images/en/tutorials/gta5/server_config.png)

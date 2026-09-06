@@ -7,10 +7,14 @@ order: 333
 ---
 
 The panel can serve HTTPS on its own, without a reverse proxy. A certificate can be taken from
-files, set directly in the configuration, or obtained automatically via Let's Encrypt.
+files, set directly in the configuration, or obtained automatically via Let's Encrypt. The
+quickest way to start is a self-signed certificate issued by one gameapctl command — see
+[Setup via gameapctl](#setup-via-gameapctl).
 
-Settings are defined in `config.env` — `/etc/gameap/config.env` on Linux, `C:\gameap\web\config.env`
-on Windows. After a change, a restart is required: `gameapctl panel restart`.
+Settings are defined in `config.env` — `/etc/gameap/config.env` on Linux
+(`~/.config/gameap/config.env` for a [rootless installation](/en/install/install_on_linux.html#rootless-installation)),
+`C:\gameap\web\config.env` on Windows. After a change, a restart is required:
+`gameapctl panel restart`.
 
 ## Certificate sources
 
@@ -24,12 +28,76 @@ The panel picks the source itself, in this order:
 It is **pairs** that are checked: a `TLS_CERT_FILE` alone, without `TLS_KEY_FILE`, does not count
 as a configured source and is silently ignored.
 
+gameapctl follows the same precedence: `gameapctl panel https enable` refuses to run while ACME is
+configured, because the panel would ignore the certificate on disk anyway, and
+`gameapctl panel https disable` switches both off.
+
 HTTPS listens on the port from `HTTPS_PORT` (`443` by default) and only when a certificate is
-available. HTTP on `HTTP_PORT` (`8025` by default) is always on.
+available. HTTP on `HTTP_PORT` is always on. The panel's own fallback for `HTTP_PORT` is `8025`,
+but `gameapctl panel install` writes `HTTP_PORT=80` in system scope and `HTTP_PORT=8025` in user
+scope — check `config.env` to see which port your installation actually uses.
 
 > The panel certificate is unrelated to the gRPC certificates the panel uses to talk to daemons.
 > Those are issued automatically by an internal certificate authority; ACME does not apply to them.
 > See [GRPC API](/en/daemon/grpc.html) for details.
+
+## Setup via gameapctl
+
+The panel terminates TLS itself, so there is no web server to configure. One command issues a
+self-signed certificate, points `config.env` at it, and restarts the panel:
+
+```bash
+gameapctl panel https enable
+gameapctl panel https status
+gameapctl panel https disable
+```
+
+The certificate covers the configured `HTTP_HOST`, the machine's host name, every address of its
+network interfaces, and loopback (`localhost`, `127.0.0.1`, `::1`); it is valid for **825 days**.
+A rerun keeps a certificate that still covers every requested name and is not about to expire, so
+the browser exception you have already accepted survives. Being self-signed, the certificate is
+not trusted by browsers until it is added to the trust store of each machine that opens the panel;
+copy it from the path `status` prints.
+
+A certificate you already have is used instead with `--cert` and `--key`. The files are left
+where they are — point the flags at the live files of an external ACME client, and the panel picks
+up every renewal on restart.
+
+| Flag            | Purpose                                                                              |
+|-----------------|--------------------------------------------------------------------------------------|
+| `--cert`        | Path to a PEM certificate to use instead of a self-signed one; requires `--key`      |
+| `--key`         | Path to the private key of `--cert`                                                  |
+| `--domain`      | Domain the certificate has to cover. Repeatable; replaces the detected names         |
+| `--ip`          | IP address the certificate has to cover. Repeatable; replaces the detected addresses |
+| `--port`        | HTTPS port: `443`, or `8443` with `--scope=user`                                     |
+| `--days`        | Validity of the self-signed certificate in days, `825` by default                    |
+| `--force-https` | Redirect HTTP requests to HTTPS (`TLS_FORCE_HTTPS`). Left as configured when absent  |
+| `--force`       | Reissue the self-signed certificate even when the current one still fits             |
+| `--scope`       | Installation scope, `system` or `user`; detected from the install state by default   |
+
+HTTP keeps answering on its own port. Turn on `--force-https` only once you are sure the HTTPS
+port is reachable — otherwise you lose access to the panel from anywhere the redirect target is
+blocked.
+
+Both listeners are served by one process, and **the panel exits when it cannot load the
+certificate it is configured with**. `enable` therefore verifies that the panel comes back up
+serving exactly the certificate it just wrote, and restores the previous `config.env` and
+restarts the panel when it does not.
+
+`disable` removes the TLS variables from `config.env` (and the `ACME_*` variables, when ACME is
+what is in effect) and restarts the panel on plain HTTP. `disable --purge` also deletes the
+certificate and key gameapctl issued; a certificate supplied via `--cert` is kept.
+
+`status` prints the scope, the configuration path, the HTTP and HTTPS addresses, the certificate
+source, the certificate actually served, and its expiry date.
+
+Where gameapctl stores the certificate it issues:
+
+| Scope   | Certificate                             | Private key                             | Default port |
+|---------|-----------------------------------------|-----------------------------------------|--------------|
+| system  | `/etc/gameap/certs/panel.crt`           | `/etc/gameap/certs/panel.key`           | `443`        |
+| user    | `~/.config/gameap/certs/panel.crt`      | `~/.config/gameap/certs/panel.key`      | `8443`       |
+| Windows | `C:\gameap\web\certs\panel.crt`         | `C:\gameap\web\certs\panel.key`         | `443`        |
 
 ## Certificate from files
 
@@ -38,6 +106,13 @@ TLS_CERT_FILE=/etc/gameap/certs/panel.crt
 TLS_KEY_FILE=/etc/gameap/certs/panel.key
 HTTPS_PORT=443
 ```
+
+These are the paths gameapctl itself uses in system scope; `~/.config/gameap/certs/` in user scope
+and `C:\gameap\web\certs` on Windows. Rather than editing `config.env` by hand, apply a
+certificate of your own with `gameapctl panel https enable --cert=<path> --key=<path>` — the
+command writes the variables and then verifies that the panel came back up serving that
+certificate, rolling the configuration back if it did not. Without that check, a bad pair takes
+the panel down: it exits when it cannot load a configured certificate.
 
 The certificate file must contain the full chain: the certificate itself, then the intermediates.
 Without the intermediates, some clients will not be able to verify the signature.
@@ -104,18 +179,30 @@ What is needed:
   connects to;
 * the panel serves the `/.well-known/acme-challenge/` path itself, on its HTTP port.
 
-> By default the panel listens on port **8025**, while the certificate authority always connects
-> to port **80**. On its own, these do not match. Either set `HTTP_PORT=80` or forward port 80
-> to the panel port using system tools:
+> The certificate authority always connects to port **80**. An installation made with
+> `gameapctl panel install` in system scope already listens there (`HTTP_PORT=80`). If the panel
+> is on another port — the built-in fallback is `8025`, and the installer picks the first free
+> port of `8025`, `8026`, … when 80 is taken — check `HTTP_PORT` in `config.env` and either set
+> `HTTP_PORT=80` or forward port 80 to the panel port using system tools:
 >
 > ```bash
 > iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8025
 > ```
 >
-> This is the most common reason `http-01` issuance fails.
+> Substitute the `HTTP_PORT` value from `config.env` for `8025` in `--to-port`.
+>
+> Such a rule only lives until the next reboot. Persist it with the firewall tooling of the
+> distribution — the one that restores rules at boot — or, instead of forwarding, put a reverse
+> proxy listening on port 80 in front of the panel.
 
 Port 80 is needed not only for the first issuance: the challenge is repeated on every renewal,
 so it must not be closed afterwards.
+
+In a [rootless installation](/en/install/install_on_linux.html#rootless-installation) the panel
+cannot bind port 80 itself — an unprivileged process is not allowed to. The challenge still
+succeeds when port 80 is forwarded to the panel's HTTP port or the panel is fronted by a reverse
+proxy: the panel serves `/.well-known/acme-challenge/` on its own HTTP port. Without such
+forwarding, use `dns-01` there.
 
 The `http-01` method **does not issue wildcard certificates** (`*.example.com`) — those require
 `dns-01`.
@@ -145,21 +232,24 @@ restricted permissions is preferable.
 
 If DNS records propagate slowly, increase `ACME_PROPAGATION_TIMEOUT`.
 
-### Setup via gameapctl
+### Let's Encrypt via gameapctl
 
 Instead of editing `config.env` by hand, you can use the wizard:
 
 ```bash
-gameapctl panel letsencrypt setup
+gameapctl panel https letsencrypt setup
 ```
 
 It asks for the domains, the email address, and the challenge type, writes the settings to
 `config.env`, and restarts the panel.
 
+> The command used to be `gameapctl panel letsencrypt`. That form still works as a deprecated
+> alias, but it is hidden from `--help`; use `gameapctl panel https letsencrypt`.
+
 The same call without questions:
 
 ```bash
-gameapctl panel letsencrypt setup --non-interactive \
+gameapctl panel https letsencrypt setup --non-interactive \
   --domains=panel.example.com \
   --email=admin@example.com \
   --challenge=http-01
@@ -167,20 +257,21 @@ gameapctl panel letsencrypt setup --non-interactive \
 
 Useful flags:
 
-| Flag                | Purpose                                                                      |
-|---------------------|-------------------------------------------------------------------------------|
-| `--challenge`       | `http-01` or `dns-01`                                                         |
-| `--domains`         | Comma-separated domains                                                       |
-| `--email`           | ACME account address                                                          |
-| `--dns-provider`    | DNS provider for `dns-01`                                                     |
-| `--env`             | Extra `KEY=VALUE` lines for `config.env` — for DNS credentials                |
-| `--staging`         | Let's Encrypt staging directory                                               |
-| `--non-interactive` | Ask no questions; fail with an error when parameters are missing              |
+| Flag                | Purpose                                                                            |
+|---------------------|------------------------------------------------------------------------------------|
+| `--challenge`       | `http-01` or `dns-01`                                                              |
+| `--domains`         | Comma-separated domains                                                            |
+| `--email`           | ACME account address                                                               |
+| `--dns-provider`    | DNS provider for `dns-01`                                                          |
+| `--env`             | Extra `KEY=VALUE` lines for `config.env` — for DNS credentials                     |
+| `--staging`         | Let's Encrypt staging directory                                                    |
+| `--non-interactive` | Ask no questions; fail with an error when parameters are missing                   |
+| `--scope`           | Installation scope, `system` or `user`; detected from the install state by default |
 
 Disabling:
 
 ```bash
-gameapctl panel letsencrypt disable
+gameapctl panel https letsencrypt disable
 ```
 
 The command removes the `ACME_*` variables from `config.env` and restarts the panel. The
@@ -252,7 +343,7 @@ terminates at a reverse proxy, and the CORS origin is computed with the `https` 
 
 If TLS terminates at nginx, Traefik, or another proxy, there is no need to configure certificates
 in the panel — leave `ACME_ENABLED=false` and do not set `TLS_*`. The panel will serve HTTP on
-`8025`, and the proxy will handle HTTPS.
+`HTTP_PORT`, and the proxy will handle HTTPS.
 
 What matters in this setup:
 
@@ -275,3 +366,5 @@ What matters in this setup:
 | Issuance stopped working after several attempts      | The production Let's Encrypt rate limit is exhausted. Switch to the staging directory and finish the setup there |
 | The browser complains about the chain                | `TLS_CERT_FILE` contains only the certificate, without the intermediates                     |
 | The certificate was replaced, but the old one is served | The files are read at startup — `gameapctl panel restart` is needed                       |
+| `gameapctl panel https enable` stops with "ACME is enabled" | ACME takes priority over a certificate on disk. Run `gameapctl panel https letsencrypt disable` first |
+| The panel does not start after `TLS_*` was edited by hand | It cannot load the configured certificate or key. Fix the pair or remove the variables; `gameapctl panel https enable --cert=<path> --key=<path>` avoids this by verifying and rolling back |

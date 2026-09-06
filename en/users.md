@@ -70,18 +70,42 @@ they apply to panel sections.
 The form has two blocks:
 
 * **Roles** — `Administrator` or `User`.
-* **Game servers** — a list of servers, with the needed permissions checkable for each one.
+* **Servers** — a table of the servers already attached to the user (name, game, IP:port).
+
+![The user edit page: the Roles field and the Servers block with one attached game server and the Add button](/images/en/users/server_privileges.png)
+
+Attaching and detaching servers takes effect immediately; the form does not need to be saved for
+that:
+
+* **Add** opens a window with a server search: start typing in the field with the hint
+  "Start typing the server name", pick the server and press **Add** once more. The server is
+  attached right away (the "Server attached" notification).
+* The remove button in a server row asks "Detach the server from the user?" and detaches the
+  server right away ("Server detached").
+* Permissions on an attached server are edited in the **Edit Server Permission** window. Unlike
+  attaching and detaching, they are applied only after **Save** in that window.
+
+![The Edit Server Permission window: the server details and the switches for every game server permission](/images/en/users/server_permissions.png)
 
 Permissions granted here are tied to the specific server: the user gets access to it and nothing
-more.
+more. Detaching a server does not delete its permissions — they stay on record and take effect
+again if the server is attached back. To remove them for good, switch them off in
+**Edit Server Permission** before detaching.
 
 The same is done via the API:
 
 ```http
-GET  /api/users/{id}/servers                              — the user's servers
-GET  /api/users/{id}/servers/{server}/permissions         — permissions on the server
-PUT  /api/users/{id}/servers/{server}/permissions         — change permissions
+GET    /api/users/{id}/servers                              — the user's servers
+PUT    /api/users/{id}/servers/{server}                     — attach a server
+DELETE /api/users/{id}/servers/{server}                     — detach a server
+GET    /api/users/{id}/servers/{server}/permissions         — permissions on the server
+PUT    /api/users/{id}/servers/{server}/permissions         — change permissions
 ```
+
+Attaching and detaching are available to administrators only and return `204 No Content`. Both
+are idempotent: attaching an already attached server keeps a single record; detaching a server
+that is not attached, or that no longer exists, also succeeds — this is how stale assignments are
+cleaned up. `404` means the user was not found (for attaching — the server as well).
 
 Your own permissions on a server can be viewed with `GET /api/servers/{server}/abilities`.
 
@@ -115,13 +139,21 @@ granted permission**. A grant tied to a single server does not make one an admin
 
 ### Caching
 
-Check results are cached for the time from `RBAC_CACHE_TTL` (30 seconds by default). Permission
-changes made through the interface and the API flush the cache immediately. Edits made directly
-in the database do not flush the cache — those changes take effect within the configured time.
+There are two caches, and this matters when permissions are edited directly in the database.
+
+| Layer        | Variable         | Default | When it applies                |
+|--------------|------------------|---------|--------------------------------|
+| In-process   | `RBAC_CACHE_TTL` | `30s`   | Always                         |
+| Shared cache | `CACHE_TTL_RBAC` | `24h`   | Only with `CACHE_DRIVER=redis` |
+
+Permission changes made through the interface and the API flush the cache immediately. Edits made
+directly in the database do **not** flush it: with the in-process cache they take effect within
+30 seconds, and with `CACHE_DRIVER=redis` — within a day. If you edited the database, clear the
+cache or restart the panel.
 
 ## Managing users
 
-| Method and path          | Purpose                        |
+| Method and path          | Purpose                         |
 |--------------------------|---------------------------------|
 | `GET /api/users`         | User list                       |
 | `POST /api/users`        | Create a user                   |
@@ -129,11 +161,32 @@ in the database do not flush the cache — those changes take effect within the 
 | `PUT /api/users/{id}`    | Update a user                   |
 | `DELETE /api/users/{id}` | Delete a user                   |
 
-The user list is available to administrators only.
+All of these are available to administrators only. When they are called with a personal access
+token, the token must carry the matching ability: `admin:user:read` for reading,
+`admin:user:manage` for creating and updating users, attaching and detaching servers and changing
+permissions on a server. Deleting a user has no token ability and is possible from a session only.
+Regardless of abilities, a token cannot assign an administrative role, edit an administrator's
+account or server assignments, or change a password — such requests are rejected with `403`.
+See [API](/en/api.html).
 
-The password set when creating or updating a user goes through the password policy check: at
-least 12 bytes and not on the compromised password list. See [Security](/en/security.html) for
-details.
+`POST /api/users` and `PUT /api/users/{id}` accept a `servers` field — an array of game server
+IDs. The list is replaced as a whole on every request: omitting the field or sending an empty
+array clears all of the user's server assignments. For incremental changes use
+`PUT`/`DELETE /api/users/{id}/servers/{server}`.
+
+Logins and e-mail addresses are stored in lowercase whatever casing was entered, and sign-in by
+either is case-insensitive. Creating a user whose login or e-mail, once lowercased, already
+belongs to another account returns `409`. When upgrading to 4.5.0 the migration lowercases the
+existing rows; if two accounts collide, only one of them keeps the identifier and the other can no
+longer sign in with it — the panel logs a warning with both user IDs, and the administrator has to
+give the second account a different login or e-mail.
+
+A user can be attached to a server only once: since 4.5.0 the user/server pair is unique in the
+database, so repeated attach calls do not create duplicates.
+
+The password set when creating or updating a user goes through the password policy check: no
+fewer than 12 and no more than 128 bytes and not on the compromised password list. See
+[Security](/en/security.html) for details.
 
 There is no user self-registration in the panel: accounts are created by an administrator.
 
@@ -143,9 +196,11 @@ There is no user self-registration in the panel: accounts are created by an admi
 
 1. Create a user: **Administration** → **Users** → **Create**.
 2. Assign them the `User` role.
-3. In the "Game servers" block, select the server and check the permissions. The minimal working
-   set: `game-server-common`, `game-server-start`, `game-server-stop`, `game-server-restart`.
-4. Add as needed: the file manager, the console, RCON, tasks.
+3. In the **Servers** block press **Add**, find the server and attach it.
+4. Open **Edit Server Permission** for that server, switch on the permissions and press **Save**.
+   The minimal working set: `game-server-common`, `game-server-start`, `game-server-stop`,
+   `game-server-restart`.
+5. Add as needed: the file manager, the console, RCON, tasks.
 
 ### Make a user an administrator
 
@@ -158,6 +213,12 @@ gives full access.
 
 ### Revoke access without deleting the account
 
-Remove the server permissions and leave the `User` role. The user will be able to log in but
-will not see a single server. Active sessions are not terminated by this — they keep working
-until they expire (24 hours, or 7 days for logins with "remember me" checked).
+Detach the server from the user — the remove button in the **Servers** block or
+`DELETE /api/users/{id}/servers/{server}` — and leave the `User` role. The permissions on the
+server are kept: if the server is attached again later, the previous set applies again. If the
+assignment has to stay, switch the permissions off in **Edit Server Permission** instead.
+
+The user will be able to log in but will no longer see that server; the other servers attached to
+them stay available. To take access away entirely, detach every server. Active sessions are not
+terminated by this — they keep working until they expire (24 hours, or 7 days for logins with
+"remember me" checked).

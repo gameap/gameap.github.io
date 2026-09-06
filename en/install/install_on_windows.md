@@ -50,6 +50,12 @@ in the Web/API section.
   Your browser does not support the video tag.
 </video>
 
+> The gameapctl interface installs and upgrades the ready-made release build; it has no option to
+> build from source. To build the panel from source on Windows, use the command line:
+> `gameapctl.exe panel install --github`, optionally with `--branch=<branch>`. gameapctl installs
+> Go and Node.js on its own; the notes on the Go toolchain and on later upgrades in
+> [Develop Version](/en/install/install_on_linux.html#develop-version) apply here as well.
+
 ### Installation Parameters
 
 Specify the necessary data for installation.
@@ -76,10 +82,10 @@ Correct value examples:
 #### Database
 
 The database where data will be stored: users, server information, etc. 
-You can use:
+On Windows the installer pre-selects **SQLite**; the other options remain available:
+* [SQLite](https://www.sqlite.org/). Selected by default. Enough if the load on your server is expected to be low and you do not plan to use more than 10 game servers.
 * [PostgreSQL](https://www.postgresql.org/). Recommended for large projects with many game servers and users.
 * [MySQL](https://www.mysql.com/)/[MariaDB](https://mariadb.org/)
-* [SQLite](https://www.sqlite.org/). If the load on your server is expected to be low and you do not plan to use more than 10 game servers.
 
 #### Installing GameAP Daemon
 
@@ -95,3 +101,16 @@ Do not forget to save the login data and database information
 that will be provided at the end.
 
 ![Panel login details shown when the installation finishes](/images/en/gameapctl/gameap_finished_installation.png)
+
+## HTTPS
+
+One command switches the panel to HTTPS with a self-signed certificate:
+
+```powershell
+C:\path\to\gameapctl.exe panel https enable
+```
+
+The certificate and key are stored in `C:\gameap\web\certs`. Being self-signed, the certificate
+is not trusted by browsers until it is added to the trust store of every machine that opens the
+panel. Flags, a certificate of your own, and Let's Encrypt are described on the
+[HTTPS and Certificates](/en/https.html) page.

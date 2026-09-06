@@ -112,11 +112,11 @@ To add a new game, go to **"Administration"** → **"Games"**, then select
 
 ### Fields
 
-##### Game
+#### Game
 
 The game which the mod belongs to.
 
-##### Name
+#### Name
 
 Mod name. This may be the name of the addon, build, kernel, any feature, etc. Enter the full name at
 your discretion.
@@ -149,7 +149,7 @@ Example game server working directory `/srv/gameap/servers/example-server`
 | Local Repository field value | Correctness of value | Installation result
 | ------ | ------- | ------ |
 | `/srv/gameap/repo/cs16_gungame.zip` | Valid, if the archive exists on the dedicated server | The `cs16_gungame.zip` archive contents will be unzipped into `/srv/gameap/servers/example-server`
-| `/srv/gameap/repo/cs16_cs16_gungame` | Valid, if the directory exists on the dedicated server | The directory contents will be copied to `/srv/gameap/servers/example-server`
+| `/srv/gameap/repo/cs16_gungame` | Valid, if the directory exists on the dedicated server | The directory contents will be copied to `/srv/gameap/servers/example-server`
 | `/srv/gameap/repo/cs16_gungame.rar` | Invalid. RAR archives not supported | Archive unzipping will be skipped
 | `https://cdn.gameap.com/cstrike-1.6/rehlds-amxx-reunion.tar.xz` | Invalid. Remote repository value is specified | Mod installation will be skipped
 
@@ -177,72 +177,166 @@ Example game server working directory `/srv/gameap/servers/example-server`
 
 ## Editing mods
 
-After making a mod, you can further configure it by specifying additional parameters such as 
-"Default startup commands", startup variables, various RCON commands.
+After the mod is created, open it for editing: **"Administration"** → **"Games"**, then pick the
+mod in the game's mod list. The editor is split into tabs:
+
+| Tab                       | What is on it                                                             |
+|---------------------------|---------------------------------------------------------------------------|
+| **Main**                  | Mod name, local and remote repositories, default start commands           |
+| **Game Servers Commands** | RCON commands: kick, ban, rename, restart, map change, message, password  |
+| **Metadata**              | Key–value pairs read by the daemon, for example container settings        |
+| **Vars**                  | Variables that become per-server settings and `{shortcodes}`              |
+| **Fast RCON commands**    | Custom RCON commands shown as buttons in the server's RCON console        |
 
 ### Main settings
-
-Main settings include parameters such as mod name, repositories, and default startup commands. Pay special attention
-to the startup commands.
 
 #### Mod name
 
 #### Repositories
 
-Read more in [Adding new mod, repositories](#repositories)
+Repositories are set separately for Linux and Windows nodes: **Local Repository (Linux)**,
+**Local Repository (Windows)**, **Remote Repository (Linux)**, **Remote Repository (Windows)**.
+Read more in [Adding new mods, repositories](#repositories).
 
-#### Default startup commands
+#### Default start commands
 
-When adding a new game server for the selected mod, this command will be automatically assigned to it. If
-the command is empty, nothing will be assigned and you should specify the startup command for each game server manually.
-The game server cannot be started without a startup command.
+There are two fields: **Start Command (Linux)** and **Start Command (Windows)**. When a game server
+is created for this mod with an empty start command, the field matching the node's operating system
+is copied into it. If that field is empty too, the start command has to be entered for every game
+server by hand — a game server cannot be started without one.
 
-You can use shortcodes in startup commands, they will then be replaced with the values of server variables. Shortcodes
-are words without spaces in braces `{`, `}`, for example, `{ip}`, `{port}`, `{maxplayers}`, etc.
+You can use shortcodes in start commands; they are replaced with the values of server variables.
+A shortcode is a word without spaces in braces `{`, `}`, for example `{ip}`, `{port}`, `{maxplayers}`.
 
 ##### Basis shortcodes
 
-These shortcodes are always available, they do not require adding additional variables in the mod settings.
+These shortcodes are always available; they do not require adding variables to the mod.
 
-| Shortcode | Description
-| ------ | -------
-| {ip} | Game server IP
-| {port} | Game server main port. Sometimes called a connect port
-| {query_port} | Query port
-| {rcon_port} | Server communication port (RCON port)
-| {rcon_password} | RCON password
-| {uuid} | Server UUID
-| {uuid_short} | Short server UUID
+| Shortcode                           | Description                                                     |
+|-------------------------------------|-----------------------------------------------------------------|
+| `{ip}`, `{host}`                    | Game server IP                                                  |
+| `{port}`, `{SERVER_PORT}`, `{PORT}` | Game server main port. Sometimes called a connect port          |
+| `{query_port}`                      | Query port                                                      |
+| `{rcon_port}`                       | Server communication port (RCON port)                           |
+| `{rcon_password}`                   | RCON password                                                   |
+| `{id}`                              | Server ID in the panel                                          |
+| `{uuid}`                            | Server UUID                                                     |
+| `{uuid_short}`                      | Short server UUID                                               |
+| `{dir}`                             | Absolute path to the server working directory                   |
+| `{game}`                            | Start code of the game                                          |
+| `{user}`                            | System user the server runs as                                  |
+| `{node_work_path}`                  | Daemon working directory on the node, for example `/srv/gameap` |
+| `{node_tools_path}`                 | `tools` directory inside the daemon working directory           |
 
 ##### User-defined shortcodes
 
-You can define these shortcodes for each specific game mod yourself. Depending on 
-individual server settings, these shortcodes will be replaced with values of the game server parameters. Read more 
-in [Variables](#variables).
+You define these shortcodes yourself for each mod in the **Vars** tab; they are replaced with the
+values of the game server's settings. Read more in [Variables](#variables).
+
+Two rules apply when a command is rendered:
+
+* Built-in shortcodes win: a variable named `port` or `dir` does not change the built-in value.
+* Every variable is substituted in three spellings — exactly as named, all lowercase and all
+  UPPERCASE. A variable `maxplayers` also replaces `{MAXPLAYERS}`, and a variable imported from a
+  Pelican egg as `SERVER_NAME` also replaces `{server_name}`. Other mixed-case spellings are left as is.
 
 ### Variables
 
-You can add individual settings for each game server. Then these settings can be edited
-by administrator or regular user on the settings page (**"Server List"** → **"Administration"** → 
-**"Settings"**).
+Variables are declared in the **Vars** tab. Each variable becomes a setting of every game server of
+this mod and a shortcode `{variable}` for the start command. Users edit the values on the server
+page, in the **Settings** tab — see [Game servers](/en/gameap_configure/game_servers.html#settings).
 
-| Field | Description
-| ------ | -------
-| Variable | Variable name. No curly brackets.
-| Default | Variable value by default. This value will be used if an individual value is not set for the game server.
-| Description | Game server description on the settings page (**"Server List"** → **"Administration"** → **"Settings"**)
-| Admin variable | If checked, only the administrator will be able to edit this setting for game servers.
+| Field           | Description |
+|-----------------|-------------|
+| **Var**         | Variable name, without braces: letters, digits and underscores, not starting with a digit, up to 32 characters. The games catalog accepts only lowercase names and the editor warns about any other; the panel itself also accepts uppercase, so variables imported from Pelican eggs keep their names |
+| **Info**        | Short label shown next to the setting, up to 128 characters. Required |
+| **Type**        | Kind of value and the widget the user sees, see [Types](#types). **String** by default |
+| **Default**     | Value used while the server has no value of its own, up to 64 characters. For a **Switch** it must equal one of the two switch values |
+| **Description** | Long help text shown as a hint under the field, up to 1000 characters |
+| **Admin Var**   | The variable is shown only to administrators (users with the `admin roles & permissions` permission). Other users do not see it in the **Settings** tab at all, and a value they send for it is ignored; administrators see it with an **Admin only** badge |
+
+#### Types
+
+| Type               | Value of `type` | Widget and value                                                        |
+|--------------------|-----------------|-------------------------------------------------------------------------|
+| **String**         | `string`        | Single-line text field. Used when no type is set                        |
+| **Text**           | `text`          | Multi-line text field                                                   |
+| **Integer**        | `int`           | Number field for whole numbers                                          |
+| **Decimal number** | `float`         | Number field, fractional part allowed                                   |
+| **Switch**         | `bool`          | On/off switch; stores **Value when enabled** or **Value when disabled** |
+| **Select**         | `select`        | Drop-down list of predefined **Options**                                |
+| **Password**       | `password`      | Text field with hidden input                                            |
+
+![The Type drop-down of a variable open on the Vars tab of a mod, listing String, Text, Integer, Decimal number, Switch, Select and Password](/images/en/gameap_configure/games/var_type.png)
+
+Whatever the type, the value is stored and substituted into commands as a string.
+
+**Switch.** The two values are `1` and `0` by default and can be changed (up to 64 characters each,
+they must differ). **Value when disabled** may be empty — handy for flags that are either present in
+the command or not. The default value must equal one of the two.
+
+**Select.** Every option has a **Value** — the string that is stored and substituted, up to 64
+characters, unique within the list — and an optional **Label** shown to the user (up to 128
+characters; equals the value when empty). At least one option is required. With **Allow a custom
+value** enabled the user may type a value that is not in the list; such a value is checked against
+the length and pattern rules below.
+
+![A variable of the Select type with the Allow a custom value switch and the Options list of values and their labels](/images/en/gameap_configure/games/var_options.png)
+
+#### Validation
+
+Rules from the **Validation** block are checked when a server setting is saved; a value that breaks
+them is rejected. Rules apply to non-empty values only — an empty value is rejected by **Required**
+and nothing else.
+
+| Rule                                   | Types                                             | Meaning |
+|----------------------------------------|---------------------------------------------------|---------|
+| **Required**                           | all                                               | An empty value is not accepted |
+| **Minimum**, **Maximum**               | Integer, Decimal number                           | Bounds of the value; the number field is limited to them |
+| **Minimum length**, **Maximum length** | String, Text, Password, Select with custom values | Length of the value in characters |
+| **Pattern (regular expression)**       | String, Text, Password, Select with custom values | The whole value must match the expression. RE2 syntax — no lookarounds or backreferences — up to 512 characters. The **Test value** field under the pattern checks a sample right in the editor |
+
+![The Validation block of a variable with Required enabled, length limits and a pattern checked against a test value](/images/en/gameap_configure/games/var_validation.png)
+
+For a **Select** the option list is a rule in itself: a value outside the list is rejected unless
+custom values are allowed. A textual value without a **Maximum length** rule is still capped at
+4096 characters.
+
+#### Translations
+
+**Info**, **Description** and option labels are written in English. Translations for other panel
+languages are added in the **Translations** block of the variable (**Info** and **Description**) and,
+for a **Select**, by the languages button next to each option (its **Label**). Pick the
+**Language** — a lowercase locale code such as `ru`, `uk` or `pt-br` — and enter the translated
+text. `en` cannot be added: the English text is taken from the main fields. Each language may be
+used once. The user sees the text in the panel's current language; when there is no translation,
+the English text is shown.
+
+![The Translations block of a variable with Russian and German translations of its Info and Description](/images/en/gameap_configure/games/var_translations.png)
 
 #### Examples
 
-| Values | Description
-| ------ | -------
-| **Variable:** default_map <br><br>**Default:** de_dust <br><br>**Description:** Map at startup | For each game server of this mod, the shortcode `{default_map}` and a new parameter in settings called "Default Map" with the default value "de_dust" will appear. <br><br>Individually for each server, this parameter can be edited at **"Server List"** → **"Administration"** → **"Settings"**
+| Values | Result |
+|--------|--------|
+| **Var:** `default_map` <br>**Info:** Default map <br>**Type:** Select <br>**Options:** `de_dust2`, `de_inferno`, `de_nuke` <br>**Default:** `de_dust2` | Every server of this mod gets the shortcode `{default_map}` and a **Default map** drop-down in its **Settings**, preset to `de_dust2`. Any other value is rejected |
+| **Var:** `maxplayers` <br>**Info:** Maximum players <br>**Type:** Integer <br>**Default:** `16` <br>**Validation:** Minimum `1`, Maximum `64` | A **Maximum players** number field; values outside 1–64 are not saved |
+| **Var:** `server_token` <br>**Info:** Steam GSLT <br>**Type:** Password <br>**Admin Var:** on | The token is hidden while typing and is visible and editable only to administrators |
 
+### Metadata
+
+The **Metadata** tab holds arbitrary **Key** / **Value** pairs attached to the mod. The daemon reads
+container settings from them when the node runs game servers in Docker or Podman: `docker_image`,
+`docker_workdir`, `docker_volumes`, `docker_installation_script` and the other `docker_*` keys. A key
+is looked up in order: server variables, then the mod's metadata, then the game's metadata; values
+must be strings. The **?** button next to the **Key** field opens the **Metadata keys** reference,
+which lists the known keys with an example for each; they are described in
+[Process Managers](/en/daemon/process_managers.html#docker).
+
+![The Metadata tab of a mod with the docker_image key and its value](/images/en/gameap_configure/games/mod_metadata.png)
 
 ### RCON commands
 
-These commands allow more advanced game server administration. If the game supports working with RCON or 
+These commands are set in the **Game Servers Commands** tab. They allow more advanced game server administration. If the game supports working with RCON or 
 if the console is supported, you can do the following: kick players from the server, ban players, change the server map,
 send text messages to the common chat, set a password.
 
@@ -351,7 +445,17 @@ For many GoldSource/Source games, this is the command:
 password {password}
 ```
 
-### FastRCON commands
+### Fast RCON commands
 
-You can specify your optional RCON commands. For example, server status command, receiving statistics, receiving
-list of recently disconnected players, etc.
+In the **Fast RCON commands** tab you can add your own RCON commands — for example a server status
+command, statistics or a list of recently disconnected players. They appear as buttons in the
+server's RCON console; a click sends the command.
+
+| Field            | Description                                           |
+|------------------|-------------------------------------------------------|
+| **Info**         | Button label shown in the panel, up to 128 characters |
+| **RCON Command** | Console command sent to the game server               |
+
+The label can be translated: the languages button next to the entry opens the same
+**Translations** block as for variables — `en` is not allowed, the English text is taken from
+**Info**.

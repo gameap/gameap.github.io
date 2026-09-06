@@ -15,12 +15,19 @@ event exchange.
 
 ## What Must Be Shared
 
-| Component         | Setting                                    | What happens otherwise                                      |
-|-------------------|--------------------------------------------|--------------------------------------------------------------|
-| Database          | PostgreSQL or MySQL                        | SQLite is not designed for several connected instances       |
-| Cache             | `CACHE_DRIVER=redis`                       | With `memory`, sessions and setup keys are visible to one instance only |
-| Event exchange    | `PUBSUB_DRIVER=redis` or `postgres`        | With `memory`, instances never learn about each other's events |
-| Files             | `FILES_DRIVER=s3`                          | With `local`, each instance has its own files and its own certificates |
+| Component         | Setting                                    | What happens otherwise                                                                     |
+|-------------------|--------------------------------------------|--------------------------------------------------------------------------------------------|
+| Database          | PostgreSQL or MySQL                        | SQLite is not designed for several connected instances                                     |
+| Cache             | `CACHE_DRIVER=redis`                       | With `memory`, sessions, setup keys and SSO login tickets are visible to one instance only |
+| Event exchange    | `PUBSUB_DRIVER=redis` or `postgres`        | With `memory`, instances never learn about each other's events                             |
+| Files             | `FILES_DRIVER=s3`                          | With `local`, each instance has its own files, certificates and plugin files               |
+
+SSO login tickets show why the cache must be shared. `POST /api/auth/sso/tickets` stores a
+single-use ticket in the cache, and `POST /api/auth/sso/exchange` takes it out again — usually
+on another instance, whichever one the balancer sent the browser to. With `CACHE_DRIVER=memory`
+the exchange succeeds only when it lands on the instance that issued the ticket, so SSO works
+intermittently. The ticket lives `AUTH_SSO_TICKET_TTL` (60 seconds by default, capped at 120),
+too short to compensate with retries. See [Security](/en/security.html).
 
 Example configuration:
 
@@ -43,7 +50,11 @@ FILES_S3_SECRET_ACCESS_KEY=...
 ```
 
 `AUTH_SECRET` and `ENCRYPTION_KEY` must be **identical** on all instances: otherwise a token
-issued by one will not be accepted by another, and encrypted data will be unreadable.
+issued by one will not be accepted by another, and encrypted data will be unreadable. Since 4.5
+this includes plugin secrets: the `plugin_secrets` table is encrypted with `ENCRYPTION_KEY`
+(AES-256-GCM), so an instance with a different key cannot read a secret another instance wrote,
+and with `PLUGINS_SECRETS_REQUIRE_ENCRYPTION=true` (the default) an instance without the key
+refuses to write secrets at all.
 
 ## Instance Identifier
 
@@ -120,13 +131,39 @@ external log collector, see [Security](/en/security.html).
 **Plugin tasks** are deduplicated across instances with distributed locks, so a plugin's
 periodic task runs once, not on every instance.
 
+**Plugin state** is synchronized. The `plugins` table is the desired state, and every instance
+reconciles against it: an install, update, uninstall, permission change or reload performed on
+one instance is announced to the others through the shared event exchange (a `gameap:plugin:sync`
+message) and picked up at once; the periodic pass every `PLUGINS_SYNC_REFRESH_INTERVAL`
+(60 seconds by default) is the safety net for a lost message. A reload bumps the record's
+`generation` counter, so **Reload** pressed on one instance restarts the plugin everywhere.
+
+A plugin whose file is missing on an instance is downloaded from the store again and verified
+against the recorded checksum. A plugin installed from a local file cannot be recovered this
+way — no other instance can obtain the file — so such plugins need shared file storage
+(`FILES_DRIVER=s3`). A plugin that fails to load on an instance is retried there with a backoff
+growing from `PLUGINS_SYNC_MIN_BACKOFF` (15 seconds) to `PLUGINS_SYNC_MAX_BACKOFF` (15 minutes);
+a plugin the runtime has disabled is restarted according to `PLUGINS_RECOVERY_*`.
+`PLUGINS_SYNC_DISABLED=true` turns synchronization off — changes then reach an instance only
+when it restarts. See [config.env Reference](/en/config.html).
+
+Two things stay local to an instance:
+
+* **SSH connections** opened by plugins through the `gameap-ssh` host library live in the memory
+  of the instance that opened them and are not visible to the others (`PLUGINS_SSH_ENABLED` is
+  `false` by default).
+* **The plugin runtime cache** of compiled WebAssembly modules is kept in memory by default;
+  when `PLUGINS_RUNTIME_CACHE_DIR` is set, it is a local path on that instance, not shared state.
+  Give each instance its own directory.
+
 ## Checking
 
 After starting, make sure that:
 
 * a daemon registered through one instance can be controlled through another;
 * a login performed on one instance is valid on the rest;
-* the file manager opens regardless of which instance the request landed on.
+* the file manager opens regardless of which instance the request landed on;
+* a plugin installed through one instance is loaded on the rest.
 
 If any of this does not work, the cause is almost always that one of the four shared components
 has remained local.

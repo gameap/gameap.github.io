@@ -32,9 +32,9 @@ encryption and limits are configurable.
 | `GRPC_MAX_CONCURRENT_STREAMS` | `100`      | Number of simultaneous streams per connection                              |
 | `GRPC_ENABLE_REFLECTION`      | `false`    | Schema reflection for debugging tools such as `grpcurl`. Do not enable it in production |
 
-> The `GRPC_ENABLED` variable **does not exist** — the panel does not read it. Older versions of
-> `gameapctl` append a `GRPC_ENABLED=true` line to `config.env`: it is harmless, but has no effect
-> whatsoever. The gRPC server cannot be turned off.
+> The `GRPC_ENABLED` variable **does not exist** — the panel does not read it. `gameapctl` writes a
+> `GRPC_ENABLED=true` line to `config.env` during installation and removes it when upgrading the
+> panel: it is harmless, but has no effect whatsoever. The gRPC server cannot be turned off.
 
 ### Ports
 
@@ -66,11 +66,28 @@ Set `GRPC_EXTERNAL_HOST` if that address differs from the one the daemons are su
 If the variables are not set, the gRPC server itself works fine — only the address in the generated
 installation command comes out wrong, and the daemon will not be able to connect.
 
+Since 4.4.2 the panel detects this case itself. While building the installation command it checks
+the resolved connect host against its own gRPC certificate. If the host is not covered, the
+`GET /api/nodes/setup` response contains a `warnings` array with the text:
+
+```text
+gRPC connect host "..." is not covered by the panel gRPC TLS certificate. Daemons will fail TLS verification when connecting via this address. Set GRPC_EXTERNAL_HOST in the panel configuration and restart the panel to regenerate the certificate.
+```
+
+The same event goes to the panel log as `resolved gRPC connect host is not covered by the panel
+gRPC TLS certificate`, with the host in the `grpc_host` field. The command itself is still generated
+and shown, and the **Create** window does not display the warning. `gameapctl` repeats the check on
+the dedicated server before installing — see
+[Dedicated Servers](/en/gameap_configure/dedicated_servers.html#if-the-installation-fails).
+
 > `GRPC_EXTERNAL_HOST` goes into the list of subject alternative names (SAN) of the self-signed gRPC
-> certificate. The certificate is created once, at the first start, so the variable has to be set
-> **before** the panel is first started. If you set it later, the daemon will reject the connection
-> because of the name mismatch in the certificate: delete `certs/server/api-server.crt` and
-> `certs/server/api-server.key` and restart the panel so the certificate is generated again.
+> certificate. Setting it before the first start is the cleanest option, but not a requirement: on
+> every start the panel compares the required SAN list with the existing certificate and, if a name
+> is missing, logs `Certificate SANs mismatch, regenerating` and issues the certificate again. It is
+> enough to set the variable and restart the panel — there is no need to delete
+> `certs/server/api-server.crt` and `certs/server/api-server.key` by hand. Already registered
+> daemons keep working: they verify the panel against the certificate authority `certs/root.crt`,
+> which is not re-issued.
 
 ### Encryption and certificates
 
@@ -78,6 +95,22 @@ With `GRPC_TLS_ENABLED=true` (the default value) the panel uses a self-signed ce
 its own internal certificate authority: `certs/root.crt` and `certs/root.key`. The server certificate
 is `certs/server/api-server.crt`. The keys are RSA 2048 bit, valid for 10 years, and everything is
 created automatically on first use.
+
+The server certificate is issued with the common name `GameAP API Server` and the following
+subject alternative names (SAN):
+
+* `HTTP_HOST`, `HTTP_BIND_IP` and `GRPC_EXTERNAL_HOST` — each is skipped when it is empty or equals
+  `0.0.0.0` (the default value of `HTTP_HOST`);
+* every non-loopback, non-link-local IP address of every network interface that is up;
+* `127.0.0.1` and `localhost`.
+
+The resolved list is written to the panel log at start as `gRPC TLS certificate SANs resolved`,
+with the origin of every entry (`config:HTTP_HOST`, `auto:<interface name>`, `fallback`).
+
+> Until 4.4.2 the interface addresses were added only when `HTTP_HOST` was empty or `0.0.0.0`. A
+> panel whose `HTTP_HOST` pointed at a public or NAT address therefore did not cover its own LAN
+> address, and a daemon on the same machine or in the same network failed TLS verification. Since
+> 4.4.2 the interface addresses are always included.
 
 These certificates have nothing to do with the panel's own HTTPS certificate: ACME and Let's Encrypt
 do not apply to gRPC, and there is no need to configure them separately.
@@ -156,6 +189,51 @@ lost.
 > heartbeat every 30 seconds. If there is NAT or a firewall between the daemon and the panel that
 > closes idle connections sooner, reduce `heartbeat_interval`.
 
+## Channel capabilities
+
+All interaction between the panel and the daemon goes over a single connection. During registration
+the daemon announces the list of capabilities it supports, and the panel checks this list before
+sending a request that depends on one of them.
+
+| Capability      | What it provides                                                          |
+|-----------------|---------------------------------------------------------------------------|
+| `grpc`          | Basic exchange: registration, heartbeat, tasks, commands                  |
+| `file_transfer` | File manager: directory listing, file upload and download                 |
+| `server_status` | State of the game servers                                                 |
+| `attach`        | Interactive session with a game server and the console                    |
+| `http_proxy`    | HTTP requests through the daemon — see below                              |
+| `metrics`       | Metrics of the dedicated server and the game servers                      |
+| `archive`       | Packing and unpacking archives on the dedicated server                    |
+
+`archive` first appears in GameAP Daemon 4.1.0. With an older daemon,
+`POST /api/file-manager/{server}/archive` and `POST /api/file-manager/{server}/extract` answer
+`502 node does not support archive operations`. Checksums (`POST /api/file-manager/{server}/hash`)
+are an ordinary file operation and do not depend on `archive`; the daemon supports them starting
+with the same version 4.1.0.
+
+### Archive operations
+
+Packing and unpacking are long-running requests that go over the same stream. The daemon reports
+progress with `ArchiveProgress` messages — by default about once a second — until it sends a single
+final `ArchiveResponse`. The panel republishes them to the browser over the WebSocket
+`/api/ws/servers/{server}/file-manager/archive-operations` as `archive.progress` and
+`archive.complete` events. An operation times out after 1 hour by default (24 hours at most) and
+can be cancelled with `POST /api/file-manager/{server}/archive-operations/{operationID}/cancel`;
+finished operations are remembered for 10 minutes.
+
+### HTTP requests through the daemon
+
+The channel lets the panel perform an HTTP request from the network of the dedicated server —
+including requests to a unix socket on it. This is needed to reach services available only from the
+dedicated server: a game's control panel, a local API, the socket of a container engine.
+
+The mechanism is implemented on both sides and works with several panel instances: the request is
+handed to the instance that owns the connection with the required daemon.
+
+> **Nothing in the current panel version uses this capability.** The daemon announces `http_proxy`
+> at registration, but no part of the interface and no built-in mechanism sends requests through it.
+> Treat it as groundwork for the future.
+
 ## Migrating from the old protocol
 
 A daemon installed before gRPC appeared is switched to the new protocol with the command:
@@ -197,10 +275,19 @@ The daemon's connection status is visible in the panel on the **"Administration"
 **"Dedicated Servers"** page. The details are in the daemon log:
 `/var/log/gameap-daemon/output.log` on Linux, `C:\gameap\daemon\logs\output.log` on Windows.
 
+The certificate check on the panel side: as an administrator, request `GET /api/nodes/setup` and
+look at the `warnings` field of the response. An empty or absent `warnings` means the connect host
+the panel hands out is covered by its gRPC certificate (with `GRPC_TLS_ENABLED=false` there is
+nothing to check). In the panel log, search for `not covered by the panel gRPC TLS certificate`.
+
+> Every call to `GET /api/nodes/setup` — and every opening of the **Create** window — issues a
+> **new** setup key (valid for 1 hour) and replaces the previous one, so a previously copied
+> installation command stops working.
+
 Typical messages in the daemon log:
 
 | Message                        | What it means                                                               |
 |--------------------------------|-----------------------------------------------------------------------------|
 | `gRPC connection failed`       | The connection was not established or was broken, followed by a pause and a new attempt |
 | `registration failed: ...`     | There is a connection, but the panel rejected the registration — wrong `ds_id` or `api_key` |
-| Certificate verification error | The name in the panel's certificate does not match the connection address. See `GRPC_EXTERNAL_HOST` |
+| Certificate verification error | The name in the panel's certificate does not match the connection address. The panel warns about this in advance in `warnings` of `GET /api/nodes/setup` and in its own log; set `GRPC_EXTERNAL_HOST` and restart the panel |

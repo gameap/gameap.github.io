@@ -9,6 +9,9 @@ order: 299
 The control panel supports the launch and basic control of any game servers and applications. 
 This manual covers making a new game by the example of Sven Co-op. Each step will include explanations.
 
+If the game has a Pelican or Pterodactyl egg, you can import it instead of filling everything in by
+hand — see [Games Import](/en/gameap_configure/games_import.html#importing-from-other-panels).
+
 ## Game adding
 
 First, go to the add game page. Go to **"Administration"** menu, then select 
@@ -51,12 +54,12 @@ Mod is a strong GameAP tool, you can enable additional plugins, configuration or
 extending the basic server capabilities. The archive with files you specify for the mod will be unzipped over 
 the base server build.
 
-To add a new mod for a specific game, select the game in the list and click **"Add the first mod"**.
+To add a new mod for a specific game, select the game in the list and click **"Add first mod"**.
 
 ![The Add first mod button for the Sven Co-op game](/images/en/tutorials/additional_games/example_menu_add_mod_svencoop.png)
 
 If the game already has at least one mod, then at the very top of the game list page, select 
-**"Add mod"**.
+**"Add Mod"**.
 
 On the mod adding page, specify the mod name depending on the 
 game mode features (GunGame, Jail, etc.), or availability of any modules (AMXX, ReAMXX for Counter-Strike,
@@ -81,11 +84,14 @@ direct links work. It is usually easier to take the bundled game configuration w
 
 ## Mod configuring
 
-After making a mod, you can further configure it by specifying additional parameters such as 
-"Default startup commands", startup variables, various RCON commands.
+After creating a mod, open it for editing. The editor has five tabs: **Main**, **Game Servers
+Commands**, **Metadata**, **Vars** and **Fast RCON commands** — they are described in
+[Editing mods](/en/gameap_configure/games.html#editing-mods).
 
-Default startup commands should be specified. If you do not specify them, then the startup command will be empty
-when creating a new game server, but it must be specified, otherwise the server will not start.
+Start with the default start commands on the **Main** tab. There are two fields — **Start Command
+(Linux)** and **Start Command (Windows)** — and the one matching the node's operating system is
+copied into every new game server of this mod. If you leave them empty, the start command of a new
+server is empty too, and the server will not start until you enter it by hand.
 
 ![Main mod settings with the default start command](/images/en/tutorials/additional_games/game_mods_edit_basic.png)
 
@@ -118,23 +124,25 @@ startdedicated.bat
 
 Pay attention to the values in braces `{` and `}`, such as `{ip}`, `{port}`, `{maxplayers}`, `{default_map}`,
 `{fps}` and others. In GameAP, they are called shortcodes; they are replaced with server variable values.
-All game servers have so-called basic variables, such as IP, ports, ID, UUID. They also have additional
-variables specified in the mod settings, these include the maximum number of games, default map, 
-FPS and others.
+All game servers have built-in variables, such as IP, ports, ID, UUID. Additional variables — the
+maximum number of players, the default map, FPS and others — are declared in the mod settings, on the
+**Vars** tab.
 
-Some parameters can be changed only by administrators, and some are available for change to ordinary users. 
-The list of variables and their names are specified in the mod settings, on the "Variables" tab.
+![The Vars tab in the mod settings](/images/en/tutorials/additional_games/game_mods_edit_vars.png)
 
-![The Variables tab in the mod settings](/images/en/tutorials/additional_games/game_mods_edit_vars.png)
+Every variable has a type — **String**, **Text**, **Integer**, **Decimal number**, **Switch**,
+**Select** or **Password** — and may carry predefined options, validation rules (required, minimum
+and maximum, length, regular expression) and translations of its label into the panel languages.
+A variable marked **Admin Var** is not shown to regular users at all; the rest appear in the
+**Settings** tab of every game server of this mod, where the values are changed individually.
+The fields are described in [Variables](/en/gameap_configure/games.html#variables).
 
-The variables specified in the mod for each game server can then be changed individually in the settings.
+The next tab, **Game Servers Commands**, holds the RCON commands for kicking and banning players,
+changing the map and so on; they are used for advanced game server administration.
 
-The next tab in the mod settings is "RCON commands". You can specify RCON commands for player kick, ban, 
-map change, and other RCON commands, they are used for advanced game server administration.
+![The Game Servers Commands tab in the mod settings](/images/en/tutorials/additional_games/game_mods_edit_commands.png)
 
-![The RCON commands tab in the mod settings](/images/en/tutorials/additional_games/game_mods_edit_commands.png)
-
-You can specify your optional RCON commands on the Fast Rcon tab. For example, the server status command or 
-statistics.
+Your own RCON commands go to the **Fast RCON commands** tab — for example a server status or
+statistics command. They appear as buttons in the server's RCON console.
 
 ![The Fast RCON tab with user-defined commands](/images/en/tutorials/additional_games/game_mods_edit_fast_rcon.png)
