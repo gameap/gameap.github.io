@@ -604,6 +604,12 @@
   height: auto;
 }
 
+.markdown-body iframe {
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
 .markdown-body code {
   padding: 0.2em 0.4em;
   margin: 0;

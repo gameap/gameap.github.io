@@ -14,6 +14,10 @@ The game features various modes: survival, creative,
 and adventure. Minecraft has a large community of players 
 who create and share various creations, mods, and skins.
 
+Watch the video tutorial on how to make a Minecraft server on a VPS with GameAP:
+
+<iframe width="1048" height="590" src="https://www.youtube.com/embed/aObSzv5_pQY" title="How to Make a Minecraft Server on a VPS with GameAP (Free Panel)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Environment Setup
 
 To begin, you need to [install GameAP](/en/get_started.html#panel-installation), which will take a few minutes:
