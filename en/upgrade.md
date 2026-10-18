@@ -125,8 +125,9 @@ What `gameapctl panel upgrade` does:
 3. Brings `config.env` in line with the new version: renames variables (see above) and removes
    `GRPC_ENABLED`, `LEGACY_PATH` and `LEGACY_ENV_PATH`, which the panel has not read since 4.3 —
    logged as `config.env: GRPC_ENABLED removed, unused since GameAP v4.3`.
-4. Starts the panel and checks that it answers at `/api/health` — up to 5 attempts, 2 seconds
-   apart.
+4. Starts the panel and waits for it to answer at `/api/health`: checks every 2 seconds for up to
+   5 minutes, as the first start of a new version runs migrations and loads every plugin. Where
+   systemd runs the panel, the check fails at once if the service stops or systemd restarts it.
 5. If the panel does not start or does not answer, the binary and `config.env` are restored and
    the previous version is started again, so a failed upgrade leaves a working installation. The
    backup is deleted only after a successful check.

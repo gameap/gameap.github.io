@@ -111,9 +111,43 @@ configuration file takes precedence. With `grpc.insecure: true`, no certificates
 | `steamcmd_path` | —                   | SteamCMD directory                                           |
 | `path_7zip`     | —                   | Path to 7-Zip. Windows only                                  |
 | `path_starter`  | —                   | Path to the starter program. Windows only                    |
+| `allowed_symlink_targets` | — | Directories outside `work_path` that symlinks may lead into, see below |
 
 Defaults set during installation: `work_path` — `/srv/gameap` on Linux and `C:\gameap` on
 Windows, `steamcmd_path` — `/srv/gameap/steamcmd` and `C:\gameap\steamcmd` respectively.
+
+#### Server directories on another drive
+
+The panel always places a server at `{work_path}/{server directory}`. To keep the files of a server
+elsewhere — on a second disk, or where the server was installed before it was added to GameAP —
+make the server directory a symlink and list the directory the link leads into in
+`allowed_symlink_targets`:
+
+```yaml
+work_path: /srv/gameap
+
+allowed_symlink_targets:
+  - /mnt/disk2/servers
+```
+
+```bash
+ln -s /mnt/disk2/servers/cs16 /srv/gameap/servers/cs16
+```
+
+The daemon confines every file operation to `work_path`. A symlink is followed only when it leads
+into `work_path` itself or into one of the listed directories; any other link is refused with
+`path is outside work directory`. The rule applies to every link the daemon meets, so a link made
+from inside a game server — by the game process or by an unpacked archive — cannot reach outside
+the listed directories either.
+
+List directories that hold nothing but game server files: everything under them becomes reachable
+from the file manager of every server on the node. Filesystem roots and directories that contain
+`work_path`, the configuration file or the certificate files are rejected at startup. Deleting a
+server from the panel removes the link and keeps the files behind it. On Windows use a directory
+junction (`mklink /J`) instead of a symlink.
+
+Without touching the configuration, a bind mount does the same job:
+`mount --bind /mnt/disk2/servers/cs16 /srv/gameap/servers/cs16`.
 
 ### Logging
 

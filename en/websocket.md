@@ -142,7 +142,7 @@ seconds by default) and `metrics.retention_duration` (10 minutes by default), se
 | `gameap_server_network_transmit_bytes_total`| Network bytes transmitted, cumulative      |
 | `gameap_server_block_io_read_bytes_total`   | Disk bytes read, cumulative                |
 | `gameap_server_block_io_write_bytes_total`  | Disk bytes written, cumulative             |
-| `gameap_server_process_pids`                | Number of server processes                 |
+| `gameap_server_process_pids`                | Number of threads (tasks), not processes   |
 
 The memory limit metrics are populated only by process managers that can enforce it: systemd,
 Docker, and Podman.

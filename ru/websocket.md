@@ -143,7 +143,7 @@ curl -X POST https://panel.example.com:8025/api/auth/short-lived-token \
 | `gameap_server_network_transmit_bytes_total`| Отправлено по сети, байты нарастающим итогом |
 | `gameap_server_block_io_read_bytes_total`  | Прочитано с диска, байты нарастающим итогом |
 | `gameap_server_block_io_write_bytes_total` | Записано на диск, байты нарастающим итогом |
-| `gameap_server_process_pids`               | Число процессов сервера                    |
+| `gameap_server_process_pids`               | Число потоков (задач), а не процессов      |
 
 Метрики предела памяти заполняются только теми менеджерами процессов, которые умеют его
 ограничивать: systemd, Docker и Podman.

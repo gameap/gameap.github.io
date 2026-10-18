@@ -170,11 +170,23 @@ recursive and does not look inside files. Matching ignores case and diacritics (
 nothing, it is re-read as if typed on the other supported layouts — English, Russian, German,
 Spanish.
 
+## Hidden Files
+
+Files and folders whose names start with a dot (`.env`, `.steam`) are not shown by default. The
+**Hidden files** button (eye icon) in the path bar, to the left of the History button, shows or
+hides them; shown entries are drawn in a muted colour. Hidden entries take no part in search or
+*Select all* and are not counted in the status bar, but their names still count as taken when
+you create, rename or paste something.
+
+The choice is kept **only in the browser**, in `localStorage` under the key `gameap:fm:settings`,
+and applies to every server you open from that browser.
+
 ## History
 
 The **History** button (clock icon) in the path bar shows the folders and files you work with
 most, on two tabs: **Recent** and **Frequent**. Each tab lists up to four folders and four
-files. The button appears once there is something to show.
+files. The button is always there; while the history is empty, the panel says so and explains
+what gets recorded.
 
 * **Recent** — items from the last 30 days, newest first.
 * **Frequent** — ranked by a score that grows by one on every visit and halves every 7 days,
@@ -237,5 +249,6 @@ Chunked uploads and checksum requests do not produce audit records.
 | `node does not support archive operations` — HTTP 502                  | GameAP Daemon on the node is older than 4.1.0                                                                                       |
 | ZIP download fails with HTTP 429                                       | Too many concurrent downloads for this game server (`FILES_ARCHIVE_CONCURRENT_PER_SERVER`). Wait for the running download to finish |
 | Unpacking fails with `archive is encrypted, password required`         | The archive is password-protected; such archives are not supported                                                                  |
+| Every operation fails with `invalid path` for a server whose directory is a symlink | The link leads outside the daemon's `work_path`. List the directory it leads into in the daemon's [`allowed_symlink_targets`](/en/daemon/daemon.html#server-directories-on-another-drive), or use a bind mount instead of the link |
 
 The details are visible in the panel log, see [Troubleshooting](/en/troubleshooting.html).

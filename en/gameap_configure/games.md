@@ -223,7 +223,7 @@ These shortcodes are always available; they do not require adding variables to t
 | `{uuid}`                            | Server UUID                                                     |
 | `{uuid_short}`                      | Short server UUID                                               |
 | `{dir}`                             | Absolute path to the server working directory                   |
-| `{game}`                            | Start code of the game                                          |
+| `{game}`                            | Start code of the game; a mod variable named `game` wins        |
 | `{user}`                            | System user the server runs as                                  |
 | `{node_work_path}`                  | Daemon working directory on the node, for example `/srv/gameap` |
 | `{node_tools_path}`                 | `tools` directory inside the daemon working directory           |
@@ -236,6 +236,9 @@ values of the game server's settings. Read more in [Variables](#variables).
 Two rules apply when a command is rendered:
 
 * Built-in shortcodes win: a variable named `port` or `dir` does not change the built-in value.
+  The one exception is `{game}`: some mods declare `game` as their own variable (Quake 2 starts
+  with `+set game {game}` and a variable `game=baseq2`), so there the variable wins and the game
+  start code is only the fallback.
 * Every variable is substituted in three spellings — exactly as named, all lowercase and all
   UPPERCASE. A variable `maxplayers` also replaces `{MAXPLAYERS}`, and a variable imported from a
   Pelican egg as `SERVER_NAME` also replaces `{server_name}`. Other mixed-case spellings are left as is.

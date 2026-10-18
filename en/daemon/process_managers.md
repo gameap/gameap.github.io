@@ -60,8 +60,10 @@ stopped on purpose is never started again.
 ### Statistics
 
 `systemd`, Docker and Podman report the full set of metrics: CPU, memory usage and limit, network traffic, disk I/O and
-process count. `tmux`, `simple`, Shawl and WinSW report only whether the server is running. Metric collection is described
-in [GameAP Daemon](/en/daemon/daemon.html#metrics-collection).
+thread count. Shawl reports CPU, memory usage (the private working set), disk I/O and thread count. It has no network
+metrics, because Windows keeps no per-process network counters, and no memory limit. Its disk I/O is the file and pipe
+I/O the game performs, reads served from the cache included. `tmux`, `simple` and WinSW report only whether the server
+is running. Metric collection is described in [GameAP Daemon](/en/daemon/daemon.html#metrics-collection).
 
 ## Linux and macOS
 
@@ -403,15 +405,15 @@ Platforms: Windows.
 that provides basic functionality for managing game servers.
 It is written in Rust and uses the Windows API to run applications as Windows services.
 
-| Feature                      |                                       |
-|------------------------------|---------------------------------------|
-| Start, stop, restart servers | ✅                                    |
-| Restart after a crash        | ✅ Shawl, `--restart`                 |
-| Statistics                   | ⚠️ Only whether the server is running |
-| Resource limits (CPU / RAM)  | ❌                                    |
-| Console reading              | ✅                                    |
-| Sending commands to console  | ❌                                    |
-| Isolation                    | ❌                                    |
+| Feature                      |                                               |
+|------------------------------|-----------------------------------------------|
+| Start, stop, restart servers | ✅                                            |
+| Restart after a crash        | ✅ Shawl, `--restart`                         |
+| Statistics                   | ⚠️ CPU, memory, disk I/O, threads; no network |
+| Resource limits (CPU / RAM)  | ❌                                            |
+| Console reading              | ✅                                            |
+| Sending commands to console  | ❌                                            |
+| Isolation                    | ❌                                            |
 
 #### Shawl Configuration
 
